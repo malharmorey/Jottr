@@ -9,7 +9,7 @@ import SignUp from './Components/SignUp';
 import AlertState from './context/alerts/AlertState';
 
 function App() {
-	const host = `${process.env.REACT_APP_HOST}`;
+	const host = import.meta.env.VITE_HOST;
 	const title = 'CloudBook | Your notes on cloud';
 
 	return (
