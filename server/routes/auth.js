@@ -3,11 +3,11 @@ const router = express.Router();
 const User = require('../models/User');
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const fetchuser = require('../middleware/fetchuser');
 
 const JWT_SECRET = `${process.env.JWT_SECRET_KEY}`;
-var success;
+let success;
 //---------------------------------ROUTE 1---------------------------------
 // Creating a user using : POST "api/auth/createUser". No login required
 router.post(
@@ -63,7 +63,7 @@ router.post(
 					id: user.id,
 				},
 			};
-			const authToken = jwt.sign(data, JWT_SECRET);
+			const authToken = jwt.sign(data, JWT_SECRET, { algorithm: 'HS256' });
 			success = true;
 			res.json({ success, authToken, message: 'User added successfully' });
 		} catch (error) {
@@ -115,7 +115,7 @@ router.post(
 					id: user.id,
 				},
 			};
-			const authToken = jwt.sign(data, JWT_SECRET);
+			const authToken = jwt.sign(data, JWT_SECRET, { algorithm: 'HS256' });
 			success = true;
 			res.json({ success, authToken });
 		} catch (error) {

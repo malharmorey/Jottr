@@ -1,8 +1,11 @@
 import React, { useContext } from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import noteContext from '../context/notes/NoteContext';
 import '../StyleSheets/noteCard.css';
 import pic from '../../src/images/pngegg.png';
+
+dayjs.extend(relativeTime);
 
 function NoteCard(props) {
 	// Notes-Context
@@ -15,7 +18,7 @@ function NoteCard(props) {
 				className='card m-auto '
 				id='notesCard'
 				style={
-					moment(props.date).isValid()
+					dayjs(props.date).isValid()
 						? { width: '95%' }
 						: { maxWidth: 'fit-content' }
 				}
@@ -27,7 +30,7 @@ function NoteCard(props) {
 
 					<p className='card-text notesCardNote'>
 						{props.description}
-						{moment(props.date).isValid() ? (
+						{dayjs(props.date).isValid() ? (
 							''
 						) : (
 							<img className='astronautImg' src={pic} alt='' />
@@ -36,18 +39,18 @@ function NoteCard(props) {
 					<p className='card-text notesCardTag'>{props.tag}</p>
 					<p className='card-text mb-3'>
 						<small
-							className={`${moment(props.date).isValid() ? '' : 'd-none'}`}
+							className={`${dayjs(props.date).isValid() ? '' : 'd-none'}`}
 						>
 							Updated{' '}
-							{moment(props.date).isValid()
-								? [moment(props.date).startOf('minutes').fromNow()]
+							{dayjs(props.date).isValid()
+								? [dayjs(props.date).startOf('minute').fromNow()]
 								: 'long ago'}
 						</small>
 					</p>
 
 					<i
 						className={`fa-regular fa-pen-to-square fa-lg text-warning fontIcon ${
-							moment(props.date).isValid() ? '' : 'd-none'
+							dayjs(props.date).isValid() ? '' : 'd-none'
 						}`}
 						role='button'
 						onClick={() => {
@@ -57,7 +60,7 @@ function NoteCard(props) {
 
 					<i
 						className={`fa-regular fa-trash-can mx-4 fa-lg text-danger fontIcon ${
-							moment(props.date).isValid() ? '' : 'd-none'
+							dayjs(props.date).isValid() ? '' : 'd-none'
 						}`}
 						role='button'
 						onClick={() => {

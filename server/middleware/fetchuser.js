@@ -1,4 +1,4 @@
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = `${process.env.JWT_SECRET_KEY}`;
 
@@ -13,7 +13,7 @@ const fetchuser = (req, res, next) => {
 
 	try {
 		// Authenticating auth-token and fetching userId from it
-		jwt.verify(token, JWT_SECRET, (err, userData) => {
+		jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] }, (err, userData) => {
 			if (err) {
 				success = false;
 				return res.status(401).send({
