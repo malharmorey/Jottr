@@ -4,10 +4,7 @@ const mongoURI = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONG
 
 const connectToMongo = () => {
 	mongoose
-		.connect(mongoURI, {
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
-		})
+		.connect(mongoURI)
 		.then(() => {
 			console.log('Successfully connected to mongoDB');
 		})
