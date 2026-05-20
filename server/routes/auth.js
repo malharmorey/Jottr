@@ -63,7 +63,7 @@ router.post(
 					id: user.id,
 				},
 			};
-			const authToken = jwt.sign(data, JWT_SECRET);
+			const authToken = jwt.sign(data, JWT_SECRET, { algorithm: 'HS256' });
 			success = true;
 			res.json({ success, authToken, message: 'User added successfully' });
 		} catch (error) {
@@ -115,7 +115,7 @@ router.post(
 					id: user.id,
 				},
 			};
-			const authToken = jwt.sign(data, JWT_SECRET);
+			const authToken = jwt.sign(data, JWT_SECRET, { algorithm: 'HS256' });
 			success = true;
 			res.json({ success, authToken });
 		} catch (error) {
