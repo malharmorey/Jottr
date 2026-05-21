@@ -1,5 +1,6 @@
 import './StyleSheets/App.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router';
+import { RouterProvider } from 'react-router/dom';
 import AppLayout from './Components/AppLayout';
 import RouteError from './Components/RouteError';
 import Home from './Components/Home';
@@ -28,20 +29,13 @@ const router = createBrowserRouter([
 			},
 		],
 	},
-], {
-	future: {
-		v7_relativeSplatPath: true,
-	},
-});
+]);
 
 function App() {
 	return (
 		<AlertState>
 			<NoteState host={host}>
-				<RouterProvider
-					router={router}
-					future={{ v7_startTransition: true }}
-				/>
+				<RouterProvider router={router} />
 			</NoteState>
 		</AlertState>
 	);
