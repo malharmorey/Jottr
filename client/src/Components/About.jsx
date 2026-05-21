@@ -1,6 +1,6 @@
 import React from 'react';
 import '../StyleSheets/about.css';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 const About = (props) => {
 	document.title = `CloudBook | ${props.title}`;

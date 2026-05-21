@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import noteContext from '../context/notes/NoteContext';
 import alertContext from '../context/alerts/AlertContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import NoteCard from './NoteCard';
 
 function SetNotes(props) {

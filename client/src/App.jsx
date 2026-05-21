@@ -1,5 +1,6 @@
 import './StyleSheets/App.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router';
+import { RouterProvider } from 'react-router/dom';
 import AppLayout from './Components/AppLayout';
 import RouteError from './Components/RouteError';
 import Home from './Components/Home';

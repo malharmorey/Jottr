@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import '../StyleSheets/login.css';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router';
+import { useNavigate } from 'react-router';
 import alertContext from '../context/alerts/AlertContext';
 
 const Login = (props) => {

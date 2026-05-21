@@ -1,7 +1,7 @@
 import React, { useContext, useRef } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 import '../StyleSheets/navbar.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import noteContext from '../context/notes/NoteContext';
 import alertContext from '../context/alerts/AlertContext';
 import cloudBookEmoji from '../images/logo512.png';
