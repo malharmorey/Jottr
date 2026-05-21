@@ -1,48 +1,42 @@
 import './StyleSheets/App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './Components/Navbar';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import AppLayout from './Components/AppLayout';
+import RouteError from './Components/RouteError';
 import Home from './Components/Home';
 import About from './Components/About';
-import NoteState from './context/notes/NoteState';
 import Login from './Components/Login';
 import SignUp from './Components/SignUp';
+import NoteState from './context/notes/NoteState';
 import AlertState from './context/alerts/AlertState';
 
+const host = import.meta.env.VITE_HOST;
+const title = 'CloudBook | Your notes on cloud';
+
+const router = createBrowserRouter([
+	{
+		element: <AppLayout />,
+		children: [
+			{
+				errorElement: <RouteError />,
+				children: [
+					{ index: true, element: <Home title={'Home'} /> },
+					{ path: 'about', element: <About title={'About'} /> },
+					{ path: 'login', element: <Login host={host} title={title} /> },
+					{ path: 'signup', element: <SignUp host={host} title={title} /> },
+					{ path: '*', element: <RouteError /> },
+				],
+			},
+		],
+	},
+]);
+
 function App() {
-	const host = import.meta.env.VITE_HOST;
-	const title = 'CloudBook | Your notes on cloud';
-
 	return (
-		<>
-			<AlertState>
-				<NoteState host={host}>
-					<Router>
-						<Navbar />
-
-						<div className='mainContainer'>
-							<Routes>
-								<Route exact path='/' element={<Home title={'Home'} />} />
-								<Route
-									exact
-									path='/about'
-									element={<About title={'About'} />}
-								/>
-								<Route
-									exact
-									path='/login'
-									element={<Login host={host} title={title} />}
-								/>
-								<Route
-									exact
-									path='/signup'
-									element={<SignUp host={host} title={title} />}
-								/>
-							</Routes>
-						</div>
-					</Router>
-				</NoteState>
-			</AlertState>
-		</>
+		<AlertState>
+			<NoteState host={host}>
+				<RouterProvider router={router} />
+			</NoteState>
+		</AlertState>
 	);
 }
 
