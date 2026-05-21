@@ -29,20 +29,13 @@ const router = createBrowserRouter([
 			},
 		],
 	},
-], {
-	future: {
-		v7_relativeSplatPath: true,
-	},
-});
+]);
 
 function App() {
 	return (
 		<AlertState>
 			<NoteState host={host}>
-				<RouterProvider
-					router={router}
-					future={{ v7_startTransition: true }}
-				/>
+				<RouterProvider router={router} />
 			</NoteState>
 		</AlertState>
 	);
