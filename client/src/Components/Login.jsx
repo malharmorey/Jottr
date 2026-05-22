@@ -3,9 +3,11 @@ import '../StyleSheets/login.css';
 import { Link } from 'react-router';
 import { useNavigate } from 'react-router';
 import useAlertStore from '../stores/alertStore';
+import useAuth from '../hooks/useAuth';
 
 const Login = (props) => {
 	const showAlert = useAlertStore((state) => state.showAlert);
+	const { login } = useAuth();
 
 	const [credentials, setCredentials] = useState({ email: '', password: '' });
 
@@ -28,7 +30,7 @@ const Login = (props) => {
 			.then(async (response) => {
 				const json = await response.json();
 				if (json.success) {
-					localStorage.setItem('token', json.authToken);
+					login(json.authToken);
 					navigate('/');
 					showAlert('Successfully loged In', 'success');
 					setCredentials({

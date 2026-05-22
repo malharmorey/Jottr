@@ -4,6 +4,7 @@ import '../StyleSheets/navbar.css';
 import { useNavigate } from 'react-router';
 import noteContext from '../context/notes/NoteContext';
 import useAlertStore from '../stores/alertStore';
+import useAuth from '../hooks/useAuth';
 import cloudBookEmoji from '../images/logo512.png';
 
 const Navbar = () => {
@@ -11,12 +12,13 @@ const Navbar = () => {
 	const Notecontext = useContext(noteContext);
 	const { clearUserNotesArray, userName } = Notecontext;
 	const showAlert = useAlertStore((state) => state.showAlert);
+	const { logout, isLoggedIn } = useAuth();
 
 	let navigate = useNavigate();
 
 	// Logging out current user and clearing user's notes array
 	const handleLogout = () => {
-		localStorage.removeItem('token');
+		logout();
 		navigate('/login');
 		clearUserNotesArray();
 		showAlert('Logged out successfully', 'success');
@@ -78,7 +80,7 @@ const Navbar = () => {
 								</NavLink>
 							</li>
 						</ul>
-						{localStorage.getItem('token') ? (
+						{isLoggedIn ? (
 							<div className='btnContainer'>
 								<div className='dropdown' style={{ display: 'inline-block' }}>
 									👤{' '}

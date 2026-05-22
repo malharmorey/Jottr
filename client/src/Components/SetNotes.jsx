@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import noteContext from '../context/notes/NoteContext';
 import useAlertStore from '../stores/alertStore';
+import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router';
 import NoteCard from './NoteCard';
 
@@ -9,11 +10,12 @@ function SetNotes(props) {
 	const context = useContext(noteContext);
 	const { reversedNotesArray, getAllNotes } = context;
 	const showAlert = useAlertStore((state) => state.showAlert);
+	const { isLoggedIn } = useAuth();
 
 	let navigate = useNavigate();
 
 	useEffect(() => {
-		if (localStorage.getItem('token') !== null) {
+		if (isLoggedIn) {
 			getAllNotes();
 		} else {
 			navigate('/login');

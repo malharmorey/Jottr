@@ -3,9 +3,11 @@ import '../StyleSheets/signup.css';
 import { Link } from 'react-router';
 import { useNavigate } from 'react-router';
 import useAlertStore from '../stores/alertStore';
+import useAuth from '../hooks/useAuth';
 
 const SignUp = (props) => {
 	const showAlert = useAlertStore((state) => state.showAlert);
+	const { login } = useAuth();
 
 	const [credentials, setCredentials] = useState({
 		name: '',
@@ -32,7 +34,7 @@ const SignUp = (props) => {
 			.then(async (response) => {
 				const json = await response.json();
 				if (json.success) {
-					localStorage.setItem('token', json.authToken);
+					login(json.authToken);
 					navigate('/');
 					showAlert('Account created sccessfully!', 'success');
 					setCredentials({
