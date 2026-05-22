@@ -3,16 +3,14 @@ import { NavLink } from 'react-router';
 import '../StyleSheets/navbar.css';
 import { useNavigate } from 'react-router';
 import noteContext from '../context/notes/NoteContext';
-import alertContext from '../context/alerts/AlertContext';
+import useAlertStore from '../stores/alertStore';
 import cloudBookEmoji from '../images/logo512.png';
 
 const Navbar = () => {
 	// Notes-Context
 	const Notecontext = useContext(noteContext);
 	const { clearUserNotesArray, userName } = Notecontext;
-	// Alert-Context
-	const Alertcontext = useContext(alertContext);
-	const { showAlert } = Alertcontext;
+	const showAlert = useAlertStore((state) => state.showAlert);
 
 	let navigate = useNavigate();
 

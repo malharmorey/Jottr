@@ -7,8 +7,8 @@ import Home from './Components/Home';
 import About from './Components/About';
 import Login from './Components/Login';
 import SignUp from './Components/SignUp';
+import AlertToaster from './Components/AlertToaster';
 import NoteState from './context/notes/NoteState';
-import AlertState from './context/alerts/AlertState';
 
 const host = import.meta.env.VITE_HOST;
 const title = 'CloudBook | Your notes on cloud';
@@ -33,11 +33,10 @@ const router = createBrowserRouter([
 
 function App() {
 	return (
-		<AlertState>
-			<NoteState host={host}>
-				<RouterProvider router={router} />
-			</NoteState>
-		</AlertState>
+		<NoteState host={host}>
+			<AlertToaster />
+			<RouterProvider router={router} />
+		</NoteState>
 	);
 }
 

@@ -1,13 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import '../StyleSheets/signup.css';
 import { Link } from 'react-router';
 import { useNavigate } from 'react-router';
-import alertContext from '../context/alerts/AlertContext';
+import useAlertStore from '../stores/alertStore';
 
 const SignUp = (props) => {
-	// Alert-Context
-	const Alertcontext = useContext(alertContext);
-	const { showAlert } = Alertcontext;
+	const showAlert = useAlertStore((state) => state.showAlert);
 
 	const [credentials, setCredentials] = useState({
 		name: '',
