@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import noteContext from '../context/notes/NoteContext';
-import alertContext from '../context/alerts/AlertContext';
+import useAlertStore from '../stores/alertStore';
 import { useNavigate } from 'react-router';
 import NoteCard from './NoteCard';
 
@@ -8,9 +8,7 @@ function SetNotes(props) {
 	// Notes-Context
 	const context = useContext(noteContext);
 	const { reversedNotesArray, getAllNotes } = context;
-	// Alert-Context
-	const Alertcontext = useContext(alertContext);
-	const { showAlert } = Alertcontext;
+	const showAlert = useAlertStore((state) => state.showAlert);
 
 	let navigate = useNavigate();
 
