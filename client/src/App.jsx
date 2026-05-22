@@ -7,6 +7,7 @@ import Home from './Components/Home';
 import About from './Components/About';
 import Login from './Components/Login';
 import SignUp from './Components/SignUp';
+import AlertToaster from './Components/AlertToaster';
 import NoteState from './context/notes/NoteState';
 import AlertState from './context/alerts/AlertState';
 
@@ -35,6 +36,7 @@ function App() {
 	return (
 		<AlertState>
 			<NoteState host={host}>
+				<AlertToaster />
 				<RouterProvider router={router} />
 			</NoteState>
 		</AlertState>
