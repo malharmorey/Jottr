@@ -1,17 +1,15 @@
-import React, { useContext, useRef } from 'react';
+import React, { useRef } from 'react';
 import { NavLink } from 'react-router';
 import '../StyleSheets/navbar.css';
 import { useNavigate } from 'react-router';
-import noteContext from '../context/notes/NoteContext';
+import { useQueryClient } from '@tanstack/react-query';
 import { useUserName } from '../hooks/useNotes';
 import useAlertStore from '../stores/alertStore';
 import useAuth from '../hooks/useAuth';
 import cloudBookEmoji from '../images/logo512.png';
 
 const Navbar = () => {
-	// Notes-Context
-	const Notecontext = useContext(noteContext);
-	const { clearUserNotesArray } = Notecontext;
+	const queryClient = useQueryClient();
 	const userName = useUserName();
 	const showAlert = useAlertStore((state) => state.showAlert);
 	const { logout, isLoggedIn } = useAuth();
@@ -22,7 +20,7 @@ const Navbar = () => {
 	const handleLogout = () => {
 		logout();
 		navigate('/login');
-		clearUserNotesArray();
+		queryClient.removeQueries({ queryKey: ['notes'] });
 		showAlert('Logged out successfully', 'success');
 	};
 
