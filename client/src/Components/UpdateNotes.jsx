@@ -1,11 +1,9 @@
-import React, { useContext, useRef, useState } from 'react';
-import noteContext from '../context/notes/NoteContext';
+import React, { useRef, useState } from 'react';
+import { useEditNote } from '../hooks/useEditNote';
 import SetNotes from './SetNotes';
 
 function UpdateNotes() {
-	// Notes-Context
-	const context = useContext(noteContext);
-	const { editNote } = context;
+	const { mutate: editNote } = useEditNote();
 
 	const ref = useRef(null);
 
@@ -27,7 +25,12 @@ function UpdateNotes() {
 	};
 
 	const handleSaveClick = () => {
-		editNote(note.id, note.etitle, note.edescription, note.etag);
+		editNote({
+			id: note.id,
+			title: note.etitle,
+			description: note.edescription,
+			tag: note.etag,
+		});
 	};
 
 	const onChange = (e) => {
