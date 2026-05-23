@@ -31,3 +31,30 @@ export const addNote = async (token, { title, description, tag }) => {
 	}
 	return data.note;
 };
+
+// PUT update an existing note
+export const updateNote = async (token, id, { title, description, tag }) => {
+	const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
+		method: 'PUT',
+		headers: headers(token),
+		body: JSON.stringify({ title, description, tag }),
+	});
+	const data = await response.json();
+	if (!response.ok || !data.success) {
+		throw new Error(data.message || 'Unable to update your note');
+	}
+	return data;
+};
+
+// DELETE a note
+export const deleteNote = async (token, id) => {
+	const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
+		method: 'DELETE',
+		headers: headers(token),
+	});
+	const data = await response.json();
+	if (!response.ok || !data.success) {
+		throw new Error(data.message || 'Unable to delete your note');
+	}
+	return data;
+};
