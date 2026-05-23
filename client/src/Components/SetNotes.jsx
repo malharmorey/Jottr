@@ -1,23 +1,19 @@
-import React, { useContext, useEffect } from 'react';
-import noteContext from '../context/notes/NoteContext';
+import React, { useEffect } from 'react';
+import { useNotes } from '../hooks/useNotes';
 import useAlertStore from '../stores/alertStore';
 import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router';
 import NoteCard from './NoteCard';
 
 function SetNotes(props) {
-	// Notes-Context
-	const context = useContext(noteContext);
-	const { reversedNotesArray, getAllNotes } = context;
+	const { data: reversedNotesArray = [] } = useNotes();
 	const showAlert = useAlertStore((state) => state.showAlert);
 	const { isLoggedIn } = useAuth();
 
 	let navigate = useNavigate();
 
 	useEffect(() => {
-		if (isLoggedIn) {
-			getAllNotes();
-		} else {
+		if (!isLoggedIn) {
 			navigate('/login');
 			showAlert('Please login first', 'danger');
 		}
