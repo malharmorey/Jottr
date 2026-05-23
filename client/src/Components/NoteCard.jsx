@@ -1,16 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import noteContext from '../context/notes/NoteContext';
+import { useDeleteNote } from '../hooks/useDeleteNote';
 import '../StyleSheets/noteCard.css';
 import pic from '../../src/images/pngegg.png';
 
 dayjs.extend(relativeTime);
 
 function NoteCard(props) {
-	// Notes-Context
-	const context = useContext(noteContext);
-	const { deleteNote } = context;
+	const { mutate: deleteNote } = useDeleteNote();
 
 	return (
 		<div className='my-3'>
