@@ -1,0 +1,43 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { updateNote } from '../api/notes';
+import useAuth from './useAuth';
+import useAlertStore from '../stores/alertStore';
+
+// edit a note, optimistically updating it and rolling back on error
+export const useEditNote = () => {
+	const { token } = useAuth();
+	const queryClient = useQueryClient();
+	const showAlert = useAlertStore.getState().showAlert;
+
+	return useMutation({
+		mutationFn: ({ id, title, description, tag }) =>
+			updateNote(token, id, { title, description, tag }),
+		onMutate: async ({ id, title, description, tag }) => {
+			await queryClient.cancelQueries({ queryKey: ['notes'] });
+			const previous = queryClient.getQueryData(['notes']);
+			queryClient.setQueryData(['notes'], (old) =>
+				old
+					? {
+							...old,
+							notes: old.notes.map((note) =>
+								note._id === id
+									? { ...note, title, description, tag, date: Date.now() }
+									: note
+							),
+					  }
+					: old
+			);
+			return { previous };
+		},
+		onError: (error, _vars, context) => {
+			queryClient.setQueryData(['notes'], context?.previous);
+			showAlert(error.message, 'danger');
+		},
+		onSuccess: () => {
+			showAlert('Your note has been updated successfully', 'success');
+		},
+		onSettled: () => {
+			queryClient.invalidateQueries({ queryKey: ['notes'] });
+		},
+	});
+};
