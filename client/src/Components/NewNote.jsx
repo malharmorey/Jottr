@@ -1,11 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import '../StyleSheets/newNote.css';
-import noteContext from '../context/notes/NoteContext';
+import { useAddNote } from '../hooks/useAddNote';
 
 function NewNote() {
-	// Notes-Context
-	const context = useContext(noteContext);
-	const { addNote } = context;
+	const { mutate: addNote } = useAddNote();
 
 	const [note, setNote] = useState({
 		title: '',
@@ -14,7 +12,7 @@ function NewNote() {
 	});
 
 	const handleSaveClick = () => {
-		addNote(note.title, note.description, note.tag);
+		addNote({ title: note.title, description: note.description, tag: note.tag });
 		setNote({ title: '', description: '', tag: '' });
 	};
 	const handleCloseClick = () => {
