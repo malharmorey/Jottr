@@ -3,6 +3,7 @@ import { NavLink } from 'react-router';
 import '../StyleSheets/navbar.css';
 import { useNavigate } from 'react-router';
 import noteContext from '../context/notes/NoteContext';
+import { useUserName } from '../hooks/useNotes';
 import useAlertStore from '../stores/alertStore';
 import useAuth from '../hooks/useAuth';
 import cloudBookEmoji from '../images/logo512.png';
@@ -10,7 +11,8 @@ import cloudBookEmoji from '../images/logo512.png';
 const Navbar = () => {
 	// Notes-Context
 	const Notecontext = useContext(noteContext);
-	const { clearUserNotesArray, userName } = Notecontext;
+	const { clearUserNotesArray } = Notecontext;
+	const userName = useUserName();
 	const showAlert = useAlertStore((state) => state.showAlert);
 	const { logout, isLoggedIn } = useAuth();
 
