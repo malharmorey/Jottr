@@ -1,10 +1,11 @@
-const express = require('express');
+import express from 'express';
+import User from '../models/User.js';
+import { body, validationResult } from 'express-validator';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import fetchuser from '../middleware/fetchuser.js';
+
 const router = express.Router();
-const User = require('../models/User');
-const { body, validationResult } = require('express-validator');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const fetchuser = require('../middleware/fetchuser');
 
 const JWT_SECRET = `${process.env.JWT_SECRET_KEY}`;
 let success;
@@ -137,4 +138,4 @@ router.post('/getuser', fetchuser, async (req, res) => {
 		res.status(500).json({ success, message: 'Internal server error' });
 	}
 });
-module.exports = router;
+export default router;

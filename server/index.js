@@ -1,6 +1,8 @@
-const connectToMongo = require('./db');
-const express = require('express');
-const cors = require('cors');
+import express from 'express';
+import cors from 'cors';
+import connectToMongo from './db.js';
+import authRouter from './routes/auth.js';
+import notesRouter from './routes/notes.js';
 
 connectToMongo();
 const app = express();
@@ -11,8 +13,8 @@ app.use(express.json());
 app.use(cors());
 
 // Available Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/notes', require('./routes/notes'));
+app.use('/api/auth', authRouter);
+app.use('/api/notes', notesRouter);
 
 app.get('/', (req, res) => {
 	res.status(200).send('Welcome to server!');
