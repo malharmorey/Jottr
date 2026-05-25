@@ -13,7 +13,7 @@ router.get('/getallnotes', fetchuser, async (req, res) => {
 	try {
 		const notes = await Note.find({ user: req.user.id });
 		const user = await User.find({ _id: req.user.id });
-		userName = user.map((user) => {
+		const userName = user.map((user) => {
 			return user.name;
 		});
 		success = true;
