@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = `${process.env.JWT_SECRET_KEY}`;
 
@@ -31,4 +31,4 @@ const fetchuser = (req, res, next) => {
 	}
 };
 
-module.exports = fetchuser;
+export default fetchuser;

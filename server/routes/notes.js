@@ -1,9 +1,10 @@
-const express = require('express');
+import express from 'express';
+import Note from '../models/Note.js';
+import fetchuser from '../middleware/fetchuser.js';
+import { body, validationResult } from 'express-validator';
+import User from '../models/User.js';
+
 const router = express.Router();
-const Note = require('../models/Note');
-const fetchuser = require('../middleware/fetchuser');
-const { body, validationResult } = require('express-validator');
-const User = require('../models/User');
 
 let success;
 //---------------------------------ROUTE 1---------------------------------
@@ -12,7 +13,7 @@ router.get('/getallnotes', fetchuser, async (req, res) => {
 	try {
 		const notes = await Note.find({ user: req.user.id });
 		const user = await User.find({ _id: req.user.id });
-		userName = user.map((user) => {
+		const userName = user.map((user) => {
 			return user.name;
 		});
 		success = true;
@@ -171,4 +172,4 @@ router.delete('/deletenote/:id', fetchuser, async (req, res) => {
 		res.status(500).json({ success, message: 'Internal server error' });
 	}
 });
-module.exports = router;
+export default router;
