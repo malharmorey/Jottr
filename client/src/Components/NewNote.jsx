@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../StyleSheets/newNote.css';
 import { useAddNote } from '../hooks/useAddNote';
+import CharCounter from './CharCounter';
 
 function NewNote() {
 	const { mutate: addNote } = useAddNote();
@@ -67,9 +68,13 @@ function NewNote() {
 										onChange={onChange}
 										value={note.title}
 										minLength={3}
+										maxLength={200}
 										placeholder={'Your note title'}
 										required
 									/>
+									<div className='text-end'>
+										<CharCounter value={note.title} max={200} />
+									</div>
 								</div>
 								<div className='mb-3'>
 									<label htmlFor='description' className='col-form-label'>
@@ -83,9 +88,13 @@ function NewNote() {
 										onChange={onChange}
 										value={note.description}
 										minLength={5}
+										maxLength={10000}
 										placeholder={'Type your note here....'}
 										required
 									></textarea>
+									<div className='text-end'>
+										<CharCounter value={note.description} max={10000} />
+									</div>
 								</div>
 								<div className='mb-3'>
 									<label htmlFor='tag' className='col-form-label'>
@@ -98,8 +107,12 @@ function NewNote() {
 										name='tag'
 										onChange={onChange}
 										value={note.tag}
+										maxLength={60}
 										placeholder={'#Personal'}
 									/>
+									<div className='text-end'>
+										<CharCounter value={note.tag} max={60} />
+									</div>
 								</div>
 							</form>
 						</div>
