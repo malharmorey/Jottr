@@ -6,6 +6,15 @@ import User from '../models/User.js';
 
 const router = express.Router();
 
+const formatMaxLengthError = (err) => {
+	const fields = Object.keys(err.errors || {}).filter((f) => err.errors[f].kind === 'maxlength');
+	if (!fields.length) return null;
+	if (fields.length === 1) return `${fields[0]} is too long`;
+	if (fields.length === 2) return `${fields[0]} and ${fields[1]} are too long`;
+	const last = fields.pop();
+	return `${fields.join(', ')} and ${last} are too long`;
+};
+
 //---------------------------------ROUTE 1---------------------------------
 // fetching all notes of a user : get "api/notes/getallnotes".Login required
 router.get('/getallnotes', fetchuser, async (req, res) => {
@@ -63,6 +72,10 @@ router.post(
 				message: 'Your note has been added successfully',
 			});
 		} catch (error) {
+			if (error.name === 'ValidationError') {
+				const msg = formatMaxLengthError(error);
+				if (msg) return res.status(400).json({ success: false, message: msg });
+			}
 			res.status(500).json({ success: false, message: 'Internal server error' });
 		}
 	}
@@ -129,6 +142,10 @@ router.put(
 				date: Date.now(),
 			});
 		} catch (error) {
+			if (error.name === 'ValidationError') {
+				const msg = formatMaxLengthError(error);
+				if (msg) return res.status(400).json({ success: false, message: msg });
+			}
 			res.status(500).json({ success: false, message: 'Internal server error' });
 		}
 	}
