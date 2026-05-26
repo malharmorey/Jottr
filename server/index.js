@@ -17,7 +17,7 @@ const port = process.env.PORT || 8080;
 
 //Middleware function
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: process.env.CLIENT_ORIGIN }));
 
 // Available Routes
 app.use('/api/auth', authRouter);
