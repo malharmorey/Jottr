@@ -20,7 +20,6 @@ const authLimiter = rateLimit({
 	},
 });
 
-let success;
 //---------------------------------ROUTE 1---------------------------------
 // Creating a user using : POST "api/auth/createUser". No login required
 router.post(
@@ -49,16 +48,14 @@ router.post(
 
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
-			success = false;
-			return res.status(400).json({ success, errors: errors.array() });
+			return res.status(400).json({ success: false, errors: errors.array() });
 		}
 		//Checking if user with same email already exist
 		try {
 			let user = await User.findOne({ email: req.body.email });
 			if (user) {
-				success = false;
 				return res.status(400).json({
-					success,
+					success: false,
 					message: 'Email already in use, Please use different Email',
 				});
 			}
@@ -78,11 +75,9 @@ router.post(
 				},
 			};
 			const authToken = jwt.sign(data, JWT_SECRET, { algorithm: 'HS256' });
-			success = true;
-			res.json({ success, authToken, message: 'User added successfully' });
+			res.json({ success: true, authToken, message: 'User added successfully' });
 		} catch (error) {
-			success = false;
-			res.status(500).json({ success, message: 'Internal server error' });
+			res.status(500).json({ success: false, message: 'Internal server error' });
 		}
 	}
 );
@@ -101,26 +96,23 @@ router.post(
 		// Returning bad request and error in case of any error
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
-			success = false;
-			return res.status(400).json({ success, errors: errors.array() });
+			return res.status(400).json({ success: false, errors: errors.array() });
 		}
 
 		const { email, password } = req.body;
 		try {
 			let user = await User.findOne({ email });
 			if (!user) {
-				success = false;
 				return res.status(400).json({
-					success,
+					success: false,
 					message: `We couldn't find an account matching the login info you entered  `,
 				});
 			}
 			//Verifying the user password input
 			const comparePassword = await bcrypt.compare(password, user.password);
 			if (!comparePassword) {
-				success = false;
 				return res.status(400).json({
-					success,
+					success: false,
 					message: `Incorrect password`,
 				});
 			}
@@ -131,11 +123,9 @@ router.post(
 				},
 			};
 			const authToken = jwt.sign(data, JWT_SECRET, { algorithm: 'HS256' });
-			success = true;
-			res.json({ success, authToken });
+			res.json({ success: true, authToken });
 		} catch (error) {
-			success = false;
-			res.status(500).json({ success, message: 'Internal server error' });
+			res.status(500).json({ success: false, message: 'Internal server error' });
 		}
 	}
 );
@@ -148,8 +138,7 @@ router.post('/getuser', fetchuser, async (req, res) => {
 		const user = await User.findById(userId).select('-password');
 		res.send(user);
 	} catch (error) {
-		success = false;
-		res.status(500).json({ success, message: 'Internal server error' });
+		res.status(500).json({ success: false, message: 'Internal server error' });
 	}
 });
 export default router;
