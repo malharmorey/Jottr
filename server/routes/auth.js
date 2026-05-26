@@ -59,6 +59,12 @@ router.post(
 					message: 'Email already in use, Please use different Email',
 				});
 			}
+			if (Buffer.byteLength(req.body.password, 'utf8') > 72) {
+				return res.status(400).json({
+					success: false,
+					message: 'Password must be 72 characters or fewer',
+				});
+			}
 			//Hashing the new user password before storing it to our DB
 			const salt = await bcrypt.genSalt(10);
 			const encryptedPassword = await bcrypt.hash(req.body.password, salt);
