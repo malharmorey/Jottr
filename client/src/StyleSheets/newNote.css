@@ -31,3 +31,6 @@
 .col-form-label {
 	font-family: var(--secondaryFont);
 }
+.charCounter {
+	font-weight: 300;
+}

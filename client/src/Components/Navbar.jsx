@@ -3,16 +3,14 @@ import { NavLink } from 'react-router';
 import '../StyleSheets/navbar.css';
 import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
-import { useUserName } from '../hooks/useNotes';
 import useAlertStore from '../stores/alertStore';
 import useAuth from '../hooks/useAuth';
 import cloudBookEmoji from '../images/logo512.png';
 
 const Navbar = () => {
 	const queryClient = useQueryClient();
-	const userName = useUserName();
 	const showAlert = useAlertStore((state) => state.showAlert);
-	const { logout, isLoggedIn } = useAuth();
+	const { logout, isLoggedIn, userName } = useAuth();
 
 	let navigate = useNavigate();
 

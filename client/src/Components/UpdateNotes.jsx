@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useEditNote } from '../hooks/useEditNote';
 import SetNotes from './SetNotes';
+import CharCounter from './CharCounter';
 
 function UpdateNotes() {
 	const { mutate: editNote } = useEditNote();
@@ -83,9 +84,13 @@ function UpdateNotes() {
 										onChange={onChange}
 										value={note.etitle}
 										minLength={3}
+										maxLength={200}
 										placeholder={'Your note title'}
 										required
 									/>
+									<div className='text-end'>
+										<CharCounter value={note.etitle} max={200} />
+									</div>
 								</div>
 								<div className='mb-3'>
 									<label htmlFor='description' className='col-form-label'>
@@ -99,9 +104,13 @@ function UpdateNotes() {
 										onChange={onChange}
 										value={note.edescription}
 										minLength={5}
+										maxLength={10000}
 										placeholder={'Type to edit yout note...'}
 										required
 									></textarea>
+									<div className='text-end'>
+										<CharCounter value={note.edescription} max={10000} />
+									</div>
 								</div>
 								<div className='mb-3'>
 									<label htmlFor='tag' className='col-form-label'>
@@ -114,8 +123,12 @@ function UpdateNotes() {
 										name='etag'
 										onChange={onChange}
 										value={note.etag}
+										maxLength={60}
 										placeholder={'#Personal'}
 									/>
+									<div className='text-end'>
+										<CharCounter value={note.etag} max={60} />
+									</div>
 								</div>
 							</form>
 						</div>

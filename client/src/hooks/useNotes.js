@@ -14,6 +14,3 @@ const useNotesQuery = (select) => {
 
 // notes of the current user, newest first
 export const useNotes = () => useNotesQuery((data) => [...data.notes].reverse());
-
-// current user's name, taken from the notes response
-export const useUserName = () => useNotesQuery((data) => data.userName?.[0]).data;
