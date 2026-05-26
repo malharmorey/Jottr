@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import connectToMongo from './db.js';
 import authRouter from './routes/auth.js';
 import notesRouter from './routes/notes.js';
@@ -16,6 +17,7 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 //Middleware function
+app.use(helmet());
 app.use(express.json());
 app.use(cors({ origin: process.env.CLIENT_ORIGIN }));
 
