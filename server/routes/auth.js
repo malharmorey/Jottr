@@ -3,16 +3,37 @@ import User from '../models/User.js';
 import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import rateLimit from 'express-rate-limit';
 import fetchuser from '../middleware/fetchuser.js';
 
 const router = express.Router();
 
 const JWT_SECRET = `${process.env.JWT_SECRET_KEY}`;
-let success;
+
+const authLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	limit: 5,
+	standardHeaders: 'draft-7',
+	legacyHeaders: false,
+	handler: (req, res) => {
+		res.status(429).json({ success: false, message: 'Too many attempts, try again in 15 minutes' });
+	},
+});
+
+const formatMaxLengthError = (err) => {
+	const fields = Object.keys(err.errors || {}).filter((f) => err.errors[f].kind === 'maxlength');
+	if (!fields.length) return null;
+	if (fields.length === 1) return `${fields[0]} is too long`;
+	if (fields.length === 2) return `${fields[0]} and ${fields[1]} are too long`;
+	const last = fields.pop();
+	return `${fields.join(', ')} and ${last} are too long`;
+};
+
 //---------------------------------ROUTE 1---------------------------------
 // Creating a user using : POST "api/auth/createUser". No login required
 router.post(
 	'/createUser',
+	authLimiter,
 	[
 		//Validating the input from user
 		body('name')
@@ -36,17 +57,21 @@ router.post(
 
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
-			success = false;
-			return res.status(400).json({ success, errors: errors.array() });
+			return res.status(400).json({ success: false, errors: errors.array() });
 		}
 		//Checking if user with same email already exist
 		try {
 			let user = await User.findOne({ email: req.body.email });
 			if (user) {
-				success = false;
 				return res.status(400).json({
-					success,
+					success: false,
 					message: 'Email already in use, Please use different Email',
+				});
+			}
+			if (Buffer.byteLength(req.body.password, 'utf8') > 72) {
+				return res.status(400).json({
+					success: false,
+					message: 'Password must be 72 characters or fewer',
 				});
 			}
 			//Hashing the new user password before storing it to our DB
@@ -62,14 +87,17 @@ router.post(
 			const data = {
 				user: {
 					id: user.id,
+					name: user.name,
 				},
 			};
 			const authToken = jwt.sign(data, JWT_SECRET, { algorithm: 'HS256' });
-			success = true;
-			res.json({ success, authToken, message: 'User added successfully' });
+			res.json({ success: true, authToken, message: 'User added successfully' });
 		} catch (error) {
-			success = false;
-			res.status(500).json({ success, message: 'Internal server error' });
+			if (error.name === 'ValidationError') {
+				const msg = formatMaxLengthError(error);
+				if (msg) return res.status(400).json({ success: false, message: msg });
+			}
+			res.status(500).json({ success: false, message: 'Internal server error' });
 		}
 	}
 );
@@ -78,6 +106,7 @@ router.post(
 // Authenticating a user using : POST "api/auth/login". No login required
 router.post(
 	'/login',
+	authLimiter,
 	[
 		//Validating the input from user
 		body('email').isEmail().withMessage('Enter a valid email'),
@@ -87,26 +116,23 @@ router.post(
 		// Returning bad request and error in case of any error
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
-			success = false;
-			return res.status(400).json({ success, errors: errors.array() });
+			return res.status(400).json({ success: false, errors: errors.array() });
 		}
 
 		const { email, password } = req.body;
 		try {
 			let user = await User.findOne({ email });
 			if (!user) {
-				success = false;
 				return res.status(400).json({
-					success,
+					success: false,
 					message: `We couldn't find an account matching the login info you entered  `,
 				});
 			}
 			//Verifying the user password input
 			const comparePassword = await bcrypt.compare(password, user.password);
 			if (!comparePassword) {
-				success = false;
 				return res.status(400).json({
-					success,
+					success: false,
 					message: `Incorrect password`,
 				});
 			}
@@ -114,14 +140,13 @@ router.post(
 			const data = {
 				user: {
 					id: user.id,
+					name: user.name,
 				},
 			};
 			const authToken = jwt.sign(data, JWT_SECRET, { algorithm: 'HS256' });
-			success = true;
-			res.json({ success, authToken });
+			res.json({ success: true, authToken });
 		} catch (error) {
-			success = false;
-			res.status(500).json({ success, message: 'Internal server error' });
+			res.status(500).json({ success: false, message: 'Internal server error' });
 		}
 	}
 );
@@ -134,8 +159,7 @@ router.post('/getuser', fetchuser, async (req, res) => {
 		const user = await User.findById(userId).select('-password');
 		res.send(user);
 	} catch (error) {
-		success = false;
-		res.status(500).json({ success, message: 'Internal server error' });
+		res.status(500).json({ success: false, message: 'Internal server error' });
 	}
 });
 export default router;

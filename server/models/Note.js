@@ -9,14 +9,17 @@ const NotesSchema = new Schema({
 	title: {
 		type: String,
 		required: true,
+		maxlength: 200,
 	},
 	description: {
 		type: String,
 		required: true,
+		maxlength: 10000,
 	},
 	tag: {
 		type: String,
 		default: 'General',
+		maxlength: 60,
 	},
 	date: {
 		type: Date,

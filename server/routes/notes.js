@@ -6,7 +6,15 @@ import User from '../models/User.js';
 
 const router = express.Router();
 
-let success;
+const formatMaxLengthError = (err) => {
+	const fields = Object.keys(err.errors || {}).filter((f) => err.errors[f].kind === 'maxlength');
+	if (!fields.length) return null;
+	if (fields.length === 1) return `${fields[0]} is too long`;
+	if (fields.length === 2) return `${fields[0]} and ${fields[1]} are too long`;
+	const last = fields.pop();
+	return `${fields.join(', ')} and ${last} are too long`;
+};
+
 //---------------------------------ROUTE 1---------------------------------
 // fetching all notes of a user : get "api/notes/getallnotes".Login required
 router.get('/getallnotes', fetchuser, async (req, res) => {
@@ -16,11 +24,9 @@ router.get('/getallnotes', fetchuser, async (req, res) => {
 		const userName = user.map((user) => {
 			return user.name;
 		});
-		success = true;
-		res.json({ success, userName: userName, notes: notes });
+		res.json({ success: true, userName: userName, notes: notes });
 	} catch (error) {
-		success = false;
-		res.status(500).json({ success, message: 'Internal server error' });
+		res.status(500).json({ success: false, message: 'Internal server error' });
 	}
 });
 
@@ -43,14 +49,12 @@ router.post(
 			.withMessage('Description must contain atleast 5 characters'),
 	],
 	async (req, res) => {
-		// let success = false;
 		const { title, description, tag } = req.body;
 		try {
 			// Returning bad request and error in case of any error
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
-				success = false;
-				return res.status(400).json({ success, errors: errors.array() });
+				return res.status(400).json({ success: false, errors: errors.array() });
 			}
 
 			// Creating a new note
@@ -62,15 +66,17 @@ router.post(
 				date: Date.now(),
 			});
 			await note.save();
-			success = true;
 			res.json({
-				success,
+				success: true,
 				note: note,
 				message: 'Your note has been added successfully',
 			});
 		} catch (error) {
-			success = false;
-			res.status(500).json({ success, message: 'Internal server error' });
+			if (error.name === 'ValidationError') {
+				const msg = formatMaxLengthError(error);
+				if (msg) return res.status(400).json({ success: false, message: msg });
+			}
+			res.status(500).json({ success: false, message: 'Internal server error' });
 		}
 	}
 );
@@ -98,8 +104,7 @@ router.put(
 		// Returning bad request and error in case of any error
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
-			success = false;
-			return res.status(400).json({ success, errors: errors.array() });
+			return res.status(400).json({ success: false, errors: errors.array() });
 		}
 		try {
 			// Creating a new note object
@@ -118,13 +123,11 @@ router.put(
 			// Finding the note to be updated
 			let note = await Note.findById(req.params.id);
 			if (!note) {
-				success = false;
-				return res.status(404).json({ success, message: 'Note not found' });
+				return res.status(404).json({ success: false, message: 'Note not found' });
 			}
 			// Allowing updation only if the user is authorized
 			if (note.user.toString() !== req.user.id) {
-				success = false;
-				return res.status(401).json({ success, message: 'Unauthorized user' });
+				return res.status(401).json({ success: false, message: 'Unauthorized user' });
 			}
 
 			// Updating note
@@ -133,15 +136,17 @@ router.put(
 				{ $set: newNote },
 				{ new: true }
 			);
-			success = true;
 			res.json({
-				success,
+				success: true,
 				message: ' Your note has been updated successfully',
 				date: Date.now(),
 			});
 		} catch (error) {
-			success = false;
-			res.status(500).json({ success, message: 'Internal server error' });
+			if (error.name === 'ValidationError') {
+				const msg = formatMaxLengthError(error);
+				if (msg) return res.status(400).json({ success: false, message: msg });
+			}
+			res.status(500).json({ success: false, message: 'Internal server error' });
 		}
 	}
 );
@@ -153,23 +158,19 @@ router.delete('/deletenote/:id', fetchuser, async (req, res) => {
 		// Finding the note to be deleted
 		let note = await Note.findById(req.params.id);
 		if (!note) {
-			success = false;
-			return res.status(404).json({ success, message: 'Note not found' });
+			return res.status(404).json({ success: false, message: 'Note not found' });
 		}
 
 		// Allowing deletion only if the user is authorized
 		if (note.user.toString() !== req.user.id) {
-			success = false;
-			return res.status(401).json({ success, message: 'Unauthorized user' });
+			return res.status(401).json({ success: false, message: 'Unauthorized user' });
 		}
 
 		// Updating note
 		note = await Note.findByIdAndDelete(req.params.id);
-		success = true;
-		res.json({ success, message: 'Your note has been deleted successfully' });
+		res.json({ success: true, message: 'Your note has been deleted successfully' });
 	} catch (error) {
-		success = false;
-		res.status(500).json({ success, message: 'Internal server error' });
+		res.status(500).json({ success: false, message: 'Internal server error' });
 	}
 });
 export default router;
