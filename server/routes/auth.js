@@ -87,6 +87,7 @@ router.post(
 			const data = {
 				user: {
 					id: user.id,
+					name: user.name,
 				},
 			};
 			const authToken = jwt.sign(data, JWT_SECRET, { algorithm: 'HS256' });
@@ -139,6 +140,7 @@ router.post(
 			const data = {
 				user: {
 					id: user.id,
+					name: user.name,
 				},
 			};
 			const authToken = jwt.sign(data, JWT_SECRET, { algorithm: 'HS256' });
