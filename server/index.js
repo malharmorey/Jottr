@@ -15,6 +15,7 @@ if (missing.length) {
 
 connectToMongo();
 const app = express();
+app.set('trust proxy', 1);
 const port = process.env.PORT || 8080;
 
 //Middleware function

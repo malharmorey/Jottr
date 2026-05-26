@@ -3,16 +3,29 @@ import User from '../models/User.js';
 import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import rateLimit from 'express-rate-limit';
 import fetchuser from '../middleware/fetchuser.js';
 
 const router = express.Router();
 
 const JWT_SECRET = `${process.env.JWT_SECRET_KEY}`;
+
+const authLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	limit: 5,
+	standardHeaders: 'draft-7',
+	legacyHeaders: false,
+	handler: (req, res) => {
+		res.status(429).json({ success: false, message: 'Too many attempts, try again in 15 minutes' });
+	},
+});
+
 let success;
 //---------------------------------ROUTE 1---------------------------------
 // Creating a user using : POST "api/auth/createUser". No login required
 router.post(
 	'/createUser',
+	authLimiter,
 	[
 		//Validating the input from user
 		body('name')
@@ -78,6 +91,7 @@ router.post(
 // Authenticating a user using : POST "api/auth/login". No login required
 router.post(
 	'/login',
+	authLimiter,
 	[
 		//Validating the input from user
 		body('email').isEmail().withMessage('Enter a valid email'),
