@@ -10,15 +10,19 @@ const router = express.Router();
 
 const JWT_SECRET = `${process.env.JWT_SECRET_KEY}`;
 
-const authLimiter = rateLimit({
-	windowMs: 15 * 60 * 1000,
-	limit: 5,
-	standardHeaders: 'draft-7',
-	legacyHeaders: false,
-	handler: (req, res) => {
-		res.status(429).json({ success: false, message: 'Too many attempts, try again in 15 minutes' });
-	},
-});
+const buildAuthLimiter = () =>
+	rateLimit({
+		windowMs: 15 * 60 * 1000,
+		limit: 5,
+		standardHeaders: 'draft-7',
+		legacyHeaders: false,
+		handler: (req, res) => {
+			res.status(429).json({ success: false, message: 'Too many attempts, try again in 15 minutes' });
+		},
+	});
+
+const signupLimiter = buildAuthLimiter();
+const loginLimiter = buildAuthLimiter();
 
 const formatMaxLengthError = (err) => {
 	const fields = Object.keys(err.errors || {}).filter((f) => err.errors[f].kind === 'maxlength');
@@ -33,7 +37,7 @@ const formatMaxLengthError = (err) => {
 // Creating a user using : POST "api/auth/createUser". No login required
 router.post(
 	'/createUser',
-	authLimiter,
+	signupLimiter,
 	[
 		//Validating the input from user
 		body('name')
@@ -106,7 +110,7 @@ router.post(
 // Authenticating a user using : POST "api/auth/login". No login required
 router.post(
 	'/login',
-	authLimiter,
+	loginLimiter,
 	[
 		//Validating the input from user
 		body('email').isEmail().withMessage('Enter a valid email'),
