@@ -4,6 +4,7 @@ import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import rateLimit from 'express-rate-limit';
+import { formatMaxLengthError } from '../lib/validation.js';
 
 const router = express.Router();
 
@@ -22,15 +23,6 @@ const buildAuthLimiter = () =>
 
 const signupLimiter = buildAuthLimiter();
 const loginLimiter = buildAuthLimiter();
-
-const formatMaxLengthError = (err) => {
-	const fields = Object.keys(err.errors || {}).filter((f) => err.errors[f].kind === 'maxlength');
-	if (!fields.length) return null;
-	if (fields.length === 1) return `${fields[0]} is too long`;
-	if (fields.length === 2) return `${fields[0]} and ${fields[1]} are too long`;
-	const last = fields.pop();
-	return `${fields.join(', ')} and ${last} are too long`;
-};
 
 //---------------------------------ROUTE 1---------------------------------
 // Creating a user using : POST "api/auth/createUser". No login required
