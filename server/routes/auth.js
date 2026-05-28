@@ -4,7 +4,6 @@ import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import rateLimit from 'express-rate-limit';
-import fetchuser from '../middleware/fetchuser.js';
 
 const router = express.Router();
 
@@ -155,15 +154,4 @@ router.post(
 	}
 );
 
-//----------------------------------ROUTE 3---------------------------------
-// Fetching a user using : POST "api/auth/getuser". Login required
-router.post('/getuser', fetchuser, async (req, res) => {
-	try {
-		const userId = req.user.id;
-		const user = await User.findById(userId).select('-password');
-		res.send(user);
-	} catch (error) {
-		res.status(500).json({ success: false, message: 'Internal server error' });
-	}
-});
 export default router;
