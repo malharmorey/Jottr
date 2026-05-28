@@ -1,30 +1,17 @@
 import express from 'express';
 import Note from '../models/Note.js';
 import fetchuser from '../middleware/fetchuser.js';
-import { body, validationResult } from 'express-validator';
-import User from '../models/User.js';
+import { body } from 'express-validator';
+import { formatMaxLengthError, validate } from '../lib/validation.js';
 
 const router = express.Router();
-
-const formatMaxLengthError = (err) => {
-	const fields = Object.keys(err.errors || {}).filter((f) => err.errors[f].kind === 'maxlength');
-	if (!fields.length) return null;
-	if (fields.length === 1) return `${fields[0]} is too long`;
-	if (fields.length === 2) return `${fields[0]} and ${fields[1]} are too long`;
-	const last = fields.pop();
-	return `${fields.join(', ')} and ${last} are too long`;
-};
 
 //---------------------------------ROUTE 1---------------------------------
 // fetching all notes of a user : get "api/notes/getallnotes".Login required
 router.get('/getallnotes', fetchuser, async (req, res) => {
 	try {
 		const notes = await Note.find({ user: req.user.id });
-		const user = await User.find({ _id: req.user.id });
-		const userName = user.map((user) => {
-			return user.name;
-		});
-		res.json({ success: true, userName: userName, notes: notes });
+		res.json({ success: true, notes });
 	} catch (error) {
 		res.status(500).json({ success: false, message: 'Internal server error' });
 	}
@@ -48,15 +35,10 @@ router.post(
 			.isLength({ min: 5 })
 			.withMessage('Description must contain atleast 5 characters'),
 	],
+	validate,
 	async (req, res) => {
 		const { title, description, tag } = req.body;
 		try {
-			// Returning bad request and error in case of any error
-			const errors = validationResult(req);
-			if (!errors.isEmpty()) {
-				return res.status(400).json({ success: false, errors: errors.array() });
-			}
-
 			// Creating a new note
 			const note = new Note({
 				title,
@@ -99,13 +81,9 @@ router.put(
 			.isLength({ min: 5 })
 			.withMessage('Description must contain atleast 5 characters'),
 	],
+	validate,
 	async (req, res) => {
 		const { title, description, tag } = req.body;
-		// Returning bad request and error in case of any error
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(400).json({ success: false, errors: errors.array() });
-		}
 		try {
 			// Creating a new note object
 			const newNote = {};
