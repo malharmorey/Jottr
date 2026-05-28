@@ -29,11 +29,11 @@ app.use(cors({ origin: (origin, cb) => cb(null, origin === process.env.CLIENT_OR
 app.use('/api/auth', authRouter);
 app.use('/api/notes', notesRouter);
 
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
 	res.status(200).send('Welcome to server!');
 });
 
-app.use((err, req, res, next) => {
+app.use((err, _req, res, next) => {
 	if (err.type === 'entity.too.large') {
 		return res.status(413).json({ success: false, message: 'Request too large' });
 	}
