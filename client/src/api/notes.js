@@ -19,7 +19,7 @@ const request = async (url, options, fallback) => {
 	return data;
 };
 
-// GET all notes of the logged-in user → { success, userName, notes }
+// GET all notes of the logged-in user → { success, notes }
 export const getAllNotes = (token) =>
 	request(
 		`${host}/api/notes/getallnotes`,

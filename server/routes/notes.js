@@ -2,7 +2,6 @@ import express from 'express';
 import Note from '../models/Note.js';
 import fetchuser from '../middleware/fetchuser.js';
 import { body, validationResult } from 'express-validator';
-import User from '../models/User.js';
 
 const router = express.Router();
 
@@ -20,11 +19,7 @@ const formatMaxLengthError = (err) => {
 router.get('/getallnotes', fetchuser, async (req, res) => {
 	try {
 		const notes = await Note.find({ user: req.user.id });
-		const user = await User.find({ _id: req.user.id });
-		const userName = user.map((user) => {
-			return user.name;
-		});
-		res.json({ success: true, userName: userName, notes: notes });
+		res.json({ success: true, notes });
 	} catch (error) {
 		res.status(500).json({ success: false, message: 'Internal server error' });
 	}
