@@ -22,7 +22,7 @@ const port = process.env.PORT || 8080;
 app.use(helmet());
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.use(express.json({ limit: '18kb' }));
-app.use(cors({ origin: process.env.CLIENT_ORIGIN }));
+app.use(cors({ origin: (origin, cb) => cb(null, origin === process.env.CLIENT_ORIGIN) }));
 
 // Available Routes
 app.use('/api/auth', authRouter);
