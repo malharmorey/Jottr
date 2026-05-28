@@ -1,10 +1,10 @@
 import express from 'express';
 import User from '../models/User.js';
-import { body, validationResult } from 'express-validator';
+import { body } from 'express-validator';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import rateLimit from 'express-rate-limit';
-import { formatMaxLengthError } from '../lib/validation.js';
+import { formatMaxLengthError, validate } from '../lib/validation.js';
 
 const router = express.Router();
 
@@ -47,13 +47,8 @@ router.post(
 				'Password must contain atleast 1 lowerCase, 1 upperCase, 1 number and 1 symbol '
 			),
 	],
+	validate,
 	async (req, res) => {
-		// Returning bad request and error in case of any error
-
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(400).json({ success: false, errors: errors.array() });
-		}
 		//Checking if user with same email already exist
 		try {
 			let user = await User.findOne({ email: req.body.email });
@@ -107,13 +102,8 @@ router.post(
 		body('email').isEmail().withMessage('Enter a valid email'),
 		body('password').exists().withMessage('Password can not be blank'),
 	],
+	validate,
 	async (req, res) => {
-		// Returning bad request and error in case of any error
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(400).json({ success: false, errors: errors.array() });
-		}
-
 		const { email, password } = req.body;
 		try {
 			let user = await User.findOne({ email });

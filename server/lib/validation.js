@@ -1,3 +1,13 @@
+import { validationResult } from 'express-validator';
+
+export const validate = (req, res, next) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ success: false, errors: errors.array() });
+	}
+	next();
+};
+
 export const formatMaxLengthError = (err) => {
 	const fields = Object.keys(err.errors || {}).filter((f) => err.errors[f].kind === 'maxlength');
 	if (!fields.length) return null;

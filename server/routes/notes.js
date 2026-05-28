@@ -1,8 +1,8 @@
 import express from 'express';
 import Note from '../models/Note.js';
 import fetchuser from '../middleware/fetchuser.js';
-import { body, validationResult } from 'express-validator';
-import { formatMaxLengthError } from '../lib/validation.js';
+import { body } from 'express-validator';
+import { formatMaxLengthError, validate } from '../lib/validation.js';
 
 const router = express.Router();
 
@@ -35,15 +35,10 @@ router.post(
 			.isLength({ min: 5 })
 			.withMessage('Description must contain atleast 5 characters'),
 	],
+	validate,
 	async (req, res) => {
 		const { title, description, tag } = req.body;
 		try {
-			// Returning bad request and error in case of any error
-			const errors = validationResult(req);
-			if (!errors.isEmpty()) {
-				return res.status(400).json({ success: false, errors: errors.array() });
-			}
-
 			// Creating a new note
 			const note = new Note({
 				title,
@@ -86,13 +81,9 @@ router.put(
 			.isLength({ min: 5 })
 			.withMessage('Description must contain atleast 5 characters'),
 	],
+	validate,
 	async (req, res) => {
 		const { title, description, tag } = req.body;
-		// Returning bad request and error in case of any error
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(400).json({ success: false, errors: errors.array() });
-		}
 		try {
 			// Creating a new note object
 			const newNote = {};
