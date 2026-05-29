@@ -23,6 +23,15 @@ const AlertToaster = () => {
 						style={{ fontSize: '0.9rem' }}
 					>
 						<strong>{alert.message}</strong>
+						{alert.onUndo && (
+							<button
+								type='button'
+								className='btn btn-sm btn-outline-dark ms-3'
+								onClick={alert.onUndo}
+							>
+								<i className='fa-solid fa-rotate-left me-1'></i>Undo
+							</button>
+						)}
 						<button
 							type='button'
 							className='btn-close'
