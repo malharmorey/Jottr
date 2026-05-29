@@ -16,3 +16,8 @@
 
 	--bs-btn-focus-shadow-rgb: var(--bs-warning-rgb);
 }
+
+.alertToaster .btn-close {
+	top: 50%;
+	transform: translateY(-50%);
+}

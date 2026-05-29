@@ -6,6 +6,7 @@ const AlertToaster = () => {
 
 	return (
 		<div
+			className='alertToaster'
 			style={{
 				position: 'fixed',
 				top: '3.7rem',
