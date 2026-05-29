@@ -36,8 +36,9 @@ const AlertToaster = () => {
 						<button
 							type='button'
 							className='btn-close'
-							data-bs-dismiss='alert'
 							aria-label='Close'
+							onClick={alert.onClose}
+							data-bs-dismiss={alert.onClose ? undefined : 'alert'}
 						></button>
 					</div>
 				</div>

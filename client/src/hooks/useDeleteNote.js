@@ -37,6 +37,14 @@ export const useDeleteNote = () => {
 		useAlertStore.getState().dismissAlert();
 	};
 
+	// fire the delete now instead of waiting out the window
+	const commitNow = (task) => {
+		clearTimeout(task.timer);
+		if (pending === task) pending = null;
+		useAlertStore.getState().dismissAlert();
+		commit(task);
+	};
+
 	const requestDelete = (id) => {
 		// only one undo at a time: finalise any delete still counting down
 		if (pending) {
@@ -48,14 +56,14 @@ export const useDeleteNote = () => {
 		usePendingDeleteStore.getState().add(id);
 
 		const task = { id, token };
-		task.timer = setTimeout(() => {
-			if (pending === task) pending = null;
-			useAlertStore.getState().dismissAlert();
-			commit(task);
-		}, UNDO_WINDOW_MS);
+		task.timer = setTimeout(() => commitNow(task), UNDO_WINDOW_MS);
 		pending = task;
 
-		useAlertStore.getState().showUndoAlert('Note deleted', () => undo(task));
+		useAlertStore.getState().showUndoAlert(
+			'Note deleted',
+			() => undo(task),
+			() => commitNow(task)
+		);
 	};
 
 	return { requestDelete };
