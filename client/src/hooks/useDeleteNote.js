@@ -47,11 +47,7 @@ export const useDeleteNote = () => {
 
 	const requestDelete = (id) => {
 		// only one undo at a time: finalise any delete still counting down
-		if (pending) {
-			clearTimeout(pending.timer);
-			commit(pending);
-			pending = null;
-		}
+		if (pending) commitNow(pending);
 
 		usePendingDeleteStore.getState().add(id);
 
