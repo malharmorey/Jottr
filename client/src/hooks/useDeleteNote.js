@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { deleteNote } from '../api/notes';
 import useAuth from './useAuth';
 import useAlertStore from '../stores/alertStore';
+import usePendingDeleteStore from '../stores/pendingDeleteStore';
 
 const UNDO_WINDOW_MS = 10000;
 
@@ -11,27 +12,32 @@ export const useDeleteNote = () => {
 	const { token } = useAuth();
 	const queryClient = useQueryClient();
 
-	// send the real DELETE; bring the note back and report if it fails
+	// run the real DELETE, then drop the note from the cache, or report a failure
 	const commit = (task) => {
 		deleteNote(task.token, task.id)
+			.then(() => {
+				queryClient.setQueryData(['notes'], (old) =>
+					old
+						? { ...old, notes: old.notes.filter((note) => note._id !== task.id) }
+						: old
+				);
+			})
 			.catch((error) => {
-				queryClient.setQueryData(['notes'], task.previous);
 				useAlertStore.getState().showAlert(error.message, 'danger');
 			})
 			.finally(() => {
-				queryClient.invalidateQueries({ queryKey: ['notes'] });
+				usePendingDeleteStore.getState().remove(task.id);
 			});
 	};
 
 	const undo = (task) => {
 		clearTimeout(task.timer);
 		if (pending === task) pending = null;
-		queryClient.setQueryData(['notes'], task.previous);
-		queryClient.invalidateQueries({ queryKey: ['notes'] });
+		usePendingDeleteStore.getState().remove(task.id);
 		useAlertStore.getState().dismissAlert();
 	};
 
-	const requestDelete = async (id) => {
+	const requestDelete = (id) => {
 		// only one undo at a time: finalise any delete still counting down
 		if (pending) {
 			clearTimeout(pending.timer);
@@ -39,13 +45,9 @@ export const useDeleteNote = () => {
 			pending = null;
 		}
 
-		await queryClient.cancelQueries({ queryKey: ['notes'] });
-		const previous = queryClient.getQueryData(['notes']);
-		queryClient.setQueryData(['notes'], (old) =>
-			old ? { ...old, notes: old.notes.filter((note) => note._id !== id) } : old
-		);
+		usePendingDeleteStore.getState().add(id);
 
-		const task = { id, token, previous };
+		const task = { id, token };
 		task.timer = setTimeout(() => {
 			if (pending === task) pending = null;
 			useAlertStore.getState().dismissAlert();
