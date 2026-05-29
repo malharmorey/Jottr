@@ -91,14 +91,14 @@ const Navbar = () => {
 										{userName ? userName : 'User'}
 									</span>
 									<ul
-										className='dropdown-menu '
+										className='dropdown-menu'
 										aria-labelledby='dropdownMenuLink'
+										onClick={handleLogout}
 									>
 										<li>
 											⚰️{' '}
 											<p
 												className='dropdown-item'
-												onClick={handleLogout}
 												data-bs-toggle='collapse'
 												data-bs-target='.navbar-collapse.show'
 											>
