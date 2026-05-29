@@ -1,0 +1,18 @@
+/* custom colors via Bootstrap 5 button variables — .btn drives every state */
+.undoBtn {
+	--bs-btn-color: var(--bs-warning-bg-subtle);
+	--bs-btn-bg: var(--bs-warning-text-emphasis);
+	--bs-btn-border-color: var(--bs-warning-text-emphasis);
+	--bs-btn-border-width: 2px;
+	--bs-btn-font-weight: 600;
+
+	--bs-btn-hover-color: var(--bs-warning-bg-subtle);
+	--bs-btn-hover-bg: color-mix(in srgb, var(--bs-warning-text-emphasis), white 20%);
+	--bs-btn-hover-border-color: color-mix(in srgb, var(--bs-warning-text-emphasis), white 20%);
+
+	--bs-btn-active-color: var(--bs-warning-bg-subtle);
+	--bs-btn-active-bg: color-mix(in srgb, var(--bs-warning-text-emphasis), black 15%);
+	--bs-btn-active-border-color: color-mix(in srgb, var(--bs-warning-text-emphasis), black 15%);
+
+	--bs-btn-focus-shadow-rgb: var(--bs-warning-rgb);
+}

@@ -1,4 +1,5 @@
 import useAlertStore from '../stores/alertStore';
+import '../StyleSheets/alertToaster.css';
 
 const AlertToaster = () => {
 	const alert = useAlertStore((state) => state.alert);
@@ -26,7 +27,7 @@ const AlertToaster = () => {
 						{alert.onUndo && (
 							<button
 								type='button'
-								className='btn btn-sm btn-outline-dark ms-3'
+								className='btn btn-sm undoBtn ms-3'
 								onClick={alert.onUndo}
 							>
 								<i className='fa-solid fa-rotate-left me-1'></i>Undo
