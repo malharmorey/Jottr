@@ -9,6 +9,15 @@ const useAlertStore = create((set) => ({
 		set({ alert: { message, type } });
 		dismissTimer = setTimeout(() => set({ alert: null }), 1800);
 	},
+	// sticky alert carrying undo + close actions; stays until acted on
+	showUndoAlert: (message, onUndo, onClose) => {
+		clearTimeout(dismissTimer);
+		set({ alert: { message, type: 'warning', onUndo, onClose } });
+	},
+	dismissAlert: () => {
+		clearTimeout(dismissTimer);
+		set({ alert: null });
+	},
 }));
 
 export default useAlertStore;

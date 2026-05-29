@@ -8,7 +8,7 @@ import pic from '../../src/images/pngegg.png';
 dayjs.extend(relativeTime);
 
 function NoteCard(props) {
-	const { mutate: deleteNote } = useDeleteNote();
+	const { requestDelete } = useDeleteNote();
 
 	return (
 		<div className='my-3'>
@@ -62,7 +62,7 @@ function NoteCard(props) {
 						}`}
 						role='button'
 						onClick={() => {
-							deleteNote(props.id);
+							requestDelete(props.id);
 						}}
 					></i>
 				</div>
