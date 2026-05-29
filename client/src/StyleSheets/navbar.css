@@ -6,6 +6,13 @@
 	z-index: 99;
 	width: 100vw;
 	padding: 4px 0px;
+}
+/* frost + hairline on a pseudo so #navbar isn't a backdrop root — lets the nested dropdown blur the page too */
+#navbar::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: -1;
 	backdrop-filter: blur(7px) saturate(191%);
 	background-color: rgba(43, 52, 76, 0.56);
 	border: 0.8px solid rgba(255, 255, 255, 0.125);
@@ -50,6 +57,7 @@
 	backdrop-filter: blur(7px) saturate(191%);
 	background-color: rgba(43, 52, 76, 0.56);
 	border: 0.8px solid rgba(255, 255, 255, 0.125);
+	cursor: pointer;
 }
 .dropdown-menu > li {
 	margin: 5px 1rem;
@@ -69,7 +77,6 @@
 	margin: 0px;
 }
 .dropdown-item:hover {
-	color: white;
-	backdrop-filter: blur(7px) saturate(191%);
-	background-color: rgba(43, 52, 76, 0.56);
+	color: inherit;
+	background-color: inherit;
 }
