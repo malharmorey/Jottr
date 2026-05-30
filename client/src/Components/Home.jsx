@@ -1,4 +1,3 @@
-import React from 'react';
 import '../StyleSheets/home.css';
 import NotesList from './NotesList';
 import NoteModal from './NoteModal';

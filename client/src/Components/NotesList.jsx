@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNotes } from '../hooks/useNotes';
 import useAlertStore from '../stores/alertStore';
 import useAuth from '../hooks/useAuth';

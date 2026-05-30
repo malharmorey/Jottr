@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import '../StyleSheets/newNote.css';
 import { useAddNote } from '../hooks/useAddNote';
 import { useEditNote } from '../hooks/useEditNote';
