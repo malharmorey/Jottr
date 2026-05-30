@@ -4,7 +4,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { useDeleteNote } from '../hooks/useDeleteNote';
 import useNoteModalStore from '../stores/noteModalStore';
 import '../StyleSheets/noteCard.css';
-import pic from '../../src/images/pngegg.png';
+import pic from '../images/pngegg.png';
 
 dayjs.extend(relativeTime);
 
