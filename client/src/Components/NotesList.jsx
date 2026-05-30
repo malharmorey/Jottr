@@ -5,7 +5,7 @@ import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router';
 import NoteCard from './NoteCard';
 
-function SetNotes(props) {
+function NotesList(props) {
 	const { data: reversedNotesArray = [] } = useNotes();
 	const showAlert = useAlertStore((state) => state.showAlert);
 	const { isLoggedIn } = useAuth();
@@ -48,4 +48,4 @@ function SetNotes(props) {
 	);
 }
 
-export default SetNotes;
+export default NotesList;

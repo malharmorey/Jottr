@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useEditNote } from '../hooks/useEditNote';
-import SetNotes from './SetNotes';
+import NotesList from './NotesList';
 import CharCounter from './CharCounter';
 
 function UpdateNotes() {
@@ -155,7 +155,7 @@ function UpdateNotes() {
 					</div>
 				</div>
 			</div>
-			<SetNotes updateNote={updateNote} />
+			<NotesList updateNote={updateNote} />
 		</>
 	);
 }
