@@ -43,6 +43,7 @@ function NoteModal() {
 				description: draft.description,
 				tag: draft.tag,
 			});
+			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
 	};
 
