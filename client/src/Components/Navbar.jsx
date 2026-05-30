@@ -12,7 +12,7 @@ const Navbar = () => {
 	const showAlert = useAlertStore((state) => state.showAlert);
 	const { logout, isLoggedIn, userName } = useAuth();
 
-	let navigate = useNavigate();
+	const navigate = useNavigate();
 
 	// Logging out current user and clearing user's notes array
 	const handleLogout = () => {

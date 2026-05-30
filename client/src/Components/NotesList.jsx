@@ -10,7 +10,7 @@ function NotesList() {
 	const showAlert = useAlertStore((state) => state.showAlert);
 	const { isLoggedIn } = useAuth();
 
-	let navigate = useNavigate();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (!isLoggedIn) {

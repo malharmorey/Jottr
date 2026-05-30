@@ -12,7 +12,7 @@ const Login = ({ host, title }) => {
 	const [credentials, setCredentials] = useState({ email: '', password: '' });
 
 	document.title = `${title}`;
-	let navigate = useNavigate();
+	const navigate = useNavigate();
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
