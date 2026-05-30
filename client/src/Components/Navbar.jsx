@@ -78,7 +78,7 @@ const Navbar = () => {
 								</NavLink>
 							</li>
 						</ul>
-						{isLoggedIn ? (
+						{isLoggedIn && (
 							<div className='btnContainer'>
 								<div className='dropdown' style={{ display: 'inline-block' }}>
 									👤{' '}
@@ -108,8 +108,6 @@ const Navbar = () => {
 									</ul>
 								</div>
 							</div>
-						) : (
-							''
 						)}
 					</div>
 				</div>

@@ -29,9 +29,7 @@ function NoteCard({ title, description, tag, date, id, note }) {
 
 					<p className='card-text notesCardNote'>
 						{description}
-						{dayjs(date).isValid() ? (
-							''
-						) : (
+						{!dayjs(date).isValid() && (
 							<img className='astronautImg' src={pic} alt='' />
 						)}
 					</p>
