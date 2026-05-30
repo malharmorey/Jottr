@@ -1,8 +1,8 @@
 import '../StyleSheets/about.css';
 import { Link } from 'react-router';
 
-const About = (props) => {
-	document.title = `CloudBook | ${props.title}`;
+const About = ({ title }) => {
+	document.title = `CloudBook | ${title}`;
 	return (
 		<>
 			<div className='aboutCard '>

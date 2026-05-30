@@ -5,13 +5,12 @@ import { useNavigate } from 'react-router';
 import useAlertStore from '../stores/alertStore';
 import useAuth from '../hooks/useAuth';
 
-const Login = (props) => {
+const Login = ({ host, title }) => {
 	const showAlert = useAlertStore((state) => state.showAlert);
 	const { login } = useAuth();
 
 	const [credentials, setCredentials] = useState({ email: '', password: '' });
 
-	const { host, title } = props;
 	document.title = `${title}`;
 	let navigate = useNavigate();
 
