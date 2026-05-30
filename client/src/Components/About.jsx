@@ -1,8 +1,9 @@
 import '../StyleSheets/about.css';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import { Link } from 'react-router';
 
 const About = ({ title }) => {
-	document.title = `CloudBook | ${title}`;
+	useDocumentTitle(`CloudBook | ${title}`);
 	return (
 		<>
 			<div className='aboutCard '>

@@ -1,10 +1,11 @@
 import '../StyleSheets/home.css';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import NotesList from './NotesList';
 import NoteModal from './NoteModal';
 import ScrollToTopBtn from './ScrollToTopBtn';
 
 const Home = ({ title }) => {
-	document.title = `CloudBook | ${title}`;
+	useDocumentTitle(`CloudBook | ${title}`);
 	return (
 		<>
 			<h2 className='pageHeading'>Your Notes 📝</h2>

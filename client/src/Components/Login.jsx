@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import '../StyleSheets/login.css';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import { Link } from 'react-router';
 import { useNavigate } from 'react-router';
 import useAlertStore from '../stores/alertStore';
@@ -11,7 +12,7 @@ const Login = ({ host, title }) => {
 
 	const [credentials, setCredentials] = useState({ email: '', password: '' });
 
-	document.title = `${title}`;
+	useDocumentTitle(title);
 	const navigate = useNavigate();
 
 	const handleLogin = async (e) => {

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import '../StyleSheets/signup.css';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import { Link } from 'react-router';
 import { useNavigate } from 'react-router';
 import useAlertStore from '../stores/alertStore';
@@ -14,7 +15,7 @@ const SignUp = ({ host, title }) => {
 		email: '',
 		password: '',
 	});
-	document.title = `${title}`;
+	useDocumentTitle(title);
 	const navigate = useNavigate();
 
 	const handleSignUp = async (e) => {
