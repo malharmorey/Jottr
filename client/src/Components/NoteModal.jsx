@@ -2,12 +2,14 @@ import React, { useEffect, useRef } from 'react';
 import '../StyleSheets/newNote.css';
 import { useAddNote } from '../hooks/useAddNote';
 import { useEditNote } from '../hooks/useEditNote';
+import { useQueryClient } from '@tanstack/react-query';
 import useNoteModalStore from '../stores/noteModalStore';
 import CharCounter from './CharCounter';
 
 function NoteModal() {
 	const { mutate: addNote } = useAddNote();
 	const { mutate: editNote } = useEditNote();
+	const queryClient = useQueryClient();
 
 	const mode = useNoteModalStore((state) => state.mode);
 	const editId = useNoteModalStore((state) => state.editId);
@@ -31,12 +33,22 @@ function NoteModal() {
 
 	const handleSave = () => {
 		if (isEdit) {
-			editNote({
-				id: editId,
-				title: draft.title,
-				description: draft.description,
-				tag: draft.tag,
-			});
+			const original = queryClient
+				.getQueryData(['notes'])
+				?.notes.find((note) => note._id === editId);
+			const unchanged =
+				original &&
+				original.title === draft.title &&
+				original.description === draft.description &&
+				original.tag === draft.tag;
+			if (!unchanged) {
+				editNote({
+					id: editId,
+					title: draft.title,
+					description: draft.description,
+					tag: draft.tag,
+				});
+			}
 		} else {
 			addNote({
 				title: draft.title,
