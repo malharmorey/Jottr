@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { NavLink } from 'react-router';
 import '../StyleSheets/navbar.css';
 import { useNavigate } from 'react-router';
@@ -12,7 +12,7 @@ const Navbar = () => {
 	const showAlert = useAlertStore((state) => state.showAlert);
 	const { logout, isLoggedIn, userName } = useAuth();
 
-	let navigate = useNavigate();
+	const navigate = useNavigate();
 
 	// Logging out current user and clearing user's notes array
 	const handleLogout = () => {
@@ -78,7 +78,7 @@ const Navbar = () => {
 								</NavLink>
 							</li>
 						</ul>
-						{isLoggedIn ? (
+						{isLoggedIn && (
 							<div className='btnContainer'>
 								<div className='dropdown' style={{ display: 'inline-block' }}>
 									👤{' '}
@@ -108,8 +108,6 @@ const Navbar = () => {
 									</ul>
 								</div>
 							</div>
-						) : (
-							''
 						)}
 					</div>
 				</div>

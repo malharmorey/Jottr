@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNotes } from '../hooks/useNotes';
 import useAlertStore from '../stores/alertStore';
 import useAuth from '../hooks/useAuth';
@@ -10,7 +10,7 @@ function NotesList() {
 	const showAlert = useAlertStore((state) => state.showAlert);
 	const { isLoggedIn } = useAuth();
 
-	let navigate = useNavigate();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (!isLoggedIn) {

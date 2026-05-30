@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, useRouteError, isRouteErrorResponse } from 'react-router';
 import '../StyleSheets/routeError.css';
 import astronaut from '../images/pngegg.png';
