@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useRouteError, isRouteErrorResponse } from 'react-router';
 import '../StyleSheets/routeError.css';
-import astronaut from '../../src/images/pngegg.png';
+import astronaut from '../images/pngegg.png';
 
 const RouteError = () => {
 	const error = useRouteError();

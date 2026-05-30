@@ -15,7 +15,7 @@ body::before {
 	bottom: 0px;
 	left: 0px;
 	z-index: 0;
-	background: url(../../src/images/1.jpg);
+	background: url(../images/1.jpg);
 	filter: invert(94%);
 	background-position-y: center;
 	background-position-x: center;

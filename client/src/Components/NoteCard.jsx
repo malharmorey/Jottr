@@ -2,13 +2,15 @@ import React from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useDeleteNote } from '../hooks/useDeleteNote';
+import useNoteModalStore from '../stores/noteModalStore';
 import '../StyleSheets/noteCard.css';
-import pic from '../../src/images/pngegg.png';
+import pic from '../images/pngegg.png';
 
 dayjs.extend(relativeTime);
 
 function NoteCard(props) {
 	const { requestDelete } = useDeleteNote();
+	const openEdit = useNoteModalStore((state) => state.openEdit);
 
 	return (
 		<div className='my-3'>
@@ -51,9 +53,9 @@ function NoteCard(props) {
 							dayjs(props.date).isValid() ? '' : 'd-none'
 						}`}
 						role='button'
-						onClick={() => {
-							props.updateNote(props.note);
-						}}
+						data-bs-toggle='modal'
+						data-bs-target='#noteModal'
+						onClick={() => openEdit(props.note)}
 					></i>
 
 					<i
