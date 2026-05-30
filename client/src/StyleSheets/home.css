@@ -4,12 +4,6 @@
 	font-weight: 600;
 	margin: 0px 4px;
 }
-.ScrollToTop > button {
-	position: fixed !important;
-	bottom: 7rem !important;
-	right: 3rem !important;
-	background: transparent !important;
-}
 /* Media queries */
 @media (max-width: 500px) {
 	.pageHeading {
