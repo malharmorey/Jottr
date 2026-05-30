@@ -5,7 +5,7 @@ import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router';
 import NoteCard from './NoteCard';
 
-function NotesList(props) {
+function NotesList() {
 	const { data: reversedNotesArray = [] } = useNotes();
 	const showAlert = useAlertStore((state) => state.showAlert);
 	const { isLoggedIn } = useAuth();
@@ -37,7 +37,6 @@ function NotesList(props) {
 								tag={note.tag}
 								date={note.date}
 								id={note._id}
-								updateNote={props.updateNote}
 								note={note}
 							/>
 						</div>
