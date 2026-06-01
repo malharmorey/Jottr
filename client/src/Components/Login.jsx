@@ -2,52 +2,17 @@ import { useState } from 'react';
 import '../StyleSheets/login.css';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import { Link } from 'react-router';
-import { useNavigate } from 'react-router';
-import useAlertStore from '../stores/alertStore';
-import useAuth from '../hooks/useAuth';
+import useLogin from '../hooks/useLogin';
 
-const Login = ({ host, title }) => {
-	const showAlert = useAlertStore((state) => state.showAlert);
-	const { login } = useAuth();
-
+const Login = ({ title }) => {
 	const [credentials, setCredentials] = useState({ email: '', password: '' });
+	const submitLogin = useLogin();
 
 	useDocumentTitle(title);
-	const navigate = useNavigate();
 
-	const handleLogin = async (e) => {
+	const handleLogin = (e) => {
 		e.preventDefault();
-		await fetch(`${host}/api/auth/login`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				email: credentials.email,
-				password: credentials.password,
-			}),
-		})
-			.then(async (response) => {
-				const json = await response.json();
-				if (json.success) {
-					login(json.authToken);
-					navigate('/');
-					showAlert('Successfully loged In', 'success');
-					setCredentials({
-						email: '',
-						password: '',
-					});
-				} else {
-					if (json.message === undefined) {
-						showAlert('You have entered wrong credentials', 'warning');
-					} else {
-						showAlert(`${json.message}`, 'danger');
-					}
-				}
-			})
-			.catch((error) => {
-				showAlert(`${error.message}`, 'danger');
-			});
+		submitLogin(credentials);
 	};
 
 	const onChange = (e) => {
