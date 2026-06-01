@@ -11,7 +11,6 @@ import Login from './Components/Login';
 import SignUp from './Components/SignUp';
 import AlertToaster from './Components/AlertToaster';
 
-const host = import.meta.env.VITE_HOST;
 const title = 'CloudBook | Your notes on cloud';
 
 const router = createBrowserRouter([
@@ -23,8 +22,8 @@ const router = createBrowserRouter([
 				children: [
 					{ index: true, element: <Home title={'Home'} /> },
 					{ path: 'about', element: <About title={'About'} /> },
-					{ path: 'login', element: <Login host={host} title={title} /> },
-					{ path: 'signup', element: <SignUp host={host} title={title} /> },
+					{ path: 'login', element: <Login title={title} /> },
+					{ path: 'signup', element: <SignUp title={title} /> },
 					{ path: '*', element: <RouteError /> },
 				],
 			},

@@ -14,6 +14,9 @@ const request = async (url, options, fallback) => {
 	}
 	const data = await response.json();
 	if (!response.ok || !data.success) {
+		if (Array.isArray(data.errors)) {
+			throw new Error(data.errors.map((e) => e.msg).join('; '));
+		}
 		throw new Error(data.message || fallback);
 	}
 	return data;

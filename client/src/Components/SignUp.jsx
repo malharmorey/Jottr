@@ -2,60 +2,21 @@ import { useState } from 'react';
 import '../StyleSheets/signup.css';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import { Link } from 'react-router';
-import { useNavigate } from 'react-router';
-import useAlertStore from '../stores/alertStore';
-import useAuth from '../hooks/useAuth';
+import useSignup from '../hooks/useSignup';
 
-const SignUp = ({ host, title }) => {
-	const showAlert = useAlertStore((state) => state.showAlert);
-	const { login } = useAuth();
-
+const SignUp = ({ title }) => {
 	const [credentials, setCredentials] = useState({
 		name: '',
 		email: '',
 		password: '',
 	});
-	useDocumentTitle(title);
-	const navigate = useNavigate();
+	const submitSignup = useSignup();
 
-	const handleSignUp = async (e) => {
+	useDocumentTitle(title);
+
+	const handleSignUp = (e) => {
 		e.preventDefault();
-		await fetch(`${host}/api/auth/createUser`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				name: credentials.name,
-				email: credentials.email,
-				password: credentials.password,
-			}),
-		})
-			.then(async (response) => {
-				const json = await response.json();
-				if (json.success) {
-					login(json.authToken);
-					navigate('/');
-					showAlert('Account created sccessfully!', 'success');
-					setCredentials({
-						name: '',
-						email: '',
-						password: '',
-					});
-				} else {
-					if (json.message === undefined) {
-						showAlert(
-							'Password must contain atleast 1 lowerCase, 1 upperCase, 1 number and 1 symbol',
-							'warning'
-						);
-					} else {
-						showAlert(`${json.message}`, 'danger');
-					}
-				}
-			})
-			.catch((error) => {
-				showAlert(`${error.message}`, 'danger');
-			});
+		submitSignup(credentials);
 	};
 
 	const onChange = (e) => {
