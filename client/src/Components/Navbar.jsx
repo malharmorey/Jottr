@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router';
+import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../StyleSheets/navbar.css';
 import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
@@ -21,6 +22,14 @@ const Navbar = () => {
 		showAlert('Logged out successfully', 'success');
 	};
 
+	// Close the mobile navbar after a nav link is selected
+	const closeNavbar = () => {
+		const menu = document.getElementById('navbarSupportedContent');
+		if (menu?.classList.contains('show')) {
+			bootstrap.Collapse.getOrCreateInstance(menu).hide();
+		}
+	};
+
 	return (
 		<>
 			<nav id='navbar' className=' navbar  navbar-expand-lg '>
@@ -28,8 +37,7 @@ const Navbar = () => {
 					<NavLink
 						className='navbar-brand  navTitle'
 						to='/'
-						data-bs-toggle='collapse'
-						data-bs-target='.navbar-collapse.show'
+						onClick={closeNavbar}
 					>
 						<img className='cloudBookEmoji' src={cloudBookEmoji} alt='' />
 						CloudBook
@@ -54,8 +62,7 @@ const Navbar = () => {
 								<NavLink
 									to='/'
 									className='nav-link navLink'
-									data-bs-toggle='collapse'
-									data-bs-target='.navbar-collapse.show'
+									onClick={closeNavbar}
 								>
 									Home
 								</NavLink>
@@ -64,8 +71,7 @@ const Navbar = () => {
 								<NavLink
 									to='/about'
 									className='nav-link navLink'
-									data-bs-toggle='collapse'
-									data-bs-target='.navbar-collapse.show'
+									onClick={closeNavbar}
 								>
 									About
 								</NavLink>
