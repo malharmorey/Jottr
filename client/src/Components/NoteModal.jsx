@@ -67,8 +67,9 @@ function NoteModal() {
 				data-bs-toggle='modal'
 				data-bs-target='#noteModal'
 				onClick={openAdd}
+				aria-label='Add a note'
 			>
-				<i className='fa-solid fa-plus'></i>
+				<i className='fa-solid fa-plus' aria-hidden='true'></i>
 			</button>
 
 			{/* ///////--------------NOTE-MODAL (add / edit)------------////// */}
