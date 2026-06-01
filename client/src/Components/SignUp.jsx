@@ -41,7 +41,6 @@ const SignUp = ({ title }) => {
 									name='name'
 									className='form-control inputField'
 									id='name'
-									aria-describedby='emailHelp'
 									placeholder='John Doe'
 									value={credentials.name}
 									onChange={onChange}

@@ -37,7 +37,6 @@ const Login = ({ title }) => {
 									name='email'
 									className='form-control inputField'
 									id='email'
-									aria-describedby='emailHelp'
 									placeholder='john@example.com'
 									value={credentials.email}
 									onChange={onChange}
