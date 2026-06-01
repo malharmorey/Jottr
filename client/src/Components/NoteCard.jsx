@@ -45,25 +45,35 @@ function NoteCard({ title, description, tag, date, id, note }) {
 						</small>
 					</p>
 
-					<i
-						className={`fa-regular fa-pen-to-square fa-lg text-warning fontIcon ${
+					<button
+						type='button'
+						className={`iconBtn text-warning ${
 							dayjs(date).isValid() ? '' : 'd-none'
 						}`}
-						role='button'
+						aria-label='Edit note'
 						data-bs-toggle='modal'
 						data-bs-target='#noteModal'
 						onClick={() => openEdit(note)}
-					></i>
+					>
+						<i
+							className='fa-regular fa-pen-to-square fa-lg fontIcon'
+							aria-hidden='true'
+						></i>
+					</button>
 
-					<i
-						className={`fa-regular fa-trash-can mx-4 fa-lg text-danger fontIcon ${
+					<button
+						type='button'
+						className={`iconBtn text-danger mx-4 ${
 							dayjs(date).isValid() ? '' : 'd-none'
 						}`}
-						role='button'
-						onClick={() => {
-							requestDelete(id);
-						}}
-					></i>
+						aria-label='Delete note'
+						onClick={() => requestDelete(id)}
+					>
+						<i
+							className='fa-regular fa-trash-can fa-lg fontIcon'
+							aria-hidden='true'
+						></i>
+					</button>
 				</div>
 			</div>
 		</div>
