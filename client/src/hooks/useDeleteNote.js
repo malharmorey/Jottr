@@ -13,21 +13,19 @@ export const useDeleteNote = () => {
 	const queryClient = useQueryClient();
 
 	// run the real DELETE, then drop the note from the cache, or report a failure
-	const commit = (task) => {
-		deleteNote(task.token, task.id)
-			.then(() => {
-				queryClient.setQueryData(['notes'], (old) =>
-					old
-						? { ...old, notes: old.notes.filter((note) => note._id !== task.id) }
-						: old
-				);
-			})
-			.catch((error) => {
-				useAlertStore.getState().showAlert(error.message, 'danger');
-			})
-			.finally(() => {
-				usePendingDeleteStore.getState().remove(task.id);
-			});
+	const commit = async (task) => {
+		try {
+			await deleteNote(task.token, task.id);
+			queryClient.setQueryData(['notes'], (old) =>
+				old
+					? { ...old, notes: old.notes.filter((note) => note._id !== task.id) }
+					: old
+			);
+		} catch (error) {
+			useAlertStore.getState().showAlert(error.message, 'danger');
+		} finally {
+			usePendingDeleteStore.getState().remove(task.id);
+		}
 	};
 
 	const undo = (task) => {
