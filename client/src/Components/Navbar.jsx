@@ -1,5 +1,5 @@
-import { useRef } from 'react';
 import { NavLink } from 'react-router';
+import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../StyleSheets/navbar.css';
 import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
@@ -22,13 +22,14 @@ const Navbar = () => {
 		showAlert('Logged out successfully', 'success');
 	};
 
-	// Collapsing navbar after selecting any NavLink
-	const navButton = useRef(null);
-	const linksContainerRef = useRef(null);
-	function collapseNav() {
-		navButton.current.classList.add('collapsed');
-		linksContainerRef.current.classList.remove('show');
-	}
+	// Close the mobile navbar after a nav link is selected
+	const closeNavbar = () => {
+		const menu = document.getElementById('navbarSupportedContent');
+		if (menu?.classList.contains('show')) {
+			bootstrap.Collapse.getOrCreateInstance(menu).hide();
+		}
+	};
+
 	return (
 		<>
 			<nav id='navbar' className=' navbar  navbar-expand-lg '>
@@ -36,13 +37,12 @@ const Navbar = () => {
 					<NavLink
 						className='navbar-brand  navTitle'
 						to='/'
-						onClick={collapseNav}
+						onClick={closeNavbar}
 					>
 						<img className='cloudBookEmoji' src={cloudBookEmoji} alt='' />
 						CloudBook
 					</NavLink>
 					<button
-						ref={navButton}
 						className='navbar-toggler'
 						type='button'
 						data-bs-toggle='collapse'
@@ -56,14 +56,13 @@ const Navbar = () => {
 					<div
 						className='collapse navbar-collapse'
 						id='navbarSupportedContent'
-						ref={linksContainerRef}
 					>
 						<ul className='navbar-nav me-auto mb-2 mb-lg-0'>
 							<li className='nav-item'>
 								<NavLink
 									to='/'
 									className='nav-link navLink'
-									onClick={collapseNav}
+									onClick={closeNavbar}
 								>
 									Home
 								</NavLink>
@@ -72,7 +71,7 @@ const Navbar = () => {
 								<NavLink
 									to='/about'
 									className='nav-link navLink'
-									onClick={collapseNav}
+									onClick={closeNavbar}
 								>
 									About
 								</NavLink>
@@ -82,28 +81,29 @@ const Navbar = () => {
 							<div className='btnContainer'>
 								<div className='dropdown' style={{ display: 'inline-block' }}>
 									👤{' '}
-									<span
+									<button
+										type='button'
 										className='me-4 loginBtn dropdown-toggle'
 										id='dropdownMenuLink'
 										data-bs-toggle='dropdown'
 										aria-expanded='false'
 									>
 										{userName ? userName : 'User'}
-									</span>
+									</button>
 									<ul
-										className='dropdown-menu'
+										className='dropdown-menu dropdown-menu-end'
 										aria-labelledby='dropdownMenuLink'
-										onClick={handleLogout}
 									>
 										<li>
-											⚰️{' '}
-											<p
+											<button
+												type='button'
 												className='dropdown-item'
 												data-bs-toggle='collapse'
 												data-bs-target='.navbar-collapse.show'
+												onClick={handleLogout}
 											>
-												Logout
-											</p>
+												⚰️ Logout
+											</button>
 										</li>
 									</ul>
 								</div>

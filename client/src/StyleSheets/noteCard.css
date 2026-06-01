@@ -35,6 +35,13 @@ small {
 	font-weight: bolder;
 	color: rgb(217, 216, 216);
 }
+.iconBtn {
+	background: none;
+	border: none;
+	padding: 0;
+	line-height: 1;
+	cursor: pointer;
+}
 
 /* Media queries */
 @media (max-width: 500px) {
