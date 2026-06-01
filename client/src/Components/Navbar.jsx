@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { NavLink } from 'react-router';
 import '../StyleSheets/navbar.css';
 import { useNavigate } from 'react-router';
@@ -22,13 +21,6 @@ const Navbar = () => {
 		showAlert('Logged out successfully', 'success');
 	};
 
-	// Collapsing navbar after selecting any NavLink
-	const navButton = useRef(null);
-	const linksContainerRef = useRef(null);
-	function collapseNav() {
-		navButton.current.classList.add('collapsed');
-		linksContainerRef.current.classList.remove('show');
-	}
 	return (
 		<>
 			<nav id='navbar' className=' navbar  navbar-expand-lg '>
@@ -36,13 +28,13 @@ const Navbar = () => {
 					<NavLink
 						className='navbar-brand  navTitle'
 						to='/'
-						onClick={collapseNav}
+						data-bs-toggle='collapse'
+						data-bs-target='.navbar-collapse.show'
 					>
 						<img className='cloudBookEmoji' src={cloudBookEmoji} alt='' />
 						CloudBook
 					</NavLink>
 					<button
-						ref={navButton}
 						className='navbar-toggler'
 						type='button'
 						data-bs-toggle='collapse'
@@ -56,14 +48,14 @@ const Navbar = () => {
 					<div
 						className='collapse navbar-collapse'
 						id='navbarSupportedContent'
-						ref={linksContainerRef}
 					>
 						<ul className='navbar-nav me-auto mb-2 mb-lg-0'>
 							<li className='nav-item'>
 								<NavLink
 									to='/'
 									className='nav-link navLink'
-									onClick={collapseNav}
+									data-bs-toggle='collapse'
+									data-bs-target='.navbar-collapse.show'
 								>
 									Home
 								</NavLink>
@@ -72,7 +64,8 @@ const Navbar = () => {
 								<NavLink
 									to='/about'
 									className='nav-link navLink'
-									onClick={collapseNav}
+									data-bs-toggle='collapse'
+									data-bs-target='.navbar-collapse.show'
 								>
 									About
 								</NavLink>
