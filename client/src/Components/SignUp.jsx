@@ -67,7 +67,7 @@ const SignUp = ({ title }) => {
 									We'll never share your email with anyone else.
 								</div>
 							</div>
-							<div className='mb-3' data-tip='This is the text of the tooltip2'>
+							<div className='mb-3'>
 								<label htmlFor='password' className='form-label'>
 									Password
 								</label>
@@ -81,9 +81,6 @@ const SignUp = ({ title }) => {
 									onChange={onChange}
 									minLength={5}
 									required
-									data-bs-toggle='tooltip'
-									data-bs-placement='top'
-									trigger='hover'
 									title='Password must contain atleast 1 lowerCase, 1 upperCase, 1 number and 1 symbol'
 								/>
 							</div>
