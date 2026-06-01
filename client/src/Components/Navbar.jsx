@@ -82,28 +82,29 @@ const Navbar = () => {
 							<div className='btnContainer'>
 								<div className='dropdown' style={{ display: 'inline-block' }}>
 									👤{' '}
-									<span
+									<button
+										type='button'
 										className='me-4 loginBtn dropdown-toggle'
 										id='dropdownMenuLink'
 										data-bs-toggle='dropdown'
 										aria-expanded='false'
 									>
 										{userName ? userName : 'User'}
-									</span>
+									</button>
 									<ul
 										className='dropdown-menu'
 										aria-labelledby='dropdownMenuLink'
-										onClick={handleLogout}
 									>
 										<li>
-											⚰️{' '}
-											<p
+											<button
+												type='button'
 												className='dropdown-item'
 												data-bs-toggle='collapse'
 												data-bs-target='.navbar-collapse.show'
+												onClick={handleLogout}
 											>
-												Logout
-											</p>
+												⚰️ Logout
+											</button>
 										</li>
 									</ul>
 								</div>
