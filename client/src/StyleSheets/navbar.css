@@ -45,14 +45,10 @@
 	font-size: 1.05rem;
 	font-weight: 500;
 	cursor: pointer;
-	text-decoration: none;
 	color: white;
 	background: none;
 	border: none;
 	padding: 0;
-}
-.loginBtn:hover {
-	color: white;
 }
 .dropdown-menu {
 	min-width: fit-content;
