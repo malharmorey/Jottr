@@ -35,7 +35,6 @@
 	background-color: rgba(255, 255, 255, 0.07);
 	color: white !important;
 	outline: none !important;
-	/* font-size: 1.05rem; */
 }
 .inputField:focus {
 	border: none;
@@ -55,11 +54,9 @@
 	font-weight: 700;
 	font-size: 1.15rem;
 	border: none;
-	transition: 00ms all ease;
 	margin-bottom: 2rem;
 }
 .loginPageBtn:hover {
-	background: -webkit-linear-gradient(to right, #3c1053, #ad5389);
 	background: linear-gradient(to right, #3c1053, #ad5389);
 	color: white;
 }
