@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import '../StyleSheets/newNote.css';
+import '../StyleSheets/noteModal.css';
 import { useAddNote } from '../hooks/useAddNote';
 import { useEditNote } from '../hooks/useEditNote';
 import { useQueryClient } from '@tanstack/react-query';
