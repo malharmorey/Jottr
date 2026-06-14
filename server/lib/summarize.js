@@ -1,5 +1,5 @@
 const GEMINI_URL =
-	'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+	'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 
 const TIMEOUT_MS = 15000;
 
@@ -30,7 +30,9 @@ const summarizeNote = async ({ title, description, tag }) => {
 			},
 			body: JSON.stringify({
 				contents: [{ parts: [{ text: buildPrompt({ title, description, tag }) }] }],
-				generationConfig: { maxOutputTokens: 150 },
+				// thinkingBudget 0 disables the model's thinking tokens so the
+				// output budget goes to the summary, not to discarded thoughts
+				generationConfig: { maxOutputTokens: 150, thinkingConfig: { thinkingBudget: 0 } },
 			}),
 			signal: controller.signal,
 		});
