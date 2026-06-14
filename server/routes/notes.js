@@ -3,8 +3,21 @@ import Note from '../models/Note.js';
 import fetchuser from '../middleware/fetchuser.js';
 import { body } from 'express-validator';
 import { formatMaxLengthError, validate } from '../lib/validation.js';
+import rateLimit from 'express-rate-limit';
+import { reserveSummary, refundSummary } from '../lib/quota.js';
+import summarizeNote from '../lib/summarize.js';
 
 const router = express.Router();
+
+const summarizeLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	limit: 20,
+	standardHeaders: 'draft-7',
+	legacyHeaders: false,
+	handler: (req, res) => {
+		res.status(429).json({ success: false, message: 'Too many summary requests, try again later' });
+	},
+});
 
 //---------------------------------ROUTE 1---------------------------------
 // fetching all notes of a user : get "api/notes/getallnotes".Login required
@@ -151,4 +164,36 @@ router.delete('/deletenote/:id', fetchuser, async (req, res) => {
 		res.status(500).json({ success: false, message: 'Internal server error' });
 	}
 });
+
+//---------------------------------ROUTE 5---------------------------------
+// Summarizing a user's note via the AI helper : POST "api/notes/summarize/:id".Login required
+router.post('/summarize/:id', summarizeLimiter, fetchuser, async (req, res) => {
+	try {
+		const note = await Note.findById(req.params.id);
+		// 404 for both "not found" and "not yours" — no existence leak
+		if (!note || note.user.toString() !== req.user.id) {
+			return res.status(404).json({ success: false, message: 'Note not found' });
+		}
+
+		const reserved = await reserveSummary(req.user.id);
+		if (!reserved) {
+			return res
+				.status(429)
+				.json({ success: false, message: 'Daily summary limit reached, try again tomorrow' });
+		}
+
+		try {
+			const summary = await summarizeNote(note);
+			res.json({ success: true, summary });
+		} catch (error) {
+			await refundSummary(req.user.id);
+			res
+				.status(502)
+				.json({ success: false, message: 'Could not generate a summary, please try again' });
+		}
+	} catch (error) {
+		res.status(500).json({ success: false, message: 'Internal server error' });
+	}
+});
+
 export default router;
