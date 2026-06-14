@@ -63,3 +63,13 @@ export const deleteNote = (token, id) =>
 		{ method: 'DELETE', headers: headers(token) },
 		'Unable to delete your note'
 	);
+
+// POST to generate an AI summary of a note
+export const summarizeNote = async (token, id) => {
+	const data = await request(
+		`${host}/api/notes/summarize/${id}`,
+		{ method: 'POST', headers: headers(token) },
+		'Unable to summarize your note'
+	);
+	return data.summary;
+};
