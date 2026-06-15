@@ -9,7 +9,8 @@ function AiSummaryModal() {
 	const noteId = useAiSummaryStore((state) => state.noteId);
 	const close = useAiSummaryStore((state) => state.close);
 	const showAlert = useAlertStore((state) => state.showAlert);
-	const { data: summary, isLoading, isError, error } = useSummarizeNote(noteId);
+	const { data: summary, isFetching, isError, error, refetch } =
+		useSummarizeNote(noteId);
 
 	const modalRef = useRef(null);
 
@@ -52,7 +53,7 @@ function AiSummaryModal() {
 						></button>
 					</div>
 					<div className='modal-body'>
-						{isLoading ? (
+						{isFetching ? (
 							<div className='text-center py-4'>
 								<div className='spinner-border text-light' role='status'>
 									<span className='visually-hidden'>Loading…</span>
@@ -71,16 +72,17 @@ function AiSummaryModal() {
 						<button
 							type='button'
 							className='btn btn-secondary bg-secondary bg-gradient'
-							data-bs-dismiss='modal'
+							onClick={() => refetch()}
+							disabled={isFetching}
 						>
-							❌ Cancel
+							🔄 Retry
 						</button>
 						<button
 							type='button'
 							className='btn btn-primary bg-primary bg-gradient'
 							data-bs-dismiss='modal'
 							onClick={copySummary}
-							disabled={!summary}
+							disabled={!summary || isFetching}
 						>
 							📋 Copy
 						</button>
