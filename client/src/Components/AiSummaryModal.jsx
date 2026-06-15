@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import '../StyleSheets/noteModal.css';
 import useAiSummaryStore from '../stores/aiSummaryStore';
 import useAlertStore from '../stores/alertStore';
@@ -11,14 +12,21 @@ function AiSummaryModal() {
 	const showAlert = useAlertStore((state) => state.showAlert);
 	const { data: summary, isFetching, isError, error, refetch } =
 		useSummarizeNote(noteId);
+	const queryClient = useQueryClient();
 
 	const modalRef = useRef(null);
 
 	useEffect(() => {
 		const el = modalRef.current;
-		el.addEventListener('hidden.bs.modal', close);
-		return () => el.removeEventListener('hidden.bs.modal', close);
-	}, [close]);
+		const onHidden = () => {
+			if (isError) {
+				queryClient.removeQueries({ queryKey: ['summary', noteId] });
+			}
+			close();
+		};
+		el.addEventListener('hidden.bs.modal', onHidden);
+		return () => el.removeEventListener('hidden.bs.modal', onHidden);
+	}, [close, isError, noteId, queryClient]);
 
 	const copySummary = async () => {
 		if (!summary) return;
