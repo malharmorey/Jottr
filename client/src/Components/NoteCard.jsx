@@ -35,7 +35,7 @@ function NoteCard({ title, description, tag, date, id, note }) {
 					onClick={() => openSummary(id)}
 				>
 					<i
-						className='fa-solid fa-circle-info fa-lg fontIcon'
+						className='fa-solid fa-wand-magic-sparkles fa-lg fontIcon'
 						aria-hidden='true'
 					></i>
 				</button>
