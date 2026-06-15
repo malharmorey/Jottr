@@ -26,7 +26,7 @@ function NoteCard({ title, description, tag, date, id, note }) {
 			>
 				<button
 					type='button'
-					className={`iconBtn text-info position-absolute top-0 end-0 m-2 ${
+					className={`iconBtn text-info position-absolute top-0 end-0 m-3 ${
 						dayjs(date).isValid() ? '' : 'd-none'
 					}`}
 					aria-label='Summarize note'
