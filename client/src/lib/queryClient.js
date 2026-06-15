@@ -5,6 +5,7 @@ const queryClient = new QueryClient({
 	// Gobal Cache for any failed read
 	queryCache: new QueryCache({
 		onError: (error, query) => {
+			if (query.meta?.skipGlobalError) return;
 			const message = query.meta?.errorMessage || error.message;
 			useAlertStore.getState().showAlert(message, 'danger');
 		},

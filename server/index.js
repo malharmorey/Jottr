@@ -7,7 +7,7 @@ import connectToMongo from './db.js';
 import authRouter from './routes/auth.js';
 import notesRouter from './routes/notes.js';
 
-const required = ['MONGO_USERNAME', 'MONGO_PASSWORD', 'MONGO_CLUSTER', 'MONGO_DBNAME', 'JWT_SECRET_KEY', 'CLIENT_ORIGIN'];
+const required = ['MONGO_USERNAME', 'MONGO_PASSWORD', 'MONGO_CLUSTER', 'MONGO_DBNAME', 'JWT_SECRET_KEY', 'CLIENT_ORIGIN', 'GEMINI_API_KEY'];
 const missing = required.filter((key) => !process.env[key]);
 if (missing.length) {
 	console.error(`Missing required env vars: ${missing.join(', ')}`);
