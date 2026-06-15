@@ -64,10 +64,7 @@ function AiSummaryModal() {
 								<img className='astronautImg' src={pic} alt='' />
 							</div>
 						) : summary ? (
-							<>
-								<h4 className='notesCardTitle'>Summary</h4>
-								<p className='notesCardNote'>{summary}</p>
-							</>
+							<p className='notesCardNote'>{summary}</p>
 						) : null}
 					</div>
 					<div className='modal-footer'>
