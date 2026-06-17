@@ -24,9 +24,10 @@ const buildAuthLimiter = ({ windowMs, limit, message, skipSuccessfulRequests, sk
 	});
 
 const signupLimiter = buildAuthLimiter({
-	windowMs: 15 * 60 * 1000,
+	windowMs: 24 * 60 * 60 * 1000,
 	limit: 5,
-	message: 'Too many attempts, try again in 15 minutes',
+	skipFailedRequests: true,
+	message: 'Daily signup limit reached, try again tomorrow',
 });
 
 const loginLimiter = buildAuthLimiter({
