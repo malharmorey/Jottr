@@ -11,15 +11,15 @@ const decodeJwt = (token) => {
 };
 
 const useAuth = () => {
-	const token = localStorage.getItem(TOKEN_KEY);
+	const token = sessionStorage.getItem(TOKEN_KEY);
 	const userName = decodeJwt(token)?.user?.name;
 
 	const login = (authToken) => {
-		localStorage.setItem(TOKEN_KEY, authToken);
+		sessionStorage.setItem(TOKEN_KEY, authToken);
 	};
 
 	const logout = () => {
-		localStorage.removeItem(TOKEN_KEY);
+		sessionStorage.removeItem(TOKEN_KEY);
 	};
 
 	return {
