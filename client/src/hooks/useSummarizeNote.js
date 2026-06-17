@@ -1,14 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
 import { summarizeNote } from '../api/notes';
+import { readSummary, writeSummary } from '../lib/summaryCache';
 import useAuth from './useAuth';
 
-// fetch + cache a note's AI summary; one request per note, reused on reopen
 export const useSummarizeNote = (noteId) => {
 	const { token } = useAuth();
 	return useQuery({
 		queryKey: ['summary', noteId],
-		queryFn: () => summarizeNote(token, noteId),
+		queryFn: async () => {
+			const summary = await summarizeNote(token, noteId);
+			writeSummary(noteId, summary);
+			return summary;
+		},
 		enabled: Boolean(noteId),
+		initialData: () => readSummary(noteId),
 		staleTime: Infinity,
 		gcTime: Infinity,
 		retry: false,

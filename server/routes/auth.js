@@ -10,19 +10,32 @@ const router = express.Router();
 
 const JWT_SECRET = `${process.env.JWT_SECRET_KEY}`;
 
-const buildAuthLimiter = () =>
+const buildAuthLimiter = ({ windowMs, limit, message, skipSuccessfulRequests, skipFailedRequests }) =>
 	rateLimit({
-		windowMs: 15 * 60 * 1000,
-		limit: 5,
+		windowMs,
+		limit,
+		skipSuccessfulRequests,
+		skipFailedRequests,
 		standardHeaders: 'draft-7',
 		legacyHeaders: false,
 		handler: (req, res) => {
-			res.status(429).json({ success: false, message: 'Too many attempts, try again in 15 minutes' });
+			res.status(429).json({ success: false, message });
 		},
 	});
 
-const signupLimiter = buildAuthLimiter();
-const loginLimiter = buildAuthLimiter();
+const signupLimiter = buildAuthLimiter({
+	windowMs: 24 * 60 * 60 * 1000,
+	limit: 5,
+	skipFailedRequests: true,
+	message: 'Daily signup limit reached, try again tomorrow',
+});
+
+const loginLimiter = buildAuthLimiter({
+	windowMs: 15 * 60 * 1000,
+	limit: 5,
+	skipSuccessfulRequests: true,
+	message: 'Too many failed attempts, try again in 15 minutes',
+});
 
 //---------------------------------ROUTE 1---------------------------------
 // Creating a user using : POST "api/auth/createUser". No login required

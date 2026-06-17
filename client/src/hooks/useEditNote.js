@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateNote } from '../api/notes';
+import { removeSummary } from '../lib/summaryCache';
 import useAuth from './useAuth';
 import useAlertStore from '../stores/alertStore';
 
@@ -33,8 +34,11 @@ export const useEditNote = () => {
 			queryClient.setQueryData(['notes'], context?.previous);
 			showAlert(error.message, 'danger');
 		},
-		onSuccess: () => {
+		onSuccess: (_data, { id }) => {
 			showAlert('Your note has been updated successfully', 'success');
+			// drop the stale summary so the next open regenerates it
+			queryClient.removeQueries({ queryKey: ['summary', id] });
+			removeSummary(id);
 		},
 		onSettled: () => {
 			queryClient.invalidateQueries({ queryKey: ['notes'] });
