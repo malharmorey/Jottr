@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import useAlertStore from '../stores/alertStore';
 import useAuth from '../hooks/useAuth';
-import cloudBookEmoji from '../images/logo512.png';
+import jottrLogo from '../images/logo512.png';
 
 const Navbar = () => {
 	const queryClient = useQueryClient();
@@ -39,7 +39,7 @@ const Navbar = () => {
 						to='/'
 						onClick={closeNavbar}
 					>
-						<img className='cloudBookEmoji' src={cloudBookEmoji} alt='' />
+						<img className='jottrLogo' src={jottrLogo} alt='' />
 						Jottr
 					</NavLink>
 					<button
