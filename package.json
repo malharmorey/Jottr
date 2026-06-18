@@ -2,14 +2,14 @@
 	"dependencies": {
 		"concurrently": "^7.3.0"
 	},
-	"name": "cloudbook",
-	"version": "1.0.0",
-	"description": "Our notebook on the cloud",
+	"name": "jottr",
+	"version": "2.0.0",
+	"description": "AI-powered note-taking app",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "concurrently \"cd server && nodemon ./index.js \" \"cd client && npm run dev\" "
 	},
-	"author": "",
+	"author": "Malhar",
 	"license": "ISC"
 }
