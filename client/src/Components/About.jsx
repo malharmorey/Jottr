@@ -3,14 +3,14 @@ import useDocumentTitle from '../hooks/useDocumentTitle';
 import { Link } from 'react-router';
 
 const About = ({ title }) => {
-	useDocumentTitle(`CloudBook | ${title}`);
+	useDocumentTitle(`Jottr | ${title}`);
 	return (
 		<>
 			<div className='aboutCard '>
 				<div className='aboutCardBody'>
 					<h2 className='aboutCardTitle'>About </h2>
 					<div className='card-text aboutCardText'>
-						<span>CloudBook</span> is a personal note-taking📝 application to
+						<span>Jottr</span> is a personal note-taking📝 application to
 						store our thoughts💬, life lessons, memories💌, stories and many
 						more directly to the cloud☁️. It is secure🔒, fast⚡️ and
 						reliable🌞. Sign Up{' '}

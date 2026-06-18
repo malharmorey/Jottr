@@ -40,7 +40,7 @@ const Navbar = () => {
 						onClick={closeNavbar}
 					>
 						<img className='cloudBookEmoji' src={cloudBookEmoji} alt='' />
-						CloudBook
+						Jottr
 					</NavLink>
 					<button
 						className='navbar-toggler'

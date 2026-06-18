@@ -6,7 +6,7 @@ import AiSummaryModal from './AiSummaryModal';
 import ScrollToTopBtn from './ScrollToTopBtn';
 
 const Home = ({ title }) => {
-	useDocumentTitle(`CloudBook | ${title}`);
+	useDocumentTitle(`Jottr | ${title}`);
 	return (
 		<>
 			<h2 className='pageHeading'>Your Notes 📝</h2>

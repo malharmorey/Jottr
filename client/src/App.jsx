@@ -11,7 +11,7 @@ import Login from './Components/Login';
 import SignUp from './Components/SignUp';
 import AlertToaster from './Components/AlertToaster';
 
-const title = 'CloudBook | Your notes on cloud';
+const title = 'Jottr | AI-powered notes';
 
 const router = createBrowserRouter([
 	{
