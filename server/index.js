@@ -41,5 +41,5 @@ app.use((err, _req, res, next) => {
 });
 
 app.listen(port, () => {
-	console.log(`CloudBook server listening on port ${port}`);
+	console.log(`Jottr app listening on port ${port}`);
 });
