@@ -28,7 +28,7 @@ const SignUp = ({ title }) => {
 			<div className='loginContainer '>
 				<div className='signUpCard '>
 					<div className='loginCardHeader'>
-						<p>👤SignUp Here</p>
+						<p>Sign Up</p>
 					</div>
 					<div className='loginCardBody'>
 						<form onSubmit={handleSignUp}>

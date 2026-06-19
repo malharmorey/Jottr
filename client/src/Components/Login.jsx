@@ -24,7 +24,7 @@ const Login = ({ title }) => {
 			<div className='loginContainer '>
 				<div className='loginCard '>
 					<div className='loginCardHeader'>
-						<p>📲Login Here</p>
+						<p>Login</p>
 					</div>
 					<div className='loginCardBody'>
 						<form onSubmit={handleLogin}>
