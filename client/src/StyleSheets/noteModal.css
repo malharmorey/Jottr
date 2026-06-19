@@ -39,3 +39,9 @@
 .modal.show .modal-dialog {
 	transform: scale(1);
 }
+@media (max-width: 575.98px) {
+	.modal-dialog {
+		margin-left: 1rem;
+		margin-right: 1rem;
+	}
+}
