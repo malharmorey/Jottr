@@ -25,6 +25,9 @@ function NotesList() {
 			showAlert('Please login first', 'danger');
 		}
 	}, []); // eslint-disable-line
+
+	if (!isLoggedIn) return null;
+
 	return (
 		<div className='row' ref={animationParent}>
 			{isLoading ? (
