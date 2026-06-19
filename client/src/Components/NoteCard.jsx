@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { useDeleteNote } from '../hooks/useDeleteNote';
 import useNoteModalStore from '../stores/noteModalStore';
 import useAiSummaryStore from '../stores/aiSummaryStore';
 import '../StyleSheets/noteCard.css';
@@ -9,7 +8,6 @@ import pic from '../images/pngegg.png';
 dayjs.extend(relativeTime);
 
 function NoteCard({ title, description, tag, date, id, note }) {
-	const { requestDelete } = useDeleteNote();
 	const openEdit = useNoteModalStore((state) => state.openEdit);
 	const openSummary = useAiSummaryStore((state) => state.open);
 
@@ -84,7 +82,9 @@ function NoteCard({ title, description, tag, date, id, note }) {
 							dayjs(date).isValid() ? '' : 'd-none'
 						}`}
 						aria-label='Delete note'
-						onClick={() => requestDelete(id)}
+						data-bs-toggle='modal'
+						data-bs-target='#confirmDeleteModal'
+						data-note-id={id}
 					>
 						<i
 							className='fa-regular fa-trash-can fa-lg fontIcon'
