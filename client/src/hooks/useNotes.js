@@ -10,6 +10,8 @@ const useNotesQuery = (select) => {
 		queryFn: () => getAllNotes(token),
 		enabled: isLoggedIn,
 		select,
+		throwOnError: (error, query) => !query.state.data,
+		meta: { skipGlobalError: true },
 	});
 };
 
