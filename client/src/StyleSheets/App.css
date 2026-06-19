@@ -3,6 +3,7 @@
 :root {
 	--primaryFont: 'Kalam', cursive;
 	--secondaryFont: 'Raleway', sans-serif;
+	--ease-pro: cubic-bezier(0.22, 1, 0.36, 1);
 }
 .mainContainer {
 	position: relative;

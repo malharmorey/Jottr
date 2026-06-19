@@ -32,3 +32,10 @@
 .charCounter {
 	font-weight: 300;
 }
+.modal.fade .modal-dialog {
+	transform: scale(0.95);
+	transition: transform 0.16s var(--ease-pro);
+}
+.modal.show .modal-dialog {
+	transform: scale(1);
+}
