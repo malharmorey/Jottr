@@ -10,11 +10,9 @@ function ScrollToTopBtn() {
 		return () => window.removeEventListener('scroll', onScroll);
 	}, []);
 
-	if (!visible) return null;
-
 	return (
 		<button
-			className='scrollToTopBtn'
+			className={`scrollToTopBtn ${visible ? 'scrollVisible' : ''}`}
 			onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
 			aria-label='Scroll to top'
 		>

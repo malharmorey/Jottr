@@ -15,4 +15,13 @@
 	backdrop-filter: blur(7px) saturate(191%);
 	background-color: rgba(43, 52, 76, 0.56);
 	border: 1px solid rgba(255, 255, 255, 0.125);
+	opacity: 0;
+	transform: translateY(1.5rem);
+	pointer-events: none;
+	transition: opacity 0.25s var(--ease-pro), transform 0.25s var(--ease-pro);
+}
+.scrollVisible {
+	opacity: 1;
+	transform: translateY(0);
+	pointer-events: auto;
 }
