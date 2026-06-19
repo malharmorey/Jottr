@@ -10,7 +10,7 @@ const Home = ({ title }) => {
 	useDocumentTitle(`Jottr | ${title}`);
 	return (
 		<>
-			<h2 className='pageHeading'>Your Notes 📝</h2>
+			<h2 className='pageHeading'>Your Notes</h2>
 			<NotesList />
 			<ScrollToTopBtn />
 			<NoteModal />

@@ -83,7 +83,7 @@ function AiSummaryModal() {
 							onClick={() => refetch()}
 							disabled={isFetching}
 						>
-							🔄 Retry
+							Retry
 						</button>
 						<button
 							type='button'
@@ -92,7 +92,7 @@ function AiSummaryModal() {
 							onClick={copySummary}
 							disabled={!summary || isFetching}
 						>
-							📋 Copy
+							Copy
 						</button>
 					</div>
 				</div>

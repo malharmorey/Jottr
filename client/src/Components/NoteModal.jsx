@@ -166,7 +166,7 @@ function NoteModal() {
 								className='btn btn-secondary bg-secondary bg-gradient'
 								data-bs-dismiss='modal'
 							>
-								❌ Close
+								Close
 							</button>
 							<button
 								type='button'
@@ -177,7 +177,7 @@ function NoteModal() {
 								disabled={draft.title.length < 3 || draft.description.length < 5}
 								onClick={handleSave}
 							>
-								💾 Save
+								Save
 							</button>
 						</div>
 					</div>

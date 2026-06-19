@@ -80,7 +80,6 @@ const Navbar = () => {
 						{isLoggedIn && (
 							<div className='btnContainer'>
 								<div className='dropdown' style={{ display: 'inline-block' }}>
-									👤{' '}
 									<button
 										type='button'
 										className='me-4 loginBtn dropdown-toggle'
@@ -102,7 +101,7 @@ const Navbar = () => {
 												data-bs-target='.navbar-collapse.show'
 												onClick={handleLogout}
 											>
-												⚰️ Logout
+												Logout
 											</button>
 										</li>
 									</ul>
