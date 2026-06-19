@@ -48,7 +48,7 @@ function ConfirmDeleteModal() {
 					<div className='modal-footer'>
 						<button
 							type='button'
-							className='btn btn-primary bg-primary bg-gradient'
+							className='btn btn-secondary bg-secondary bg-gradient'
 							data-bs-dismiss='modal'
 						>
 							Cancel
