@@ -85,6 +85,7 @@ const Navbar = () => {
 										className='me-4 loginBtn dropdown-toggle'
 										id='dropdownMenuLink'
 										data-bs-toggle='dropdown'
+										data-bs-display='static'
 										aria-expanded='false'
 									>
 										{userName ? userName : 'User'}

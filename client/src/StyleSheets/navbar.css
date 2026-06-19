@@ -51,13 +51,24 @@
 	border: none;
 	padding: 0;
 }
-.dropdown-menu {
+#navbar .dropdown-menu {
 	min-width: fit-content;
 	padding: 0px;
 	backdrop-filter: blur(7px) saturate(191%);
 	background-color: rgba(43, 52, 76, 0.56);
 	border: 0.8px solid rgba(255, 255, 255, 0.125);
 	cursor: pointer;
+	display: block;
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(-0.5rem);
+	transition: opacity 0.2s var(--ease-pro), transform 0.2s var(--ease-pro),
+		visibility 0.2s var(--ease-pro);
+}
+#navbar .dropdown-menu.show {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
 }
 .dropdown-menu > li {
 	margin: 5px 1rem;
