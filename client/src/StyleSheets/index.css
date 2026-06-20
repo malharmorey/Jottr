@@ -1,31 +1,282 @@
-@import url(../StyleSheets/App.css);
-*,
-*::before,
-*::after {
-	margin: 0px;
-	padding: 0px;
-	box-sizing: border-box;
+/* Layer order: Bootstrap sits lowest so Tailwind + our own styles win as each
+   component is ported. Un-ported components still match Bootstrap's rules and
+   keep their look until they move over. Bootstrap is removed entirely at the
+   end of the migration. */
+@layer theme, base, components, utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Raleway:wght@200;300;400;500;600;700;800&display=swap');
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@theme {
+	--font-primary: 'Kalam', cursive;
+	--font-secondary: 'Raleway', sans-serif;
+	--ease-pro: cubic-bezier(0.22, 1, 0.36, 1);
+	/* navbar collapse point — Bootstrap's lg (992px), not Tailwind's lg (1024) */
+	--breakpoint-nav: 62rem;
+	/* frost palette — single source for every glass surface; exposed as the
+	   bg-frost / border-frost-border / etc. utilities so the look changes in
+	   one place */
+	--color-frost: rgba(43, 52, 76, 0.56);
+	--color-frost-border: rgba(255, 255, 255, 0.125);
 }
-body::before {
-	content: '';
-	position: fixed;
-	min-height: 100vh;
-	top: 0px;
-	right: 0px;
-	bottom: 0px;
-	left: 0px;
-	z-index: 0;
-	background: url(../images/1.jpg);
-	filter: invert(94%);
-	background-position-y: center;
-	background-position-x: center;
-	background-size: cover;
+
+@layer base {
+	*,
+	*::before,
+	*::after {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	/* form controls inherit the body font (avoids the native textarea monospace
+	   and the smaller default button font) */
+	input,
+	textarea,
+	select,
+	button {
+		font: inherit;
+	}
+
+	body {
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+			'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+			'Helvetica Neue', sans-serif;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		color: white;
+	}
+
+	/* Whole-page backdrop photo, inverted to the light frost palette. */
+	body::before {
+		content: '';
+		position: fixed;
+		inset: 0;
+		min-height: 100vh;
+		z-index: 0;
+		background: url(../images/1.jpg);
+		filter: invert(94%);
+		background-position: center;
+		background-size: cover;
+	}
 }
-body {
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-		sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+
+/* THE signature frost/glass surface — ~10 surfaces depend on it. */
+@utility frost {
+	backdrop-filter: blur(7px) saturate(191%);
+	background-color: var(--color-frost);
+	border: 0.8px solid var(--color-frost-border);
+	border-radius: 1.2rem;
+	overflow: hidden;
 	color: white;
+}
+
+/* Input-field frost variant (login/signup fields). */
+@utility frost-input {
+	backdrop-filter: blur(7px) saturate(191%);
+	background-color: rgba(255, 255, 255, 0.07);
+	border: none;
+	color: white;
+	outline: none;
+}
+
+@keyframes shimmerGlide {
+	0% {
+		background-position: 100% 0;
+	}
+	100% {
+		background-position: 0 0;
+	}
+}
+
+/* Loading placeholder bar (Shimmer). */
+@utility shimmer-bar {
+	border-radius: 0.4rem;
+	background: linear-gradient(
+		90deg,
+		rgba(255, 255, 255, 0.06) 25%,
+		rgba(255, 255, 255, 0.18) 37%,
+		rgba(255, 255, 255, 0.06) 63%
+	);
+	background-size: 400% 100%;
+	animation: shimmerGlide 1.4s ease-in-out infinite;
+}
+
+/* Radix dialog: drop-from-above on open, reverse on close (Bootstrap-modal
+   feel), plus the footer buttons (solid colour + Bootstrap-style sheen). */
+@keyframes modalDrop {
+	from {
+		opacity: 0;
+		transform: translate(-50%, calc(-50% - 50px));
+	}
+	to {
+		opacity: 1;
+		transform: translate(-50%, -50%);
+	}
+}
+@keyframes modalDropOut {
+	from {
+		opacity: 1;
+		transform: translate(-50%, -50%);
+	}
+	to {
+		opacity: 0;
+		transform: translate(-50%, calc(-50% - 50px));
+	}
+}
+@keyframes overlayFade {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@layer components {
+	.modalContent {
+		transform: translate(-50%, -50%);
+	}
+	.modalContent[data-state='open'] {
+		animation: modalDrop 0.4s var(--ease-pro);
+	}
+	.modalContent[data-state='closed'] {
+		animation: modalDropOut 0.3s var(--ease-pro);
+	}
+	.modalOverlay[data-state='open'] {
+		animation: overlayFade 0.25s ease-out;
+	}
+	.modalOverlay[data-state='closed'] {
+		animation: overlayFade 0.25s ease-out reverse;
+	}
+
+	.modalBtn {
+		border: 1px solid transparent;
+		border-radius: 0.375rem;
+		padding: 0.375rem 0.75rem;
+		font-family: var(--font-secondary);
+		color: #fff;
+		cursor: pointer;
+		background-image: linear-gradient(
+			180deg,
+			rgba(255, 255, 255, 0.15),
+			rgba(255, 255, 255, 0)
+		);
+	}
+	.modalBtn:disabled {
+		opacity: 0.65;
+		cursor: default;
+	}
+	.modalBtn-secondary {
+		background-color: #6c757d;
+	}
+	.modalBtn-primary {
+		background-color: #0d6efd;
+	}
+	.modalBtn-danger {
+		background-color: #dc3545;
+	}
+}
+
+/* Navbar hamburger that morphs into an X (driven by data-open), and the
+   logout dropdown's slide-down. */
+@keyframes navDropIn {
+	from {
+		opacity: 0;
+		transform: translateY(-0.5rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@layer components {
+	.hamburgerIcon {
+		position: relative;
+		display: block;
+		width: 1.5em;
+		height: 1.5em;
+		background-image: linear-gradient(
+			rgba(255, 255, 255, 0.75),
+			rgba(255, 255, 255, 0.75)
+		);
+		background-size: 100% 2px;
+		background-position: center;
+		background-repeat: no-repeat;
+		transition: background-size 0.3s var(--ease-pro);
+	}
+	.hamburgerIcon::before,
+	.hamburgerIcon::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		height: 2px;
+		border-radius: 2px;
+		background-color: rgba(255, 255, 255, 0.75);
+		transition: top 0.3s var(--ease-pro), bottom 0.3s var(--ease-pro),
+			transform 0.3s var(--ease-pro);
+	}
+	.hamburgerIcon::before {
+		top: 20%;
+	}
+	.hamburgerIcon::after {
+		bottom: 20%;
+	}
+	.hamburgerIcon[data-open='true'] {
+		background-size: 0 2px;
+	}
+	.hamburgerIcon[data-open='true']::before {
+		top: 50%;
+		transform: translateY(-50%) rotate(45deg);
+	}
+	.hamburgerIcon[data-open='true']::after {
+		bottom: 50%;
+		transform: translateY(50%) rotate(-45deg);
+	}
+
+	.navDropdown[data-state='open'] {
+		animation: navDropIn 0.25s var(--ease-pro);
+	}
+	.navDropdown[data-state='closed'] {
+		animation: navDropIn 0.25s var(--ease-pro) reverse;
+	}
+}
+
+/* Toast — drops in from above, rises back up to leave. Separate in/out
+   keyframes (not one reversed) so the exit reliably replays and fires
+   animationend; a single reused name can stick on its finished state. */
+@keyframes toastIn {
+	from {
+		opacity: 0;
+		transform: translateY(-1.5rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+@keyframes toastOut {
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(-1.5rem);
+	}
+}
+
+@layer components {
+	.toastAnim {
+		will-change: transform, opacity;
+	}
+	.toastAnim[data-state='open'] {
+		animation: toastIn 0.35s var(--ease-pro) both;
+	}
+	.toastAnim[data-state='closed'] {
+		animation: toastOut 0.35s var(--ease-pro) both;
+	}
 }

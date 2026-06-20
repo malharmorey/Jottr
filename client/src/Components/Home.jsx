@@ -1,4 +1,3 @@
-import '../StyleSheets/home.css';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import NotesList from './NotesList';
 import NoteModal from './NoteModal';
@@ -10,7 +9,9 @@ const Home = ({ title }) => {
 	useDocumentTitle(`Jottr | ${title}`);
 	return (
 		<>
-			<h2 className='pageHeading'>Your Notes</h2>
+			<h2 className='mx-2 font-secondary text-[2.1rem] font-semibold max-[500px]:text-[2rem] max-[400px]:text-[1.8rem]'>
+				Your Notes
+			</h2>
 			<NotesList />
 			<ScrollToTopBtn />
 			<NoteModal />

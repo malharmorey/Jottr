@@ -35,7 +35,7 @@ export const useEditNote = () => {
 			showAlert(error.message, 'danger');
 		},
 		onSuccess: (_data, { id }) => {
-			showAlert('Your note has been updated successfully', 'success');
+			showAlert('Note updated', 'success');
 			// drop the stale summary so the next open regenerates it
 			queryClient.removeQueries({ queryKey: ['summary', id] });
 			removeSummary(id);

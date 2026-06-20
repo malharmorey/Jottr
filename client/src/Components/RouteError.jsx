@@ -1,5 +1,4 @@
 import { Link, useRouteError, isRouteErrorResponse } from 'react-router';
-import '../StyleSheets/routeError.css';
 import astronaut from '../images/pngegg.png';
 
 const RouteError = () => {
@@ -22,13 +21,24 @@ const RouteError = () => {
 	}
 
 	return (
-		<div className='routeError'>
-			<div className='card routeErrorCard'>
-				<div className='card-body'>
-					<img className='routeErrorImg' src={astronaut} alt='' />
-					<h2 className='routeErrorHeading'>{heading}</h2>
-					<p className='routeErrorMessage'>{message}</p>
-					<Link to='/' className='routeErrorBtn'>
+		<div className='flex min-h-[70vh] items-center justify-center p-4'>
+			<div className='frost w-full max-w-lg text-center'>
+				<div className='px-6 py-8'>
+					<img
+						className='mx-auto mb-4 block w-full max-w-2xs'
+						src={astronaut}
+						alt=''
+					/>
+					<h2 className='mb-[0.6rem] font-primary text-[2rem] font-bold max-[500px]:text-[1.6rem]'>
+						{heading}
+					</h2>
+					<p className='mb-6 font-secondary text-[1.1rem] max-[500px]:text-[1.05rem]'>
+						{message}
+					</p>
+					<Link
+						to='/'
+						className='inline-block rounded-[0.8rem] border border-[rgba(255,255,255,0.4)] bg-[rgba(255,255,255,0.12)] px-[1.6rem] py-[0.6rem] font-secondary font-semibold text-white no-underline transition-colors duration-200 hover:bg-[rgba(255,255,255,0.22)]'
+					>
 						Take me home
 					</Link>
 				</div>

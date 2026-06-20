@@ -3,7 +3,7 @@ import { addNote } from '../api/notes';
 import useAuth from './useAuth';
 import useAlertStore from '../stores/alertStore';
 
-// add a note, optimistically inserting it and rolling back on error
+// add a note, inserting the server's note (with its real _id) on success
 export const useAddNote = () => {
 	const { token } = useAuth();
 	const queryClient = useQueryClient();
@@ -11,21 +11,17 @@ export const useAddNote = () => {
 
 	return useMutation({
 		mutationFn: (newNote) => addNote(token, newNote),
-		onMutate: async (newNote) => {
-			await queryClient.cancelQueries({ queryKey: ['notes'] });
-			const previous = queryClient.getQueryData(['notes']);
-			const optimistic = { _id: `temp-${Date.now()}`, date: Date.now(), ...newNote };
+		// Insert the real note (real _id) so its list key is stable from the
+		// first paint — no temp→real key swap, so the list reflow plays a single
+		// clean enter instead of vanishing and re-entering on the refetch.
+		onSuccess: (note) => {
 			queryClient.setQueryData(['notes'], (old) =>
-				old ? { ...old, notes: [...old.notes, optimistic] } : old
+				old ? { ...old, notes: [...old.notes, note] } : old
 			);
-			return { previous };
+			showAlert('Note added', 'success');
 		},
-		onError: (error, _newNote, context) => {
-			queryClient.setQueryData(['notes'], context?.previous);
+		onError: (error) => {
 			showAlert(error.message, 'danger');
-		},
-		onSuccess: () => {
-			showAlert('Your note has been added successfully', 'success');
 		},
 		onSettled: () => {
 			queryClient.invalidateQueries({ queryKey: ['notes'] });

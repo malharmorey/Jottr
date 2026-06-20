@@ -1,10 +1,9 @@
-import { useEffect, useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import '../StyleSheets/noteModal.css';
 import useAiSummaryStore from '../stores/aiSummaryStore';
 import useAlertStore from '../stores/alertStore';
 import { useSummarizeNote } from '../hooks/useSummarizeNote';
 import pic from '../images/pngegg.png';
+import Modal from './Modal';
 
 function AiSummaryModal() {
 	const noteId = useAiSummaryStore((state) => state.noteId);
@@ -14,19 +13,15 @@ function AiSummaryModal() {
 		useSummarizeNote(noteId);
 	const queryClient = useQueryClient();
 
-	const modalRef = useRef(null);
-
-	useEffect(() => {
-		const el = modalRef.current;
-		const onHidden = () => {
+	// On any dismiss: evict an errored summary so reopening regenerates it.
+	const handleOpenChange = (isOpen) => {
+		if (!isOpen) {
 			if (isError) {
 				queryClient.removeQueries({ queryKey: ['summary', noteId] });
 			}
 			close();
-		};
-		el.addEventListener('hidden.bs.modal', onHidden);
-		return () => el.removeEventListener('hidden.bs.modal', onHidden);
-	}, [close, isError, noteId, queryClient]);
+		}
+	};
 
 	const copySummary = async () => {
 		if (!summary) return;
@@ -39,65 +34,51 @@ function AiSummaryModal() {
 	};
 
 	return (
-		<div
-			className='modal fade'
-			id='aiSummaryModal'
-			tabIndex='-1'
-			aria-labelledby='aiSummaryModalLabel'
-			aria-hidden='true'
-			ref={modalRef}
+		<Modal
+			open={noteId != null}
+			onOpenChange={handleOpenChange}
+			title='AI Summary'
+			footer={
+				<>
+					<button
+						type='button'
+						className='modalBtn modalBtn-secondary'
+						onClick={() => refetch()}
+						disabled={isFetching}
+					>
+						Retry
+					</button>
+					<button
+						type='button'
+						className='modalBtn modalBtn-primary'
+						onClick={() => {
+							copySummary();
+							close();
+						}}
+						disabled={!summary || isFetching}
+					>
+						Copy
+					</button>
+				</>
+			}
 		>
-			<div className='modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable'>
-				<div className='modal-content modalCard'>
-					<div className='modal-header'>
-						<h5 className='modal-title' id='aiSummaryModalLabel'>
-							AI Summary
-						</h5>
-						<button
-							type='button'
-							className='btn-close'
-							data-bs-dismiss='modal'
-							aria-label='Close'
-						></button>
-					</div>
-					<div className='modal-body'>
-						{isFetching ? (
-							<div className='text-center py-4'>
-								<div className='spinner-border text-light' role='status'>
-									<span className='visually-hidden'>Loading…</span>
-								</div>
-							</div>
-						) : isError ? (
-							<div className='text-center'>
-								<p className='notesCardNote'>{error.message}</p>
-								<img className='astronautImg' src={pic} alt='' />
-							</div>
-						) : summary ? (
-							<p className='notesCardNote'>{summary}</p>
-						) : null}
-					</div>
-					<div className='modal-footer'>
-						<button
-							type='button'
-							className='btn btn-secondary bg-secondary bg-gradient'
-							onClick={() => refetch()}
-							disabled={isFetching}
-						>
-							Retry
-						</button>
-						<button
-							type='button'
-							className='btn btn-primary bg-primary bg-gradient'
-							data-bs-dismiss='modal'
-							onClick={copySummary}
-							disabled={!summary || isFetching}
-						>
-							Copy
-						</button>
-					</div>
+			{isFetching ? (
+				<div className='flex justify-center py-4'>
+					<div className='h-8 w-8 animate-spin rounded-full border-4 border-white/30 border-t-white'></div>
 				</div>
-			</div>
-		</div>
+			) : isError ? (
+				<div className='text-center'>
+					<p className='font-secondary text-[1.1rem]'>{error.message}</p>
+					<img
+						className='mx-auto h-84 w-108 max-[530px]:h-full max-[530px]:w-full'
+						src={pic}
+						alt=''
+					/>
+				</div>
+			) : summary ? (
+				<p className='font-secondary text-[1.1rem]'>{summary}</p>
+			) : null}
+		</Modal>
 	);
 }
 
