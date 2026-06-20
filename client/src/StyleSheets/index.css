@@ -240,7 +240,9 @@
 	}
 }
 
-/* Toast slide — GPU keyframe (smoother than a JS-timed transition toggle). */
+/* Toast — drops in from above, rises back up to leave. Separate in/out
+   keyframes (not one reversed) so the exit reliably replays and fires
+   animationend; a single reused name can stick on its finished state. */
 @keyframes toastIn {
 	from {
 		opacity: 0;
@@ -251,15 +253,25 @@
 		transform: translateY(0);
 	}
 }
+@keyframes toastOut {
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(-1.5rem);
+	}
+}
 
 @layer components {
 	.toastAnim {
 		will-change: transform, opacity;
 	}
 	.toastAnim[data-state='open'] {
-		animation: toastIn 0.4s var(--ease-pro) both;
+		animation: toastIn 0.35s var(--ease-pro) both;
 	}
 	.toastAnim[data-state='closed'] {
-		animation: toastIn 0.4s var(--ease-pro) reverse both;
+		animation: toastOut 0.35s var(--ease-pro) both;
 	}
 }
