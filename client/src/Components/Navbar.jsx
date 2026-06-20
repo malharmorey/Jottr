@@ -55,7 +55,7 @@ const Navbar = () => {
 		<>
 			<nav
 				id='navbar'
-				className="fixed top-0 z-[99] w-screen py-1 text-white before:absolute before:inset-0 before:-z-[1] before:border before:border-frost-border before:bg-frost before:backdrop-blur-[7px] before:backdrop-saturate-[191%] before:content-['']"
+				className="fixed top-0 z-99 w-screen py-1 text-white before:absolute before:inset-0 before:-z-1 before:border before:border-frost-border before:bg-frost before:backdrop-blur-[7px] before:backdrop-saturate-[191%] before:content-['']"
 			>
 				<div className='flex flex-wrap items-center justify-between px-3 nav:px-4'>
 					<NavLink
@@ -119,7 +119,7 @@ const Navbar = () => {
 											<DropdownMenu.Content
 												align={isDesktop ? 'end' : 'start'}
 												sideOffset={6}
-												className='navDropdown z-[100] min-w-fit rounded-md border border-frost-border bg-frost backdrop-blur-[7px] backdrop-saturate-[191%]'
+												className='navDropdown z-100 min-w-fit rounded-md border border-frost-border bg-frost backdrop-blur-[7px] backdrop-saturate-[191%]'
 											>
 												<DropdownMenu.Item
 													className='cursor-pointer px-4 py-2 text-[1.05rem] text-white outline-none'

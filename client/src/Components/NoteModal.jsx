@@ -59,7 +59,7 @@ function NoteModal() {
 		<>
 			<button
 				type='button'
-				className='fixed bottom-8 right-8 z-[100] flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border border-frost-border bg-frost text-[2rem] font-bold tracking-[-0.24px] text-white backdrop-blur-[7px] backdrop-saturate-[191%]'
+				className='fixed bottom-8 right-8 z-100 flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border border-frost-border bg-frost text-[2rem] font-bold tracking-[-0.24px] text-white backdrop-blur-[7px] backdrop-saturate-[191%]'
 				onClick={openAdd}
 				aria-label='Add a note'
 			>

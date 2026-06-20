@@ -29,7 +29,7 @@ const AlertToaster = () => {
 	if (!shown) return null;
 
 	return (
-		<div className='fixed left-1/2 top-[calc(3.6rem+2px)] z-[99] -translate-x-1/2'>
+		<div className='fixed left-1/2 top-[calc(3.6rem+2px)] z-99 -translate-x-1/2'>
 			<div
 				className={`toastAnim flex max-w-[88vw] items-center gap-3 rounded-lg border py-2 pl-4 pr-3 text-[0.9rem] shadow-lg nav:max-w-[48vw] ${
 					toastStyles[shown.type] || toastStyles.success
