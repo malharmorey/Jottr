@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import useAlertStore from '../stores/alertStore';
 
-// Light backgrounds with dark text (Bootstrap 5.3 alert palette), so the close
-// icon stays dark — unlike the dark frost modals.
+// Coordinated soft-tinted palettes: bg, border, text and any inline button all
+// share one hue per type, so the close ✕ (text-current) and the Undo button
+// always match the toast they sit in.
 const toastStyles = {
-	success: 'bg-[#d1e7dd] text-[#0a3622] border-[#a3cfbb]',
-	danger: 'bg-[#f8d7da] text-[#58151c] border-[#f1aeb5]',
+	success: 'bg-[#e7f6ec] border-[#bfe3cb] text-[#1a6b3c]',
+	danger: 'bg-[#fdeaea] border-[#f3c2c2] text-[#9b2c2c]',
+	warning: 'bg-[#fdf4e3] border-[#f0dca8] text-[#8a5a00]',
 };
 
 const AlertToaster = () => {
@@ -27,9 +29,9 @@ const AlertToaster = () => {
 	if (!shown) return null;
 
 	return (
-		<div className='fixed left-0 right-0 top-[3.7rem] z-[99] mx-auto'>
+		<div className='fixed left-1/2 top-[calc(3.6rem+2px)] z-[99] -translate-x-1/2'>
 			<div
-				className={`relative rounded-md border py-4 pl-4 pr-12 text-[0.9rem] transition-[transform,opacity] duration-[250ms] ease-pro ${
+				className={`flex max-w-[90vw] items-center gap-3 rounded-lg border py-2 pl-4 pr-3 text-[0.9rem] shadow-lg transition-[transform,opacity] duration-[350ms] ease-pro ${
 					toastStyles[shown.type] || toastStyles.success
 				} ${open ? 'translate-y-0 opacity-100' : '-translate-y-6 opacity-0'}`}
 				role='alert'
@@ -41,19 +43,21 @@ const AlertToaster = () => {
 				{shown.onUndo && (
 					<button
 						type='button'
-						className='ml-3 inline-flex items-center rounded border-2 border-[#997404] bg-[#997404] px-2 py-1 text-[0.875rem] font-semibold text-[#fff3cd] hover:bg-[#ad9036]'
+						className='inline-flex shrink-0 items-center rounded border-none bg-current px-2 py-1 text-[0.875rem] font-semibold hover:opacity-90'
 						onClick={shown.onUndo}
 					>
-						<i className='fa-solid fa-rotate-left mr-1'></i>Undo
+						<span className='text-[#fdf4e3]'>
+							<i className='fa-solid fa-rotate-left mr-1'></i>Undo
+						</span>
 					</button>
 				)}
 				<button
 					type='button'
-					className='absolute right-3 top-1/2 -translate-y-1/2 text-current opacity-70 hover:opacity-100'
+					className='shrink-0 cursor-pointer border-none bg-transparent leading-none text-current opacity-60 hover:opacity-100'
 					aria-label='Close'
 					onClick={shown.onClose || dismissAlert}
 				>
-					<i className='fa-solid fa-xmark'></i>
+					<i className='fa-solid fa-xmark' aria-hidden='true'></i>
 				</button>
 			</div>
 		</div>

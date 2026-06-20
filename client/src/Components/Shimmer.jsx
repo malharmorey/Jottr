@@ -3,7 +3,7 @@ function ShimmerCard() {
 	return (
 		<div className='w-full md:w-1/2'>
 			<div className='my-4'>
-				<div className='frost relative mx-auto' style={{ width: '95%' }}>
+				<div className='frost relative mx-2'>
 					<div className='mx-[0.3rem] my-[0.8rem] p-4'>
 						<div className='shimmer-bar mb-[1.2rem] h-[1.8rem] w-3/5'></div>
 						<div className='shimmer-bar mb-[0.7rem] h-[1.1rem] w-full'></div>

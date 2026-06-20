@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { useQueryClient } from '@tanstack/react-query';
@@ -7,15 +7,27 @@ import useAuth from '../hooks/useAuth';
 import jottrLogo from '../images/logo512.png';
 
 const navLink =
-	'block py-2 font-secondary text-[1.05rem] font-medium text-white no-underline lg:px-2';
+	'block py-2 font-secondary text-[1.05rem] font-medium text-white no-underline nav:px-3';
 
 const Navbar = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
+	// right-align the logout menu under the username on desktop, left-align it
+	// (under the nav items) on mobile
+	const [isDesktop, setIsDesktop] = useState(() =>
+		window.matchMedia('(min-width: 992px)').matches
+	);
 	const queryClient = useQueryClient();
 	const showAlert = useAlertStore((state) => state.showAlert);
 	const { logout, isLoggedIn, userName } = useAuth();
 
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		const mq = window.matchMedia('(min-width: 992px)');
+		const onChange = (e) => setIsDesktop(e.matches);
+		mq.addEventListener('change', onChange);
+		return () => mq.removeEventListener('change', onChange);
+	}, []);
 
 	const closeMenu = () => setMenuOpen(false);
 
@@ -34,7 +46,7 @@ const Navbar = () => {
 				id='navbar'
 				className="fixed top-0 z-[99] w-screen py-1 text-white before:absolute before:inset-0 before:-z-[1] before:border before:border-[rgba(255,255,255,0.125)] before:bg-[rgba(43,52,76,0.56)] before:backdrop-blur-[7px] before:backdrop-saturate-[191%] before:content-['']"
 			>
-				<div className='flex flex-wrap items-center justify-between px-3'>
+				<div className='flex flex-wrap items-center justify-between px-3 nav:px-4'>
 					<NavLink
 						className='flex items-center pt-[7px] font-primary text-[1.5rem] font-bold text-white no-underline'
 						to='/'
@@ -46,7 +58,7 @@ const Navbar = () => {
 
 					<button
 						type='button'
-						className='cursor-pointer border-none bg-transparent p-1 focus:outline-none lg:hidden'
+						className='cursor-pointer border-none bg-transparent p-1 focus:outline-none nav:hidden'
 						onClick={() => setMenuOpen((open) => !open)}
 						aria-expanded={menuOpen}
 						aria-label='Toggle navigation'
@@ -57,9 +69,9 @@ const Navbar = () => {
 					<div
 						className={`${
 							menuOpen ? 'flex' : 'hidden'
-						} basis-full flex-col lg:flex lg:basis-auto lg:grow lg:flex-row lg:items-center`}
+						} basis-full flex-col nav:flex nav:basis-auto nav:grow nav:flex-row nav:items-center`}
 					>
-						<ul className='mb-2 ml-2 flex list-none flex-col lg:mb-0 lg:mr-auto lg:flex-row'>
+						<ul className='ml-2 flex list-none flex-col nav:mr-auto nav:flex-row'>
 							<li>
 								<NavLink to='/' className={navLink} onClick={closeMenu}>
 									Home
@@ -78,7 +90,7 @@ const Navbar = () => {
 									<DropdownMenu.Trigger asChild>
 										<button
 											type='button'
-											className='flex cursor-pointer items-center border-none bg-transparent p-0 py-2 font-secondary text-[1.05rem] font-medium text-white outline-none'
+											className='flex cursor-pointer items-center border-none bg-transparent px-0 py-2 font-secondary text-[1.05rem] font-medium text-white outline-none nav:px-3'
 										>
 											{userName ? userName : 'User'}
 											<i
@@ -89,12 +101,12 @@ const Navbar = () => {
 									</DropdownMenu.Trigger>
 									<DropdownMenu.Portal>
 										<DropdownMenu.Content
-											align='end'
+											align={isDesktop ? 'end' : 'start'}
 											sideOffset={6}
 											className='navDropdown z-[100] min-w-fit rounded-md border border-[rgba(255,255,255,0.125)] bg-[rgba(43,52,76,0.56)] backdrop-blur-[7px] backdrop-saturate-[191%]'
 										>
 											<DropdownMenu.Item
-												className='cursor-pointer px-3 py-2 text-[1.05rem] text-white outline-none'
+												className='cursor-pointer px-4 py-2 text-[1.05rem] text-white outline-none'
 												onSelect={handleLogout}
 											>
 												Logout

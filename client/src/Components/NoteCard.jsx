@@ -17,11 +17,11 @@ function NoteCard({ title, description, tag, date, id, note }) {
 	return (
 		<div className='my-4'>
 			<div
-				className='frost relative mx-auto'
+				className={`frost relative ${
+					dayjs(date).isValid() ? 'mx-2' : 'mx-auto'
+				}`}
 				style={
-					dayjs(date).isValid()
-						? { width: '95%' }
-						: { maxWidth: 'fit-content' }
+					dayjs(date).isValid() ? undefined : { maxWidth: 'fit-content' }
 				}
 			>
 				<button
@@ -37,15 +37,15 @@ function NoteCard({ title, description, tag, date, id, note }) {
 						aria-hidden='true'
 					></i>
 				</button>
-				<div className='mx-[0.3rem] my-[0.8rem] p-4 max-[500px]:mx-[0.2rem] max-[500px]:my-[1.3rem] max-[400px]:mx-0 max-[400px]:my-[1.4rem]'>
+				<div className='mx-[0.3rem] my-[0.8rem] px-4 py-5 max-[500px]:mx-[0.2rem] max-[500px]:my-[1.3rem] max-[400px]:mx-0 max-[400px]:my-[1.4rem]'>
 					<h4
-						className='mb-2 font-primary text-[1.8rem] font-bold max-[400px]:text-[1.7rem]'
+						className='mb-3 break-words font-primary text-[1.8rem] font-bold leading-[1.15] max-[400px]:text-[1.7rem]'
 						id='cardTitle'
 					>
 						{title}
 					</h4>
 
-					<p className='font-secondary text-[1.1rem] max-[400px]:text-[1.05rem]'>
+					<p className='mb-2 break-words font-secondary text-[1.1rem] leading-relaxed tracking-[0.01em] max-[400px]:text-[1.05rem]'>
 						{description}
 						{!dayjs(date).isValid() && (
 							<img
@@ -55,7 +55,7 @@ function NoteCard({ title, description, tag, date, id, note }) {
 							/>
 						)}
 					</p>
-					<p className='font-primary text-[1.1rem]'>{tag}</p>
+					<p className='mb-2 break-words font-primary text-[1.1rem]'>{tag}</p>
 					<p className='mb-4'>
 						<small
 							className={`font-bold text-[rgb(217,216,216)] ${

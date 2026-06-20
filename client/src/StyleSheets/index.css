@@ -12,6 +12,8 @@
 	--font-primary: 'Kalam', cursive;
 	--font-secondary: 'Raleway', sans-serif;
 	--ease-pro: cubic-bezier(0.22, 1, 0.36, 1);
+	/* navbar collapse point — Bootstrap's lg (992px), not Tailwind's lg (1024) */
+	--breakpoint-nav: 62rem;
 }
 
 @layer base {
@@ -132,16 +134,16 @@
 		transform: translate(-50%, -50%);
 	}
 	.modalContent[data-state='open'] {
-		animation: modalDrop 0.3s var(--ease-pro);
+		animation: modalDrop 0.4s var(--ease-pro);
 	}
 	.modalContent[data-state='closed'] {
-		animation: modalDropOut 0.2s var(--ease-pro);
+		animation: modalDropOut 0.3s var(--ease-pro);
 	}
 	.modalOverlay[data-state='open'] {
-		animation: overlayFade 0.15s ease-out;
+		animation: overlayFade 0.25s ease-out;
 	}
 	.modalOverlay[data-state='closed'] {
-		animation: overlayFade 0.15s ease-out reverse;
+		animation: overlayFade 0.25s ease-out reverse;
 	}
 
 	.modalBtn {
@@ -231,9 +233,9 @@
 	}
 
 	.navDropdown[data-state='open'] {
-		animation: navDropIn 0.2s var(--ease-pro);
+		animation: navDropIn 0.25s var(--ease-pro);
 	}
 	.navDropdown[data-state='closed'] {
-		animation: navDropIn 0.2s var(--ease-pro) reverse;
+		animation: navDropIn 0.25s var(--ease-pro) reverse;
 	}
 }
