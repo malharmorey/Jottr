@@ -253,10 +253,13 @@
 }
 
 @layer components {
+	.toastAnim {
+		will-change: transform, opacity;
+	}
 	.toastAnim[data-state='open'] {
-		animation: toastIn 0.3s var(--ease-pro) both;
+		animation: toastIn 0.4s var(--ease-pro) both;
 	}
 	.toastAnim[data-state='closed'] {
-		animation: toastIn 0.3s var(--ease-pro) reverse both;
+		animation: toastIn 0.4s var(--ease-pro) reverse both;
 	}
 }

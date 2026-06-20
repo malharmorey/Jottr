@@ -29,6 +29,17 @@ const Navbar = () => {
 		return () => mq.removeEventListener('change', onChange);
 	}, []);
 
+	// close the open mobile menu (and its logout dropdown) on any click outside
+	useEffect(() => {
+		if (!menuOpen) return;
+		const onPointerDown = (e) => {
+			const nav = document.getElementById('navbar');
+			if (nav && !nav.contains(e.target)) setMenuOpen(false);
+		};
+		document.addEventListener('pointerdown', onPointerDown);
+		return () => document.removeEventListener('pointerdown', onPointerDown);
+	}, [menuOpen]);
+
 	const closeMenu = () => setMenuOpen(false);
 
 	// Logging out current user and clearing user's notes array
@@ -67,9 +78,9 @@ const Navbar = () => {
 					</button>
 
 					<div
-						className={`${
-							menuOpen ? 'flex' : 'hidden'
-						} basis-full flex-col nav:flex nav:basis-auto nav:grow nav:flex-row nav:items-center`}
+						className={`flex basis-full flex-col overflow-hidden transition-[max-height,opacity] duration-300 ease-pro nav:!max-h-none nav:!overflow-visible nav:!opacity-100 nav:basis-auto nav:grow nav:flex-row nav:items-center ${
+							menuOpen ? 'max-h-52 opacity-100' : 'max-h-0 opacity-0'
+						}`}
 					>
 						<ul className='ml-2 flex list-none flex-col nav:mr-auto nav:flex-row'>
 							<li>
@@ -86,7 +97,7 @@ const Navbar = () => {
 
 						{isLoggedIn && (
 							<div className='ml-2'>
-								<DropdownMenu.Root>
+								<DropdownMenu.Root modal={false}>
 									<DropdownMenu.Trigger asChild>
 										<button
 											type='button'

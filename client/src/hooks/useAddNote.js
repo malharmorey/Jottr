@@ -18,7 +18,7 @@ export const useAddNote = () => {
 			queryClient.setQueryData(['notes'], (old) =>
 				old ? { ...old, notes: [...old.notes, note] } : old
 			);
-			showAlert('Your note has been added successfully', 'success');
+			showAlert('Note added', 'success');
 		},
 		onError: (error) => {
 			showAlert(error.message, 'danger');

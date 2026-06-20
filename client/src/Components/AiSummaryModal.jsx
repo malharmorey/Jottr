@@ -62,22 +62,26 @@ function AiSummaryModal() {
 				</>
 			}
 		>
-			{isFetching ? (
-				<div className='flex justify-center py-4'>
-					<div className='h-8 w-8 animate-spin rounded-full border-4 border-white/30 border-t-white'></div>
-				</div>
-			) : isError ? (
-				<div className='text-center'>
-					<p className='font-secondary text-[1.1rem]'>{error.message}</p>
-					<img
-						className='mx-auto h-[21rem] w-[27rem] max-[530px]:h-full max-[530px]:w-full'
-						src={pic}
-						alt=''
-					/>
-				</div>
-			) : summary ? (
-				<p className='font-secondary text-[1.1rem]'>{summary}</p>
-			) : null}
+			{/* fixed-height shell so the spinner→astronaut→summary swap doesn't
+			    resize (and re-center) the modal mid-open — no content jitter */}
+			<div className='flex min-h-[22rem] flex-col'>
+				{isFetching ? (
+					<div className='flex flex-1 items-center justify-center'>
+						<div className='h-8 w-8 animate-spin rounded-full border-4 border-white/30 border-t-white'></div>
+					</div>
+				) : isError ? (
+					<div className='flex flex-1 flex-col items-center justify-center text-center'>
+						<p className='mb-2 font-secondary text-[1.1rem]'>{error.message}</p>
+						<img
+							className='mx-auto max-h-[16rem] w-auto max-[530px]:h-full max-[530px]:w-full'
+							src={pic}
+							alt=''
+						/>
+					</div>
+				) : summary ? (
+					<p className='font-secondary text-[1.1rem]'>{summary}</p>
+				) : null}
+			</div>
 		</Modal>
 	);
 }
