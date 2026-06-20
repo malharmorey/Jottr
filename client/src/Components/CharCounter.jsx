@@ -1,7 +1,7 @@
 const CharCounter = ({ value, max }) => {
-	const className = value.length > max - 20 ? 'text-danger' : 'text-white text-light';
+	const color = value.length > max - 20 ? 'text-[#dc3545]' : 'text-[#f8f9fa]';
 	return (
-		<small className={`charCounter ${className}`}>
+		<small className={`font-light ${color}`}>
 			{value.length}/{max}
 		</small>
 	);

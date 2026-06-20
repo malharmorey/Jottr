@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import useNoteModalStore from '../stores/noteModalStore';
 import useAiSummaryStore from '../stores/aiSummaryStore';
+import useConfirmDeleteStore from '../stores/confirmDeleteStore';
 import pic from '../images/pngegg.png';
 
 dayjs.extend(relativeTime);
@@ -11,6 +12,7 @@ const iconBtn = 'cursor-pointer border-none bg-transparent p-0 leading-none';
 function NoteCard({ title, description, tag, date, id, note }) {
 	const openEdit = useNoteModalStore((state) => state.openEdit);
 	const openSummary = useAiSummaryStore((state) => state.open);
+	const openConfirmDelete = useConfirmDeleteStore((state) => state.open);
 
 	return (
 		<div className='my-4'>
@@ -28,8 +30,6 @@ function NoteCard({ title, description, tag, date, id, note }) {
 						dayjs(date).isValid() ? '' : 'hidden'
 					}`}
 					aria-label='Summarize note'
-					data-bs-toggle='modal'
-					data-bs-target='#aiSummaryModal'
 					onClick={() => openSummary(id)}
 				>
 					<i
@@ -75,8 +75,6 @@ function NoteCard({ title, description, tag, date, id, note }) {
 							dayjs(date).isValid() ? '' : 'hidden'
 						}`}
 						aria-label='Edit note'
-						data-bs-toggle='modal'
-						data-bs-target='#noteModal'
 						onClick={() => openEdit(note)}
 					>
 						<i
@@ -91,9 +89,7 @@ function NoteCard({ title, description, tag, date, id, note }) {
 							dayjs(date).isValid() ? '' : 'hidden'
 						}`}
 						aria-label='Delete note'
-						data-bs-toggle='modal'
-						data-bs-target='#confirmDeleteModal'
-						data-note-id={id}
+						onClick={() => openConfirmDelete(id)}
 					>
 						<i
 							className='fa-regular fa-trash-can fa-lg max-[400px]:text-[21px]!'
