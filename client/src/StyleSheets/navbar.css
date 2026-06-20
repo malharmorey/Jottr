@@ -115,6 +115,11 @@
 @media (min-width: 992px) {
 	#navbar .dropdown-menu {
 		display: block;
+		/* pin it under the toggle so show/hide can't drift it sideways */
+		top: 100%;
+		right: 0;
+		left: auto;
+		transform-origin: top right;
 		opacity: 0;
 		visibility: hidden;
 		transform: translateY(-0.5rem);
