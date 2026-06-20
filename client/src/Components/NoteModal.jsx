@@ -6,7 +6,7 @@ import CharCounter from './CharCounter';
 import Modal from './Modal';
 
 const fieldClass =
-	'block w-full rounded-md border border-[#ced4da] bg-white px-3 py-[0.375rem] text-base text-[#212529] focus:border-[#86b7fe] focus:outline-none focus:ring focus:ring-[rgba(13,110,253,0.25)]';
+	'block w-full rounded-md border border-[#ced4da] bg-white px-3 py-1.5 text-base text-[#212529] focus:border-[#86b7fe] focus:outline-none focus:ring focus:ring-[rgba(13,110,253,0.25)]';
 const labelClass = 'mb-1 block font-secondary';
 
 function NoteModal() {
@@ -59,7 +59,7 @@ function NoteModal() {
 		<>
 			<button
 				type='button'
-				className='fixed bottom-8 right-8 z-100 flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border border-frost-border bg-frost text-[2rem] font-bold tracking-[-0.24px] text-white backdrop-blur-[7px] backdrop-saturate-[191%]'
+				className='fixed bottom-8 right-8 z-100 flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border border-frost-border bg-frost text-[2rem] font-bold tracking-[-0.24px] text-white backdrop-blur-[7px] backdrop-saturate-191'
 				onClick={openAdd}
 				aria-label='Add a note'
 			>

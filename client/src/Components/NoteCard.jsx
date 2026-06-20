@@ -39,23 +39,23 @@ function NoteCard({ title, description, tag, date, id, note }) {
 				</button>
 				<div className='mx-[0.3rem] my-[0.8rem] px-4 py-5 max-[500px]:mx-[0.2rem] max-[500px]:my-[1.3rem] max-[400px]:mx-0 max-[400px]:my-[1.4rem]'>
 					<h4
-						className='mb-3 break-words font-primary text-[1.8rem] font-bold leading-[1.15] max-[400px]:text-[1.7rem]'
+						className='mb-3 wrap-break-word font-primary text-[1.8rem] font-bold leading-[1.15] max-[400px]:text-[1.7rem]'
 						id='cardTitle'
 					>
 						{title}
 					</h4>
 
-					<p className='mb-2 break-words font-secondary text-[1.1rem] leading-relaxed tracking-[0.01em] max-[400px]:text-[1.05rem]'>
+					<p className='mb-2 wrap-break-word font-secondary text-[1.1rem] leading-relaxed tracking-[0.01em] max-[400px]:text-[1.05rem]'>
 						{description}
 						{!dayjs(date).isValid() && (
 							<img
-								className='h-[21rem] w-[27rem] max-[530px]:h-full max-[530px]:w-full'
+								className='h-84 w-108 max-[530px]:h-full max-[530px]:w-full'
 								src={pic}
 								alt=''
 							/>
 						)}
 					</p>
-					<p className='mb-2 break-words font-primary text-[1.1rem]'>{tag}</p>
+					<p className='mb-2 wrap-break-word font-primary text-[1.1rem]'>{tag}</p>
 					<p className='mb-4'>
 						<small
 							className={`font-bold text-[rgb(217,216,216)] ${

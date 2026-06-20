@@ -70,7 +70,7 @@ function AiSummaryModal() {
 				<div className='text-center'>
 					<p className='font-secondary text-[1.1rem]'>{error.message}</p>
 					<img
-						className='mx-auto h-[21rem] w-[27rem] max-[530px]:h-full max-[530px]:w-full'
+						className='mx-auto h-84 w-108 max-[530px]:h-full max-[530px]:w-full'
 						src={pic}
 						alt=''
 					/>

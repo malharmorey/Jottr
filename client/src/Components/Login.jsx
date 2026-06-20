@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import useLogin from '../hooks/useLogin';
 
 const inputClass =
-	'frost-input mb-0 block w-full rounded-md px-3 py-[0.375rem] text-base text-white placeholder:text-[rgba(33,37,41,0.75)] focus:outline-none';
+	'frost-input mb-0 block w-full rounded-md px-3 py-1.5 text-base text-white placeholder:text-[rgba(33,37,41,0.75)] focus:outline-none';
 
 const Login = ({ title }) => {
 	const [credentials, setCredentials] = useState({ email: '', password: '' });
@@ -71,7 +71,7 @@ const Login = ({ title }) => {
 						</div>
 						<button
 							type='submit'
-							className="relative mb-8 w-full cursor-pointer overflow-hidden rounded-md border-none bg-white px-3 py-[0.375rem] font-secondary text-[1.15rem] font-bold text-black transition-colors duration-300 before:absolute before:inset-0 before:rounded-[inherit] before:bg-linear-to-r before:from-[#3c1053] before:to-[#ad5389] before:opacity-0 before:transition-opacity before:duration-300 before:content-[''] hover:bg-transparent hover:text-white hover:before:opacity-100"
+							className="relative mb-8 w-full cursor-pointer overflow-hidden rounded-md border-none bg-white px-3 py-1.5 font-secondary text-[1.15rem] font-bold text-black transition-colors duration-300 before:absolute before:inset-0 before:rounded-[inherit] before:bg-linear-to-r before:from-[#3c1053] before:to-[#ad5389] before:opacity-0 before:transition-opacity before:duration-300 before:content-[''] hover:bg-transparent hover:text-white hover:before:opacity-100"
 						>
 							<span className='relative'>Log In</span>
 						</button>

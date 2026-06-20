@@ -22,10 +22,10 @@ const RouteError = () => {
 
 	return (
 		<div className='flex min-h-[70vh] items-center justify-center p-4'>
-			<div className='frost w-full max-w-[32rem] text-center'>
+			<div className='frost w-full max-w-lg text-center'>
 				<div className='px-6 py-8'>
 					<img
-						className='mx-auto mb-4 block w-full max-w-[18rem]'
+						className='mx-auto mb-4 block w-full max-w-2xs'
 						src={astronaut}
 						alt=''
 					/>
