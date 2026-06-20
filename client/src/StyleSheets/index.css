@@ -163,3 +163,69 @@
 		background-color: #dc3545;
 	}
 }
+
+/* Navbar hamburger that morphs into an X (driven by data-open), and the
+   logout dropdown's slide-down. */
+@keyframes navDropIn {
+	from {
+		opacity: 0;
+		transform: translateY(-0.5rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@layer components {
+	.hamburgerIcon {
+		position: relative;
+		display: block;
+		width: 1.5em;
+		height: 1.5em;
+		background-image: linear-gradient(
+			rgba(255, 255, 255, 0.75),
+			rgba(255, 255, 255, 0.75)
+		);
+		background-size: 100% 2px;
+		background-position: center;
+		background-repeat: no-repeat;
+		transition: background-size 0.3s var(--ease-pro);
+	}
+	.hamburgerIcon::before,
+	.hamburgerIcon::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		height: 2px;
+		border-radius: 2px;
+		background-color: rgba(255, 255, 255, 0.75);
+		transition: top 0.3s var(--ease-pro), bottom 0.3s var(--ease-pro),
+			transform 0.3s var(--ease-pro);
+	}
+	.hamburgerIcon::before {
+		top: 20%;
+	}
+	.hamburgerIcon::after {
+		bottom: 20%;
+	}
+	.hamburgerIcon[data-open='true'] {
+		background-size: 0 2px;
+	}
+	.hamburgerIcon[data-open='true']::before {
+		top: 50%;
+		transform: translateY(-50%) rotate(45deg);
+	}
+	.hamburgerIcon[data-open='true']::after {
+		bottom: 50%;
+		transform: translateY(50%) rotate(-45deg);
+	}
+
+	.navDropdown[data-state='open'] {
+		animation: navDropIn 0.2s var(--ease-pro);
+	}
+	.navDropdown[data-state='closed'] {
+		animation: navDropIn 0.2s var(--ease-pro) reverse;
+	}
+}
