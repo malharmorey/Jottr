@@ -30,11 +30,57 @@
 	font-size: 1.5rem;
 	padding-top: 7px;
 }
-
+.navbar-toggler {
+	border: 0;
+}
+.navbar-toggler:focus {
+	box-shadow: none;
+}
+.navbar-toggler-icon {
+	position: relative;
+	width: 1.5em;
+	height: 1.5em;
+	background-image: linear-gradient(
+		rgba(255, 255, 255, 0.75),
+		rgba(255, 255, 255, 0.75)
+	);
+	background-size: 100% 2px;
+	background-position: center;
+	background-repeat: no-repeat;
+	transition: background-size 0.3s var(--ease-pro);
+}
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 2px;
+	border-radius: 2px;
+	background-color: rgba(255, 255, 255, 0.75);
+	transition: top 0.3s var(--ease-pro), bottom 0.3s var(--ease-pro),
+		transform 0.3s var(--ease-pro);
+}
+.navbar-toggler-icon::before {
+	top: 20%;
+}
+.navbar-toggler-icon::after {
+	bottom: 20%;
+}
+.navbar-toggler:not(.collapsed) .navbar-toggler-icon {
+	background-size: 0 2px;
+}
+.navbar-toggler:not(.collapsed) .navbar-toggler-icon::before {
+	top: 50%;
+	transform: translateY(-50%) rotate(45deg);
+}
+.navbar-toggler:not(.collapsed) .navbar-toggler-icon::after {
+	bottom: 50%;
+	transform: translateY(50%) rotate(-45deg);
+}
 .navbar-nav {
 	margin-left: 0.5rem;
 }
-/* line the username dropdown up with the Home/About links so the three stack on mobile */
 .btnContainer {
 	margin-left: 0.5rem;
 }
@@ -62,17 +108,24 @@
 	background-color: rgba(43, 52, 76, 0.56);
 	border: 0.8px solid rgba(255, 255, 255, 0.125);
 	cursor: pointer;
-	display: block;
-	opacity: 0;
-	visibility: hidden;
-	transform: translateY(-0.5rem);
-	transition: opacity 0.2s var(--ease-pro), transform 0.2s var(--ease-pro),
-		visibility 0.2s var(--ease-pro);
 }
-#navbar .dropdown-menu.show {
-	opacity: 1;
-	visibility: visible;
-	transform: translateY(0);
+/* slide animation only where the menu floats (lg+); on mobile it lives inside the
+   open hamburger menu, so we keep Bootstrap's display toggle to stay out of the
+   collapse height and avoid the expand overshoot */
+@media (min-width: 992px) {
+	#navbar .dropdown-menu {
+		display: block;
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(-0.5rem);
+		transition: opacity 0.2s var(--ease-pro), transform 0.2s var(--ease-pro),
+			visibility 0.2s var(--ease-pro);
+	}
+	#navbar .dropdown-menu.show {
+		opacity: 1;
+		visibility: visible;
+		transform: translateY(0);
+	}
 }
 .dropdown-menu > li {
 	margin: 5px 1rem;

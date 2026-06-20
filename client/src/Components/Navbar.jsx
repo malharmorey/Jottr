@@ -43,7 +43,7 @@ const Navbar = () => {
 						Jottr
 					</NavLink>
 					<button
-						className='navbar-toggler'
+						className='navbar-toggler collapsed'
 						type='button'
 						data-bs-toggle='collapse'
 						data-bs-target='#navbarSupportedContent'
