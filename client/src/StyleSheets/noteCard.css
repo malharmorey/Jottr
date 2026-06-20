@@ -42,6 +42,48 @@ small {
 	line-height: 1;
 	cursor: pointer;
 }
+.shimmerBar {
+	border-radius: 0.4rem;
+	background: linear-gradient(
+		90deg,
+		rgba(255, 255, 255, 0.06) 25%,
+		rgba(255, 255, 255, 0.18) 37%,
+		rgba(255, 255, 255, 0.06) 63%
+	);
+	background-size: 400% 100%;
+	animation: shimmerGlide 1.4s ease-in-out infinite;
+}
+@keyframes shimmerGlide {
+	0% {
+		background-position: 100% 0;
+	}
+	100% {
+		background-position: 0 0;
+	}
+}
+.shimmerTitle {
+	height: 1.8rem;
+	width: 60%;
+	margin-bottom: 1.2rem;
+}
+.shimmerLine {
+	height: 1.1rem;
+	width: 100%;
+	margin-bottom: 0.7rem;
+}
+.shimmerLineShort {
+	width: 75%;
+	margin-bottom: 1.2rem;
+}
+.shimmerTag {
+	height: 1.1rem;
+	width: 30%;
+	margin-bottom: 0.9rem;
+}
+.shimmerDate {
+	height: 0.8rem;
+	width: 25%;
+}
 
 /* Media queries */
 @media (max-width: 500px) {
