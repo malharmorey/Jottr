@@ -10,7 +10,7 @@ function Modal({ open, onOpenChange, title, children, footer, size = 'lg' }) {
 				<Dialog.Overlay className='modalOverlay fixed inset-0 z-[1050] bg-black/50' />
 				<Dialog.Content
 					aria-describedby={undefined}
-					className={`modalContent fixed left-1/2 top-1/2 z-[1055] flex max-h-[calc(100vh-3.5rem)] w-[calc(100%-2rem)] ${maxWidth} flex-col overflow-hidden rounded-[0.5rem] border border-[rgba(255,255,255,0.125)] bg-[rgba(43,52,76,0.56)] text-white backdrop-blur-[7px] backdrop-saturate-[191%]`}
+					className={`modalContent fixed left-1/2 top-1/2 z-[1055] flex max-h-[calc(100vh-3.5rem)] w-[calc(100%-2rem)] ${maxWidth} flex-col overflow-hidden rounded-[0.5rem] border border-frost-border bg-frost text-white backdrop-blur-[7px] backdrop-saturate-[191%]`}
 				>
 					<div className='flex items-center justify-between border-b border-[rgba(255,255,255,0.15)] p-4'>
 						<Dialog.Title className='font-secondary text-[1.25rem] font-semibold'>

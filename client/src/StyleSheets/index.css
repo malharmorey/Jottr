@@ -14,6 +14,11 @@
 	--ease-pro: cubic-bezier(0.22, 1, 0.36, 1);
 	/* navbar collapse point — Bootstrap's lg (992px), not Tailwind's lg (1024) */
 	--breakpoint-nav: 62rem;
+	/* frost palette — single source for every glass surface; exposed as the
+	   bg-frost / border-frost-border / etc. utilities so the look changes in
+	   one place */
+	--color-frost: rgba(43, 52, 76, 0.56);
+	--color-frost-border: rgba(255, 255, 255, 0.125);
 }
 
 @layer base {
@@ -60,8 +65,8 @@
 /* THE signature frost/glass surface — ~10 surfaces depend on it. */
 @utility frost {
 	backdrop-filter: blur(7px) saturate(191%);
-	background-color: rgba(43, 52, 76, 0.56);
-	border: 0.8px solid rgba(255, 255, 255, 0.125);
+	background-color: var(--color-frost);
+	border: 0.8px solid var(--color-frost-border);
 	border-radius: 1.2rem;
 	overflow: hidden;
 	color: white;

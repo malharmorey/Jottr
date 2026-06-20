@@ -55,7 +55,7 @@ const Navbar = () => {
 		<>
 			<nav
 				id='navbar'
-				className="fixed top-0 z-[99] w-screen py-1 text-white before:absolute before:inset-0 before:-z-[1] before:border before:border-[rgba(255,255,255,0.125)] before:bg-[rgba(43,52,76,0.56)] before:backdrop-blur-[7px] before:backdrop-saturate-[191%] before:content-['']"
+				className="fixed top-0 z-[99] w-screen py-1 text-white before:absolute before:inset-0 before:-z-[1] before:border before:border-frost-border before:bg-frost before:backdrop-blur-[7px] before:backdrop-saturate-[191%] before:content-['']"
 			>
 				<div className='flex flex-wrap items-center justify-between px-3 nav:px-4'>
 					<NavLink
@@ -77,56 +77,62 @@ const Navbar = () => {
 						<span className='hamburgerIcon' data-open={menuOpen}></span>
 					</button>
 
+					{/* grid 0fr→1fr animates to the exact content height, so the mobile
+					    menu opens and closes at the same smooth speed */}
 					<div
-						className={`flex basis-full flex-col overflow-hidden transition-[max-height,opacity] duration-300 ease-pro nav:!max-h-none nav:!overflow-visible nav:!opacity-100 nav:basis-auto nav:grow nav:flex-row nav:items-center ${
-							menuOpen ? 'max-h-52 opacity-100' : 'max-h-0 opacity-0'
+						className={`grid basis-full transition-[grid-template-rows,opacity] duration-300 ease-pro nav:!block nav:!opacity-100 nav:basis-auto nav:grow ${
+							menuOpen
+								? 'grid-rows-[1fr] opacity-100'
+								: 'grid-rows-[0fr] opacity-0'
 						}`}
 					>
-						<ul className='ml-2 flex list-none flex-col nav:mr-auto nav:flex-row'>
-							<li>
-								<NavLink to='/' className={navLink} onClick={closeMenu}>
-									Home
-								</NavLink>
-							</li>
-							<li>
-								<NavLink to='/about' className={navLink} onClick={closeMenu}>
-									About
-								</NavLink>
-							</li>
-						</ul>
+						<div className='flex min-h-0 flex-col overflow-hidden nav:flex-row nav:items-center nav:overflow-visible'>
+							<ul className='ml-2 flex list-none flex-col nav:mr-auto nav:flex-row'>
+								<li>
+									<NavLink to='/' className={navLink} onClick={closeMenu}>
+										Home
+									</NavLink>
+								</li>
+								<li>
+									<NavLink to='/about' className={navLink} onClick={closeMenu}>
+										About
+									</NavLink>
+								</li>
+							</ul>
 
-						{isLoggedIn && (
-							<div className='ml-2'>
-								<DropdownMenu.Root modal={false}>
-									<DropdownMenu.Trigger asChild>
-										<button
-											type='button'
-											className='flex cursor-pointer items-center border-none bg-transparent px-0 py-2 font-secondary text-[1.05rem] font-medium text-white outline-none nav:px-3'
-										>
-											{userName ? userName : 'User'}
-											<i
-												className='fa-solid fa-caret-down ml-2'
-												aria-hidden='true'
-											></i>
-										</button>
-									</DropdownMenu.Trigger>
-									<DropdownMenu.Portal>
-										<DropdownMenu.Content
-											align={isDesktop ? 'end' : 'start'}
-											sideOffset={6}
-											className='navDropdown z-[100] min-w-fit rounded-md border border-[rgba(255,255,255,0.125)] bg-[rgba(43,52,76,0.56)] backdrop-blur-[7px] backdrop-saturate-[191%]'
-										>
-											<DropdownMenu.Item
-												className='cursor-pointer px-4 py-2 text-[1.05rem] text-white outline-none'
-												onSelect={handleLogout}
+							{isLoggedIn && (
+								<div className='ml-2'>
+									<DropdownMenu.Root modal={false}>
+										<DropdownMenu.Trigger asChild>
+											<button
+												type='button'
+												className='flex cursor-pointer items-center border-none bg-transparent px-0 py-2 font-secondary text-[1.05rem] font-medium text-white outline-none nav:px-3'
 											>
-												Logout
-											</DropdownMenu.Item>
-										</DropdownMenu.Content>
-									</DropdownMenu.Portal>
-								</DropdownMenu.Root>
-							</div>
-						)}
+												{userName ? userName : 'User'}
+												<i
+													className='fa-solid fa-caret-down ml-2'
+													aria-hidden='true'
+												></i>
+											</button>
+										</DropdownMenu.Trigger>
+										<DropdownMenu.Portal>
+											<DropdownMenu.Content
+												align={isDesktop ? 'end' : 'start'}
+												sideOffset={6}
+												className='navDropdown z-[100] min-w-fit rounded-md border border-frost-border bg-frost backdrop-blur-[7px] backdrop-saturate-[191%]'
+											>
+												<DropdownMenu.Item
+													className='cursor-pointer px-4 py-2 text-[1.05rem] text-white outline-none'
+													onSelect={handleLogout}
+												>
+													Logout
+												</DropdownMenu.Item>
+											</DropdownMenu.Content>
+										</DropdownMenu.Portal>
+									</DropdownMenu.Root>
+								</div>
+							)}
+						</div>
 					</div>
 				</div>
 			</nav>
