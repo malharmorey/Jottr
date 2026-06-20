@@ -43,7 +43,7 @@ const Navbar = () => {
 						Jottr
 					</NavLink>
 					<button
-						className='navbar-toggler'
+						className='navbar-toggler collapsed'
 						type='button'
 						data-bs-toggle='collapse'
 						data-bs-target='#navbarSupportedContent'
@@ -85,6 +85,7 @@ const Navbar = () => {
 										className='me-4 loginBtn dropdown-toggle'
 										id='dropdownMenuLink'
 										data-bs-toggle='dropdown'
+										data-bs-display='static'
 										aria-expanded='false'
 									>
 										{userName ? userName : 'User'}

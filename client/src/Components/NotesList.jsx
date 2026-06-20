@@ -13,7 +13,7 @@ function NotesList() {
 	const { isLoggedIn } = useAuth();
 
 	const [animationParent] = useAutoAnimate({
-		duration: 250,
+		duration: 400,
 		easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
 	});
 
@@ -25,8 +25,11 @@ function NotesList() {
 			showAlert('Please login first', 'danger');
 		}
 	}, []); // eslint-disable-line
+
+	if (!isLoggedIn) return null;
+
 	return (
-		<div className='row' ref={animationParent}>
+		<div className='row notesRow' ref={animationParent}>
 			{isLoading ? (
 				<Shimmer />
 			) : reversedNotesArray.length === 0 ? (

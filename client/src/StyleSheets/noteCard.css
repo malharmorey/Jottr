@@ -1,12 +1,16 @@
 @import url(../StyleSheets/App.css);
 #notesCard {
-	min-height: 100%;
 	border-radius: 1.2rem;
 	overflow: hidden;
 	backdrop-filter: blur(7px) saturate(191%);
 	background-color: rgba(43, 52, 76, 0.56);
 	border: 0.8px solid rgba(255, 255, 255, 0.125);
 	color: white;
+}
+/* each card keeps its own height instead of stretching to its row-neighbour, so the
+   list reflow on add/remove is a clean slide with no mid-animation resize */
+.notesRow {
+	align-items: flex-start;
 }
 .notesCardBody {
 	margin: 0.8rem 0.3rem;

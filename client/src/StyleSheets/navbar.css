@@ -30,8 +30,58 @@
 	font-size: 1.5rem;
 	padding-top: 7px;
 }
-
+.navbar-toggler {
+	border: 0;
+}
+.navbar-toggler:focus {
+	box-shadow: none;
+}
+.navbar-toggler-icon {
+	position: relative;
+	width: 1.5em;
+	height: 1.5em;
+	background-image: linear-gradient(
+		rgba(255, 255, 255, 0.75),
+		rgba(255, 255, 255, 0.75)
+	);
+	background-size: 100% 2px;
+	background-position: center;
+	background-repeat: no-repeat;
+	transition: background-size 0.3s var(--ease-pro);
+}
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 2px;
+	border-radius: 2px;
+	background-color: rgba(255, 255, 255, 0.75);
+	transition: top 0.3s var(--ease-pro), bottom 0.3s var(--ease-pro),
+		transform 0.3s var(--ease-pro);
+}
+.navbar-toggler-icon::before {
+	top: 20%;
+}
+.navbar-toggler-icon::after {
+	bottom: 20%;
+}
+.navbar-toggler:not(.collapsed) .navbar-toggler-icon {
+	background-size: 0 2px;
+}
+.navbar-toggler:not(.collapsed) .navbar-toggler-icon::before {
+	top: 50%;
+	transform: translateY(-50%) rotate(45deg);
+}
+.navbar-toggler:not(.collapsed) .navbar-toggler-icon::after {
+	bottom: 50%;
+	transform: translateY(50%) rotate(-45deg);
+}
 .navbar-nav {
+	margin-left: 0.5rem;
+}
+.btnContainer {
 	margin-left: 0.5rem;
 }
 .navLink {
@@ -51,13 +101,64 @@
 	border: none;
 	padding: 0;
 }
-.dropdown-menu {
+#navbar .dropdown-menu {
 	min-width: fit-content;
 	padding: 0px;
 	backdrop-filter: blur(7px) saturate(191%);
 	background-color: rgba(43, 52, 76, 0.56);
 	border: 0.8px solid rgba(255, 255, 255, 0.125);
 	cursor: pointer;
+}
+/* lg+: the menu floats under the toggle, so slide it with translateY */
+@media (min-width: 992px) {
+	#navbar .dropdown-menu {
+		display: block;
+		/* pin it under the toggle so show/hide can't drift it sideways */
+		top: 100%;
+		right: 0;
+		left: auto;
+		transform-origin: top right;
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(-0.5rem);
+		transition: opacity 0.2s var(--ease-pro), transform 0.2s var(--ease-pro),
+			visibility 0.2s var(--ease-pro);
+	}
+	#navbar .dropdown-menu.show {
+		opacity: 1;
+		visibility: visible;
+		transform: translateY(0);
+	}
+}
+/* mobile: the menu sits inside the open hamburger. Reveal it by height so that while
+   closed it adds zero height to the collapse (no expand overshoot), yet still slides
+   open and shut smoothly */
+@media (max-width: 991.98px) {
+	/* overlay the menu (absolute) so opening it doesn't push the navbar taller, but
+	   pin it left:0 so it can't drift sideways, and reveal by height so while closed
+	   it adds zero height to the collapse */
+	#navbar .dropdown-menu {
+		display: block;
+		top: 100%;
+		left: 0;
+		right: auto;
+		overflow: hidden;
+		max-height: 0;
+		opacity: 0;
+		transition: max-height 0.25s var(--ease-pro), opacity 0.2s var(--ease-pro);
+	}
+	#navbar .dropdown-menu.show {
+		max-height: 2.5rem;
+		opacity: 1;
+	}
+	/* line Logout up under the username, with horizontal padding inside the box */
+	#navbar .dropdown-menu > li {
+		margin-left: 0;
+		margin-right: 0;
+		padding-left: 0.75rem;
+		padding-right: 0.75rem;
+		justify-content: flex-start;
+	}
 }
 .dropdown-menu > li {
 	margin: 5px 1rem;

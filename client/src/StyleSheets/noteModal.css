@@ -22,6 +22,13 @@
 	border: 1px solid rgba(255, 255, 255, 0.125);
 	color: white;
 }
+.modalCard .btn-close {
+	filter: invert(1) grayscale(100%) brightness(200%);
+	opacity: 0.75;
+}
+.modalCard .btn-close:hover {
+	opacity: 1;
+}
 .modal-title {
 	font-family: var(--secondaryFont);
 	font-weight: 600;
@@ -31,13 +38,6 @@
 }
 .charCounter {
 	font-weight: 300;
-}
-.modal.fade .modal-dialog {
-	transform: scale(0.95);
-	transition: transform 0.16s var(--ease-pro);
-}
-.modal.show .modal-dialog {
-	transform: scale(1);
 }
 @media (max-width: 575.98px) {
 	.modal-dialog {
