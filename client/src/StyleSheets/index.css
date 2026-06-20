@@ -239,3 +239,24 @@
 		animation: navDropIn 0.25s var(--ease-pro) reverse;
 	}
 }
+
+/* Toast slide — GPU keyframe (smoother than a JS-timed transition toggle). */
+@keyframes toastIn {
+	from {
+		opacity: 0;
+		transform: translateY(-1.5rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@layer components {
+	.toastAnim[data-state='open'] {
+		animation: toastIn 0.3s var(--ease-pro) both;
+	}
+	.toastAnim[data-state='closed'] {
+		animation: toastIn 0.3s var(--ease-pro) reverse both;
+	}
+}

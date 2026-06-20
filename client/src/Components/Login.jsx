@@ -71,7 +71,7 @@ const Login = ({ title }) => {
 						</div>
 						<button
 							type='submit'
-							className="relative mb-8 w-full cursor-pointer overflow-hidden rounded-md border-none bg-white px-3 py-[0.375rem] font-secondary text-[1.15rem] font-bold text-black transition-colors duration-300 before:absolute before:-inset-px before:bg-linear-to-r before:from-[#3c1053] before:to-[#ad5389] before:opacity-0 before:transition-opacity before:duration-300 before:content-[''] hover:text-white hover:before:opacity-100"
+							className="relative mb-8 w-full cursor-pointer overflow-hidden rounded-md border-none bg-white px-3 py-[0.375rem] font-secondary text-[1.15rem] font-bold text-black transition-colors duration-300 before:absolute before:inset-0 before:rounded-[inherit] before:bg-linear-to-r before:from-[#3c1053] before:to-[#ad5389] before:opacity-0 before:transition-opacity before:duration-300 before:content-[''] hover:text-white hover:before:opacity-100"
 						>
 							<span className='relative'>Log In</span>
 						</button>

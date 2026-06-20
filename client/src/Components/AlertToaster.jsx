@@ -20,10 +20,10 @@ const AlertToaster = () => {
 	useEffect(() => {
 		if (alert) {
 			setShown(alert);
-			const id = requestAnimationFrame(() => setOpen(true));
-			return () => cancelAnimationFrame(id);
+			setOpen(true);
+		} else {
+			setOpen(false);
 		}
-		setOpen(false);
 	}, [alert]);
 
 	if (!shown) return null;
@@ -31,11 +31,12 @@ const AlertToaster = () => {
 	return (
 		<div className='fixed left-1/2 top-[calc(3.6rem+2px)] z-[99] -translate-x-1/2'>
 			<div
-				className={`flex max-w-[90vw] items-center gap-3 rounded-lg border py-2 pl-4 pr-3 text-[0.9rem] shadow-lg transition-[transform,opacity] duration-[350ms] ease-pro ${
+				className={`toastAnim flex max-w-[90vw] items-center gap-3 rounded-lg border py-2 pl-4 pr-3 text-[0.9rem] shadow-lg ${
 					toastStyles[shown.type] || toastStyles.success
-				} ${open ? 'translate-y-0 opacity-100' : '-translate-y-6 opacity-0'}`}
+				}`}
+				data-state={open ? 'open' : 'closed'}
 				role='alert'
-				onTransitionEnd={() => {
+				onAnimationEnd={() => {
 					if (!open) setShown(null);
 				}}
 			>
@@ -43,12 +44,10 @@ const AlertToaster = () => {
 				{shown.onUndo && (
 					<button
 						type='button'
-						className='inline-flex shrink-0 items-center rounded border-none bg-current px-2 py-1 text-[0.875rem] font-semibold hover:opacity-90'
+						className='inline-flex shrink-0 items-center rounded border-none bg-[#8a5a00] px-2 py-1 text-[0.875rem] font-semibold text-[#fdf4e3] hover:opacity-90'
 						onClick={shown.onUndo}
 					>
-						<span className='text-[#fdf4e3]'>
-							<i className='fa-solid fa-rotate-left mr-1'></i>Undo
-						</span>
+						<i className='fa-solid fa-rotate-left mr-1'></i>Undo
 					</button>
 				)}
 				<button
