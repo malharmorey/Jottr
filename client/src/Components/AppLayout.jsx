@@ -5,7 +5,7 @@ const AppLayout = () => {
 	return (
 		<>
 			<Navbar />
-			<main className='mainContainer'>
+			<main className='relative mx-4 my-[1.8rem] h-[inherit] w-[inherit]'>
 				<Outlet />
 			</main>
 		</>

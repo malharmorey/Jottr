@@ -9,7 +9,7 @@ const Home = ({ title }) => {
 	useDocumentTitle(`Jottr | ${title}`);
 	return (
 		<>
-			<h2 className='mx-1 font-secondary font-semibold max-[500px]:text-[2rem] max-[400px]:text-[1.8rem]'>
+			<h2 className='mx-1 font-secondary text-[2.1rem] font-semibold max-[500px]:text-[2rem] max-[400px]:text-[1.8rem]'>
 				Your Notes
 			</h2>
 			<NotesList />
