@@ -1,31 +1,67 @@
-@import url(../StyleSheets/App.css);
-*,
-*::before,
-*::after {
-	margin: 0px;
-	padding: 0px;
-	box-sizing: border-box;
+/* Layer order: Bootstrap sits lowest so Tailwind + our own styles win as each
+   component is ported. Un-ported components still match Bootstrap's rules and
+   keep their look until they move over. Bootstrap is removed entirely at the
+   end of the migration. */
+@layer bootstrap, theme, base, components, utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Raleway:wght@200;300;400;500;600;700;800&display=swap');
+@import 'bootstrap/dist/css/bootstrap.min.css' layer(bootstrap);
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@theme {
+	--font-primary: 'Kalam', cursive;
+	--font-secondary: 'Raleway', sans-serif;
+	--ease-pro: cubic-bezier(0.22, 1, 0.36, 1);
 }
-body::before {
-	content: '';
-	position: fixed;
-	min-height: 100vh;
-	top: 0px;
-	right: 0px;
-	bottom: 0px;
-	left: 0px;
-	z-index: 0;
-	background: url(../images/1.jpg);
-	filter: invert(94%);
-	background-position-y: center;
-	background-position-x: center;
-	background-size: cover;
+
+@layer base {
+	*,
+	*::before,
+	*::after {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	body {
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+			'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+			'Helvetica Neue', sans-serif;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		color: white;
+	}
+
+	/* Whole-page backdrop photo, inverted to the light frost palette. */
+	body::before {
+		content: '';
+		position: fixed;
+		inset: 0;
+		min-height: 100vh;
+		z-index: 0;
+		background: url(../images/1.jpg);
+		filter: invert(94%);
+		background-position: center;
+		background-size: cover;
+	}
 }
-body {
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-		sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+
+/* THE signature frost/glass surface — ~10 surfaces depend on it. */
+@utility frost {
+	backdrop-filter: blur(7px) saturate(191%);
+	background-color: rgba(43, 52, 76, 0.56);
+	border: 0.8px solid rgba(255, 255, 255, 0.125);
+	border-radius: 1.2rem;
+	overflow: hidden;
 	color: white;
+}
+
+/* Input-field frost variant (login/signup fields). */
+@utility frost-input {
+	backdrop-filter: blur(7px) saturate(191%);
+	background-color: rgba(255, 255, 255, 0.07);
+	border: none;
+	color: white;
+	outline: none;
 }
