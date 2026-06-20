@@ -34,6 +34,10 @@
 .navbar-nav {
 	margin-left: 0.5rem;
 }
+/* line the username dropdown up with the Home/About links so the three stack on mobile */
+.btnContainer {
+	margin-left: 0.5rem;
+}
 .navLink {
 	color: white !important;
 	font-family: var(--secondaryFont);
