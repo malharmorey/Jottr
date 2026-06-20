@@ -3,6 +3,7 @@ import useDocumentTitle from '../hooks/useDocumentTitle';
 import NotesList from './NotesList';
 import NoteModal from './NoteModal';
 import AiSummaryModal from './AiSummaryModal';
+import ConfirmDeleteModal from './ConfirmDeleteModal';
 import ScrollToTopBtn from './ScrollToTopBtn';
 
 const Home = ({ title }) => {
@@ -14,6 +15,7 @@ const Home = ({ title }) => {
 			<ScrollToTopBtn />
 			<NoteModal />
 			<AiSummaryModal />
+			<ConfirmDeleteModal />
 		</>
 	);
 };
