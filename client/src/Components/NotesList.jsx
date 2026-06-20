@@ -29,7 +29,7 @@ function NotesList() {
 	if (!isLoggedIn) return null;
 
 	return (
-		<div className='row' ref={animationParent}>
+		<div className='row notesRow' ref={animationParent}>
 			{isLoading ? (
 				<Shimmer />
 			) : reversedNotesArray.length === 0 ? (
