@@ -29,14 +29,14 @@ function NotesList() {
 	if (!isLoggedIn) return null;
 
 	return (
-		<div className='row notesRow' ref={animationParent}>
+		<div className='flex flex-wrap items-start' ref={animationParent}>
 			{isLoading ? (
 				<Shimmer />
 			) : reversedNotesArray.length === 0 ? (
 				<NoteCard title={'Nothing in Here, but you and me'} date={''} />
 			) : (
 				reversedNotesArray.map((note) => (
-					<div className='col-md-6 p-0' key={note._id}>
+					<div className='w-full md:w-1/2' key={note._id}>
 						<NoteCard
 							title={note.title ? note.title : 'No title available'}
 							description={

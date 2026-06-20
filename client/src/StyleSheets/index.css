@@ -65,3 +65,25 @@
 	color: white;
 	outline: none;
 }
+
+@keyframes shimmerGlide {
+	0% {
+		background-position: 100% 0;
+	}
+	100% {
+		background-position: 0 0;
+	}
+}
+
+/* Loading placeholder bar (Shimmer). */
+@utility shimmer-bar {
+	border-radius: 0.4rem;
+	background: linear-gradient(
+		90deg,
+		rgba(255, 255, 255, 0.06) 25%,
+		rgba(255, 255, 255, 0.18) 37%,
+		rgba(255, 255, 255, 0.06) 63%
+	);
+	background-size: 400% 100%;
+	animation: shimmerGlide 1.4s ease-in-out infinite;
+}

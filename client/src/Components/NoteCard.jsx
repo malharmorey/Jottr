@@ -2,20 +2,20 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import useNoteModalStore from '../stores/noteModalStore';
 import useAiSummaryStore from '../stores/aiSummaryStore';
-import '../StyleSheets/noteCard.css';
 import pic from '../images/pngegg.png';
 
 dayjs.extend(relativeTime);
+
+const iconBtn = 'cursor-pointer border-none bg-transparent p-0 leading-none';
 
 function NoteCard({ title, description, tag, date, id, note }) {
 	const openEdit = useNoteModalStore((state) => state.openEdit);
 	const openSummary = useAiSummaryStore((state) => state.open);
 
 	return (
-		<div className='my-3'>
+		<div className='my-4'>
 			<div
-				className='card m-auto '
-				id='notesCard'
+				className='frost relative mx-auto'
 				style={
 					dayjs(date).isValid()
 						? { width: '95%' }
@@ -24,8 +24,8 @@ function NoteCard({ title, description, tag, date, id, note }) {
 			>
 				<button
 					type='button'
-					className={`iconBtn text-info position-absolute top-0 end-0 m-3 ${
-						dayjs(date).isValid() ? '' : 'd-none'
+					className={`${iconBtn} absolute right-0 top-0 m-4 text-[#0dcaf0] ${
+						dayjs(date).isValid() ? '' : 'hidden'
 					}`}
 					aria-label='Summarize note'
 					data-bs-toggle='modal'
@@ -33,25 +33,34 @@ function NoteCard({ title, description, tag, date, id, note }) {
 					onClick={() => openSummary(id)}
 				>
 					<i
-						className='fa-solid fa-wand-magic-sparkles fa-lg fontIcon'
+						className='fa-solid fa-wand-magic-sparkles fa-lg max-[400px]:text-[21px]!'
 						aria-hidden='true'
 					></i>
 				</button>
-				<div className='card-body notesCardBody'>
-					<h4 className='card-title notesCardTitle' id='cardTitle'>
+				<div className='mx-[0.3rem] my-[0.8rem] p-4 max-[500px]:mx-[0.2rem] max-[500px]:my-[1.3rem] max-[400px]:mx-0 max-[400px]:my-[1.4rem]'>
+					<h4
+						className='mb-2 font-primary text-[1.8rem] font-bold max-[400px]:text-[1.7rem]'
+						id='cardTitle'
+					>
 						{title}
 					</h4>
 
-					<p className='card-text notesCardNote'>
+					<p className='font-secondary text-[1.1rem] max-[400px]:text-[1.05rem]'>
 						{description}
 						{!dayjs(date).isValid() && (
-							<img className='astronautImg' src={pic} alt='' />
+							<img
+								className='h-[21rem] w-[27rem] max-[530px]:h-full max-[530px]:w-full'
+								src={pic}
+								alt=''
+							/>
 						)}
 					</p>
-					<p className='card-text notesCardTag'>{tag}</p>
-					<p className='card-text mb-3'>
+					<p className='font-primary text-[1.1rem]'>{tag}</p>
+					<p className='mb-4'>
 						<small
-							className={`${dayjs(date).isValid() ? '' : 'd-none'}`}
+							className={`font-bold text-[rgb(217,216,216)] ${
+								dayjs(date).isValid() ? '' : 'hidden'
+							}`}
 						>
 							Updated{' '}
 							{dayjs(date).isValid()
@@ -62,8 +71,8 @@ function NoteCard({ title, description, tag, date, id, note }) {
 
 					<button
 						type='button'
-						className={`iconBtn text-warning ${
-							dayjs(date).isValid() ? '' : 'd-none'
+						className={`${iconBtn} text-[#ffc107] ${
+							dayjs(date).isValid() ? '' : 'hidden'
 						}`}
 						aria-label='Edit note'
 						data-bs-toggle='modal'
@@ -71,15 +80,15 @@ function NoteCard({ title, description, tag, date, id, note }) {
 						onClick={() => openEdit(note)}
 					>
 						<i
-							className='fa-regular fa-pen-to-square fa-lg fontIcon'
+							className='fa-regular fa-pen-to-square fa-lg max-[400px]:text-[21px]!'
 							aria-hidden='true'
 						></i>
 					</button>
 
 					<button
 						type='button'
-						className={`iconBtn text-danger mx-4 ${
-							dayjs(date).isValid() ? '' : 'd-none'
+						className={`${iconBtn} mx-6 text-[#dc3545] ${
+							dayjs(date).isValid() ? '' : 'hidden'
 						}`}
 						aria-label='Delete note'
 						data-bs-toggle='modal'
@@ -87,7 +96,7 @@ function NoteCard({ title, description, tag, date, id, note }) {
 						data-note-id={id}
 					>
 						<i
-							className='fa-regular fa-trash-can fa-lg fontIcon'
+							className='fa-regular fa-trash-can fa-lg max-[400px]:text-[21px]!'
 							aria-hidden='true'
 						></i>
 					</button>
