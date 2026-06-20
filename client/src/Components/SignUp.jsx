@@ -28,7 +28,7 @@ const SignUp = ({ title }) => {
 			<div className='loginContainer '>
 				<div className='signUpCard '>
 					<div className='loginCardHeader'>
-						<p>👤SignUp Here</p>
+						<p>Sign Up</p>
 					</div>
 					<div className='loginCardBody'>
 						<form onSubmit={handleSignUp}>
@@ -57,15 +57,11 @@ const SignUp = ({ title }) => {
 									name='email'
 									className='form-control inputField'
 									id='email'
-									aria-describedby='emailHelp'
 									placeholder='john@example.com'
 									value={credentials.email}
 									onChange={onChange}
 									required
 								/>
-								<div id='emailHelp' className='form-text'>
-									We'll never share your email with anyone else.
-								</div>
 							</div>
 							<div className='mb-3'>
 								<label htmlFor='password' className='form-label'>
