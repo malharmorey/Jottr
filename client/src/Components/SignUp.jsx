@@ -80,7 +80,7 @@ const SignUp = ({ title }) => {
 								onChange={onChange}
 								minLength={5}
 								required
-								title='Password must contain atleast 1 lowerCase, 1 upperCase, 1 number and 1 symbol'
+								title='Password must contain at least 1 lowerCase, 1 upperCase, 1 number and 1 symbol'
 							/>
 						</div>
 						<div className='mb-4 text-center'>

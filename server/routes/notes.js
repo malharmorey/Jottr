@@ -41,12 +41,12 @@ router.post(
 			.isLength({
 				min: 3,
 			})
-			.withMessage('Title should contain atleast 3 characters'),
+			.withMessage('Title should contain at least 3 characters'),
 		body('description')
 			.exists({ checkFalsy: true })
 			.withMessage('Description can not be blank')
 			.isLength({ min: 5 })
-			.withMessage('Description must contain atleast 5 characters'),
+			.withMessage('Description must contain at least 5 characters'),
 	],
 	validate,
 	async (req, res) => {
@@ -87,12 +87,12 @@ router.put(
 			.isLength({
 				min: 3,
 			})
-			.withMessage('Title should contain atleast 3 characters'),
+			.withMessage('Title should contain at least 3 characters'),
 		body('description')
 			.exists({ checkFalsy: true })
 			.withMessage('Description can not be blank')
 			.isLength({ min: 5 })
-			.withMessage('Description must contain atleast 5 characters'),
+			.withMessage('Description must contain at least 5 characters'),
 	],
 	validate,
 	async (req, res) => {
@@ -116,7 +116,7 @@ router.put(
 			if (!note) {
 				return res.status(404).json({ success: false, message: 'Note not found' });
 			}
-			// Allowing updation only if the user is authorized
+			// Allowing the update only if the user is authorized
 			if (note.user.toString() !== req.user.id) {
 				return res.status(401).json({ success: false, message: 'Unauthorized user' });
 			}
@@ -129,7 +129,7 @@ router.put(
 			);
 			res.json({
 				success: true,
-				message: ' Your note has been updated successfully',
+				message: 'Your note has been updated successfully',
 				date: Date.now(),
 			});
 		} catch (error) {
