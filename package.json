@@ -11,5 +11,5 @@
 		"dev": "concurrently \"cd server && nodemon ./index.js \" \"cd client && npm run dev\" "
 	},
 	"author": "Malhar",
-	"license": "ISC"
+	"license": "MIT"
 }

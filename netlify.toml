@@ -1,5 +1,3 @@
-# Netlify build configuration for the client SPA, kept in version control
-# instead of only the dashboard. SPA routing is handled by client/public/_redirects.
 [build]
   base = "client"
   command = "npm run build"

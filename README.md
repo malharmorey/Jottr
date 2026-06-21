@@ -1,6 +1,6 @@
 <h1 align="center">Jottr</h1>
 
-<p align="center">Notes that summarize themselves — a cloud notebook with on-demand AI summaries.</p>
+<p align="center">AI-powered notes — capture anything, and summarize it on demand.</p>
 
 <p align="center">
   <a href="https://jottr.app"><strong>jottr.app »</strong></a>
@@ -14,25 +14,19 @@
   <img alt="Tests" src="https://img.shields.io/badge/tests-36%20passing-success">
 </p>
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1c84bcb9-33d2-4ab2-ba93-ba58b0aecf96/deploy-status)](https://app.netlify.com/projects/jottr-app/deploys)
+
 ---
 
 ## Overview
 
-Jottr is a personal note-taking app for the thoughts, reminders, and loose ideas worth keeping. Notes are saved to the cloud the moment you add them and reachable from any device. When a note runs long, one tap turns it into a concise, AI-written summary — generated on demand by Google's Gemini, never automatically.
-
-## Features
-
-- **Notes CRUD** with optimistic UI — adds, edits, and deletes feel instant and roll back on error.
-- **On-demand AI summaries** — summarize any note in a tap; results are cached per note for the session.
-- **Undo delete** — a 10-second window to bring a note back before it's really gone.
-- **JWT authentication** — sign up, log in, and reach your notes from anywhere.
-- **Responsive, accessible UI** — a frosted-glass design built on Radix primitives, down to mobile.
+Jottr is an open-source, cross-platform note app that helps you capture thoughts, reminders, loose ideas etc and get AI-written summary on demand.
 
 ## Tech stack
 
-**Frontend** — Vite · React 18 · React Router 7 (data API) · TanStack Query (server state) · Zustand (client state) · Tailwind CSS v4 · Radix UI · day.js
+**Frontend** — Vite · React · React Router · TanStack Query · Zustand · Tailwind CSS · Radix UI
 
-**Backend** — Node · Express · Mongoose (MongoDB Atlas) · JSON Web Tokens · bcrypt · Helmet · express-rate-limit · express-validator
+**Backend** — Node · Express · Mongoose (MongoDB) · JSON Web Tokens · bcrypt · Helmet · express-rate-limit · express-validator
 
 **AI** — Google Gemini 2.5 Flash
 
@@ -45,30 +39,20 @@ Jottr is a personal note-taking app for the thoughts, reminders, and loose ideas
 ```
 client/                          server/
   React SPA (Vite)                 Express REST API
-  ├─ TanStack Query  ──HTTP──►      ├─ routes/       (auth, notes)
+  ├─ TanStack Query  ──HTTP──►     ├─ routes/       (auth, notes)
   │   optimistic cache             ├─ middleware/   (JWT verify)
   ├─ Zustand  (alerts, modals)     ├─ models/       (Mongoose schemas)
   └─ Radix + Tailwind UI           └─ lib/          (Gemini, quota, validation)
                                         │
-                                   MongoDB Atlas
+                                   MongoDB
 ```
 
-Server state lives in TanStack Query — one source of truth, optimistic updates with rollback. Zustand holds only ephemeral client state (toasts, modal open-state); no server data is mirrored into a store. The API is a thin REST layer: components call typed `api/*` functions through `use*` hooks, never `fetch` directly.
+## Typical workflow
 
-## Design decisions
-
-- **Optimistic UI with rollback.** Mutations update the cache immediately and revert on error, so the app feels instant without losing correctness.
-- **Server vs. client state, kept separate.** TanStack Query owns anything from the API; Zustand owns only UI state.
-- **CSS-first Tailwind v4.** Design tokens and the frosted-glass surface live in one stylesheet via `@theme` / `@utility`; Radix supplies accessible modal and menu behavior.
-- **AI summaries are explicit and bounded.** They run only when requested, cap output length, and the prompt is hardened against injection from note content.
-
-## Security
-
-- **CORS** locked to the canonical origin (`https://jottr.app`); other origins are rejected server-side.
-- **Authentication** via JWT signed with a pinned `HS256` algorithm; passwords hashed with bcrypt (input capped at bcrypt's 72-byte limit).
-- **Rate limiting** per IP, split by endpoint — failed logins, account creation, and summary requests each have their own budget.
-- **Hardened headers** with Helmet, an 18 kB JSON body limit, and boot-time validation that refuses to start without the required environment variables.
-- **AI guardrails** — the note is fenced as untrusted data in the prompt, with a per-user daily summary quota enforced in the database.
+1. **Sign up / log in** — a JWT is issued and stored client-side.
+2. **Write a note** — added optimistically, persisted to MongoDB Atlas.
+3. **Summarize** — `POST /api/notes/summarize/:id` runs rate-limit → JWT auth → ownership check → daily quota → Gemini, and returns the summary.
+4. **Edit or delete** — both optimistic; delete holds a 10-second undo before it commits.
 
 ## Getting started
 
@@ -127,4 +111,4 @@ npm run coverage     # tests with a coverage report
 
 ## License
 
-ISC © Malhar
+MIT License
