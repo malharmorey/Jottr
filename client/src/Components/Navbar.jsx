@@ -4,6 +4,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { useQueryClient } from '@tanstack/react-query';
 import useAlertStore from '../stores/alertStore';
 import useAuth from '../hooks/useAuth';
+import { clearSummaries } from '../lib/summaryCache';
 import jottrLogo from '../images/logo512.png';
 
 const navLink =
@@ -11,8 +12,7 @@ const navLink =
 
 const Navbar = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
-	// right-align the logout menu under the username on desktop, left-align it
-	// (under the nav items) on mobile
+
 	const [isDesktop, setIsDesktop] = useState(() =>
 		window.matchMedia('(min-width: 992px)').matches
 	);
@@ -29,7 +29,7 @@ const Navbar = () => {
 		return () => mq.removeEventListener('change', onChange);
 	}, []);
 
-	// close the open mobile menu (and its logout dropdown) on any click outside
+	// Close the open mobile menu (and its logout dropdown) on any click outside
 	useEffect(() => {
 		if (!menuOpen) return;
 		const onPointerDown = (e) => {
@@ -47,6 +47,8 @@ const Navbar = () => {
 		logout();
 		navigate('/login');
 		queryClient.removeQueries({ queryKey: ['notes'] });
+		queryClient.removeQueries({ queryKey: ['summary'] });
+		clearSummaries();
 		showAlert('Logged out successfully', 'success');
 		closeMenu();
 	};

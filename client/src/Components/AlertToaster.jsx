@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 import useAlertStore from '../stores/alertStore';
 
-// Coordinated soft-tinted palettes: bg, border, text and any inline button all
-// share one hue per type, so the close ✕ (text-current) and the Undo button
-// always match the toast they sit in.
 const toastStyles = {
 	success: 'bg-[#e7f6ec] border-[#bfe3cb] text-[#1a6b3c]',
 	danger: 'bg-[#fdeaea] border-[#f3c2c2] text-[#9b2c2c]',

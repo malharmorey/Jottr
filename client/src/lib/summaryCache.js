@@ -25,3 +25,7 @@ export const removeSummary = (noteId) => {
 	delete map[noteId];
 	writeAll(map);
 };
+
+export const clearSummaries = () => {
+	sessionStorage.removeItem(STORAGE_KEY);
+};

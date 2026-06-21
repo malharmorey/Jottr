@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 
-// note ids hidden from the list while their delete waits out the undo window
 const usePendingDeleteStore = create((set) => ({
 	ids: [],
 	add: (id) => set((state) => ({ ids: [...state.ids, id] })),

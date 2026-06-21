@@ -3,8 +3,6 @@ const GEMINI_URL =
 
 const TIMEOUT_MS = 15000;
 
-// Fixed instruction sheet. The note is fenced as untrusted data so anything
-// written inside it is summarized, never obeyed.
 const INSTRUCTIONS = `You summarize notes for a personal notes app. Your ONLY job is to write a short, factual summary of the note below.
 
 Rules:
@@ -30,8 +28,6 @@ const summarizeNote = async ({ title, description, tag }) => {
 			},
 			body: JSON.stringify({
 				contents: [{ parts: [{ text: buildPrompt({ title, description, tag }) }] }],
-				// thinkingBudget 0 disables the model's thinking tokens so the
-				// output budget goes to the summary, not to discarded thoughts
 				generationConfig: { maxOutputTokens: 150, thinkingConfig: { thinkingBudget: 0 } },
 			}),
 			signal: controller.signal,

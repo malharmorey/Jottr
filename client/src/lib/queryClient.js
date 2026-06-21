@@ -2,7 +2,7 @@ import { QueryClient, QueryCache } from '@tanstack/react-query';
 import useAlertStore from '../stores/alertStore';
 
 const queryClient = new QueryClient({
-	// Gobal Cache for any failed read
+	// Global cache for any failed read
 	queryCache: new QueryCache({
 		onError: (error, query) => {
 			if (query.meta?.skipGlobalError) return;

@@ -64,7 +64,7 @@ function NoteCard({ title, description, tag, date, id, note }) {
 						>
 							Updated{' '}
 							{dayjs(date).isValid()
-								? [dayjs(date).startOf('minute').fromNow()]
+								? dayjs(date).startOf('minute').fromNow()
 								: 'long ago'}
 						</small>
 					</p>

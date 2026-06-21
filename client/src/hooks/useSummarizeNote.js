@@ -17,7 +17,6 @@ export const useSummarizeNote = (noteId) => {
 		staleTime: Infinity,
 		gcTime: Infinity,
 		retry: false,
-		// errors surface in the summary modal, not the global toast
 		meta: { skipGlobalError: true },
 	});
 };

@@ -48,16 +48,16 @@ router.post(
 			.isLength({
 				min: 4,
 			})
-			.withMessage('Name should contain atleast 4 characters'),
+			.withMessage('Name should contain at least 4 characters'),
 		body('email').isEmail().withMessage('Enter a valid email'),
 		body('password')
 			.isLength({
 				min: 5,
 			})
-			.withMessage('Password lenght must be minimum 5 characters')
+			.withMessage('Password length must be minimum 5 characters')
 			.isStrongPassword()
 			.withMessage(
-				'Password must contain atleast 1 lowerCase, 1 upperCase, 1 number and 1 symbol '
+				'Password must contain at least 1 lowerCase, 1 upperCase, 1 number and 1 symbol'
 			),
 	],
 	validate,
@@ -123,7 +123,7 @@ router.post(
 			if (!user) {
 				return res.status(400).json({
 					success: false,
-					message: `We couldn't find an account matching the login info you entered  `,
+					message: `We couldn't find an account matching the login info you entered`,
 				});
 			}
 			//Verifying the user password input

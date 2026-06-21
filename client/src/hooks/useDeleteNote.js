@@ -12,7 +12,6 @@ export const useDeleteNote = () => {
 	const { token } = useAuth();
 	const queryClient = useQueryClient();
 
-	// run the real DELETE, then drop the note from the cache, or report a failure
 	const commit = async (task) => {
 		try {
 			await deleteNote(task.token, task.id);
@@ -35,7 +34,6 @@ export const useDeleteNote = () => {
 		useAlertStore.getState().dismissAlert();
 	};
 
-	// fire the delete now instead of waiting out the window
 	const commitNow = (task) => {
 		clearTimeout(task.timer);
 		if (pending === task) pending = null;
@@ -44,7 +42,6 @@ export const useDeleteNote = () => {
 	};
 
 	const requestDelete = (id) => {
-		// only one undo at a time: finalise any delete still counting down
 		if (pending) commitNow(pending);
 
 		usePendingDeleteStore.getState().add(id);
