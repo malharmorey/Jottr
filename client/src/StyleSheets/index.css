@@ -280,3 +280,68 @@
 		animation: toastOut 0.35s var(--ease-pro) both;
 	}
 }
+
+/* About page — the note→summary signature: the summary rises in while a sheen
+   sweeps across it (remounted via a key to replay on wand hover/tap), and the
+   wand glyph pulses to invite the interaction. */
+@keyframes aboutReveal {
+	from {
+		opacity: 0;
+		transform: translateY(0.5rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+@keyframes aboutSweep {
+	from {
+		transform: translateX(-130%);
+	}
+	to {
+		transform: translateX(130%);
+	}
+}
+@keyframes wandPulse {
+	0%,
+	100% {
+		transform: scale(1);
+		opacity: 0.8;
+	}
+	50% {
+		transform: scale(1.18);
+		opacity: 1;
+	}
+}
+
+@layer components {
+	.aboutSummary {
+		animation: aboutReveal 0.6s var(--ease-pro) both;
+	}
+	/* sheen sweeps the AI-summary block edge to edge; the block's overflow-hidden
+	   clips it so it never bleeds onto the card behind it */
+	.aboutSheen {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		background: linear-gradient(
+			100deg,
+			transparent 35%,
+			rgba(255, 255, 255, 0.22) 50%,
+			transparent 65%
+		);
+		transform: translateX(-130%);
+		animation: aboutSweep 0.9s var(--ease-pro) 0.15s both;
+	}
+	.aboutWand {
+		animation: wandPulse 2s var(--ease-pro) infinite;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.aboutSummary,
+	.aboutSheen,
+	.aboutWand {
+		animation: none;
+	}
+}
