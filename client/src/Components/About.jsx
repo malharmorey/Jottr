@@ -29,12 +29,12 @@ const WandIcon = ({ className }) => (
 );
 
 const SUMMARIES = [
-	"Small family birthday lunch for Diya on Saturday. Gulab jamun, not cake. Call Nani, order sweets, get balloons.",
-	"Diya's birthday is a close family lunch at home on Saturday, gulab jamun over cake. To do: call Nani, order sweets, buy balloons.",
-	"Saturday is Diya's birthday lunch at home with close family. Gulab jamun instead of cake. Remember to call Nani, order the sweets, and grab balloons.",
-	"Hosting an intimate birthday lunch for Diya on Saturday. Gulab jamun replaces the cake. Left to do: call Nani, order sweets, pick up balloons.",
-	"Diya's birthday plan: a quiet family lunch at home Saturday, gulab jamun not cake. Still pending, call Nani, sweets, balloons.",
-	"A close family lunch for Diya's birthday on Saturday at home. Skip the cake for gulab jamun. Don't forget to call Nani, order sweets, and get balloons.",
+	"Diya's birthday lunch is Saturday at home. Call Nani, order sweets, get balloons.",
+	"Small family lunch for Diya's birthday Saturday. Errands left: Nani, sweets, balloons.",
+	"Saturday is Diya's birthday lunch at home. To do: call Nani, sweets, balloons.",
+	"Hosting Diya's birthday lunch Saturday, gulab jamun not cake. Nani, sweets, balloons pending.",
+	"Diya's birthday Saturday: lunch at home, then call Nani, order sweets, get balloons.",
+	"Family lunch for Diya's birthday Saturday. Still need Nani, sweets, and balloons.",
 ];
 
 const prefersReducedMotion = () =>
