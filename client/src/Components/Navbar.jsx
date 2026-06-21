@@ -4,6 +4,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { useQueryClient } from '@tanstack/react-query';
 import useAlertStore from '../stores/alertStore';
 import useAuth from '../hooks/useAuth';
+import { clearSummaries } from '../lib/summaryCache';
 import jottrLogo from '../images/logo512.png';
 
 const navLink =
@@ -46,6 +47,8 @@ const Navbar = () => {
 		logout();
 		navigate('/login');
 		queryClient.removeQueries({ queryKey: ['notes'] });
+		queryClient.removeQueries({ queryKey: ['summary'] });
+		clearSummaries();
 		showAlert('Logged out successfully', 'success');
 		closeMenu();
 	};
