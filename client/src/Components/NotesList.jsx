@@ -24,7 +24,7 @@ function NotesList() {
 			navigate('/login');
 			showAlert('Please login first', 'danger');
 		}
-	}, []); // eslint-disable-line
+	}, [isLoggedIn, navigate, showAlert]);
 
 	if (!isLoggedIn) return null;
 
