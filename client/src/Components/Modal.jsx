@@ -1,7 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog';
 
-// Shared frost dialog shell built on Radix: handles the overlay, centered
-// frost card, drop-from-above animation, focus trap, Escape and the close ✕.
 function Modal({ open, onOpenChange, title, children, footer, size = 'lg' }) {
 	const maxWidth = size === 'sm' ? 'max-w-[300px]' : 'max-w-[800px]';
 	return (

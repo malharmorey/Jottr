@@ -11,8 +11,7 @@ const navLink =
 
 const Navbar = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
-	// right-align the logout menu under the username on desktop, left-align it
-	// (under the nav items) on mobile
+
 	const [isDesktop, setIsDesktop] = useState(() =>
 		window.matchMedia('(min-width: 992px)').matches
 	);
@@ -29,7 +28,7 @@ const Navbar = () => {
 		return () => mq.removeEventListener('change', onChange);
 	}, []);
 
-	// close the open mobile menu (and its logout dropdown) on any click outside
+	// Close the open mobile menu (and its logout dropdown) on any click outside
 	useEffect(() => {
 		if (!menuOpen) return;
 		const onPointerDown = (e) => {

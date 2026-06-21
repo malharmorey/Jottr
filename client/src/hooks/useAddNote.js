@@ -11,9 +11,7 @@ export const useAddNote = () => {
 
 	return useMutation({
 		mutationFn: (newNote) => addNote(token, newNote),
-		// Insert the real note (real _id) so its list key is stable from the
-		// first paint — no temp→real key swap, so the list reflow plays a single
-		// clean enter instead of vanishing and re-entering on the refetch.
+
 		onSuccess: (note) => {
 			queryClient.setQueryData(['notes'], (old) =>
 				old ? { ...old, notes: [...old.notes, note] } : old
