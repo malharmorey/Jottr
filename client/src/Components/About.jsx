@@ -29,12 +29,12 @@ const WandIcon = ({ className }) => (
 );
 
 const SUMMARIES = [
-	"Diya's birthday lunch is Saturday at home. Call Nani, order sweets, get balloons.",
-	"Small family lunch for Diya's birthday Saturday. Errands left: Nani, sweets, balloons.",
-	"Saturday is Diya's birthday lunch at home. To do: call Nani, sweets, balloons.",
-	"Hosting Diya's birthday lunch Saturday, gulab jamun not cake. Nani, sweets, balloons pending.",
-	"Diya's birthday Saturday: lunch at home, then call Nani, order sweets, get balloons.",
-	"Family lunch for Diya's birthday Saturday. Still need Nani, sweets, and balloons.",
+	"Diya's birthday is a small family lunch at home Saturday, gulab jamun over cake. To do: call Nani, order sweets, get balloons, find a gift.",
+	"Hosting Diya's birthday lunch Saturday with close family. Action items: Nani, sweets, balloons, and a gift she'll love.",
+	"Saturday: an intimate birthday lunch for Diya at home. Still pending: call Nani, order sweets, buy balloons, sort the gift.",
+	"Plan for Diya's birthday: family lunch at home Saturday, gulab jamun not cake. Left to do: Nani, sweets, balloons, gift.",
+	"Diya's birthday Saturday is a quiet family lunch. Remaining tasks: ring Nani, order the sweets, grab balloons, choose a gift.",
+	"A small home lunch for Diya's birthday Saturday. To finish: call Nani, order sweets, pick up balloons, and find a gift.",
 ];
 
 const prefersReducedMotion = () =>
@@ -88,8 +88,8 @@ const About = ({ title }) => {
 				Jottr
 			</p>
 			<p className='mt-2 font-secondary text-[1.35rem] font-semibold max-[400px]:text-[1.2rem]'>
-				Notes that{' '}
-				<span className='text-[rgb(108,204,252)]'>summarize themselves.</span>
+				Your notes,{' '}
+				<span className='text-[rgb(108,204,252)]'>AI-powered.</span>
 			</p>
 
 			<p className='mt-4 font-secondary text-[1.1rem] leading-relaxed text-white/85'>
@@ -105,9 +105,10 @@ const About = ({ title }) => {
 						your note
 					</span>
 					<p className='font-primary text-[1.1rem] leading-snug text-white/90'>
-						Mom called about Diya&rsquo;s birthday on Saturday. A small lunch at
-						home, gulab jamun instead of a cake, just close family. Still need to
-						call Nani, order the sweets, and pick up balloons.
+						Mom called about Diya&rsquo;s birthday this Saturday. She wants a small
+						lunch at home, just close family, and gulab jamun instead of a cake. I
+						still need to call Nani, order the sweets, pick up balloons, and find a
+						gift she&rsquo;ll actually like.
 					</p>
 				</div>
 
