@@ -30,4 +30,20 @@ export default [
 			],
 		},
 	},
+	{
+		files: ['src/tests/**/*.{js,jsx}', '**/*.test.{js,jsx}'],
+		languageOptions: {
+			globals: {
+				...globals.node,
+				describe: 'readonly',
+				it: 'readonly',
+				expect: 'readonly',
+				vi: 'readonly',
+				beforeEach: 'readonly',
+				afterEach: 'readonly',
+				beforeAll: 'readonly',
+				afterAll: 'readonly',
+			},
+		},
+	},
 ];
