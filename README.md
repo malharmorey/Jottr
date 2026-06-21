@@ -1,35 +1,114 @@
-<h1 align="center">CloudBook</h1>
+<h1 align="center">Jottr</h1>
 
- <p align="center">CloudBook is a personal note-taking📝 application to store our thoughts💬, life lessons, memories💌, stories and many more directly to the cloud☁️.
- </p>
+<p align="center">AI-powered notes — capture anything, and summarize it on demand.</p>
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/ab5f2458-0a2c-4d38-b256-219be85e2b16/deploy-status)](https://app.netlify.com/projects/cloud-book/deploys)
+<p align="center">
+  <a href="https://jottr.app"><strong>jottr.app »</strong></a>
+</p>
 
-### Why CloudBook?
+<p align="center">
+  <img alt="React" src="https://img.shields.io/badge/React-18.3-149eca?logo=react&logoColor=white">
+  <img alt="Vite" src="https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white">
+  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind-v4-38bdf8?logo=tailwindcss&logoColor=white">
+  <img alt="Node" src="https://img.shields.io/badge/Node-22-5fa04e?logo=nodedotjs&logoColor=white">
+  <img alt="Tests" src="https://img.shields.io/badge/tests-36%20passing-success">
+</p>
 
-- All Encrypted. Only you can read your notes.
-- Sign In on unlimited devices. Fast⚡️, free💸, and Secure🔒.
-- Open-source
-- A strong focus on longevity and sustainability.
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1c84bcb9-33d2-4ab2-ba93-ba58b0aecf96/deploy-status)](https://app.netlify.com/projects/jottr-app/deploys)
 
-### Creating your CloudBook account
+---
 
-1. Launch🚀 the web app at [cloudbook-app.netlify.app](https://cloud-book.netlify.app/).
-2. Click Sign Up👤 to create your CloudBook account.
-3. Now access your Notes on any of your favourite device.
-   - Mac
-   - Windows
-   - Linux
-   - iOS
-   - Android
-4. You're all set. Start taking notes its fun🎉.
+## Overview
 
-## Built With
+Jottr is an open-source, cross-platform note app that helps you capture thoughts, reminders, loose ideas etc and get AI-written summary on demand.
 
-- [React JS](https://reactjs.org/)
-- [Node JS](https://nodejs.org/en/)
-- [Express JS](https://expressjs.com/)
-- [MongoDB](https://www.mongodb.com/)
-- [JWT Auth](https://jwt.io/)
-- [Bootstrap 5](https://getbootstrap.com/)
-- [React Router](https://reactrouter.com/en/main)
+## Tech stack
+
+**Frontend** — Vite · React · React Router · TanStack Query · Zustand · Tailwind CSS · Radix UI
+
+**Backend** — Node · Express · Mongoose (MongoDB) · JSON Web Tokens · bcrypt · Helmet · express-rate-limit · express-validator
+
+**AI** — Google Gemini 2.5 Flash
+
+**Testing** — Vitest · React Testing Library · jsdom (36 tests, ~89% line coverage)
+
+**Hosting** — Netlify (client) · Google Cloud Run (API) · MongoDB Atlas (data)
+
+## Architecture
+
+```
+client/                          server/
+  React SPA (Vite)                 Express REST API
+  ├─ TanStack Query  ──HTTP──►     ├─ routes/       (auth, notes)
+  │   optimistic cache             ├─ middleware/   (JWT verify)
+  ├─ Zustand  (alerts, modals)     ├─ models/       (Mongoose schemas)
+  └─ Radix + Tailwind UI           └─ lib/          (Gemini, quota, validation)
+                                        │
+                                   MongoDB
+```
+
+## Typical workflow
+
+1. **Sign up / log in** — a JWT is issued and stored client-side.
+2. **Write a note** — added optimistically, persisted to MongoDB Atlas.
+3. **Summarize** — `POST /api/notes/summarize/:id` runs rate-limit → JWT auth → ownership check → daily quota → Gemini, and returns the summary.
+4. **Edit or delete** — both optimistic; delete holds a 10-second undo before it commits.
+
+## Getting started
+
+### Prerequisites
+
+- Node 22+
+- A MongoDB connection (Atlas or local)
+- A Google Gemini API key
+
+### Environment variables
+
+`server/.env`
+
+```
+MONGO_USERNAME=...
+MONGO_PASSWORD=...
+MONGO_CLUSTER=...
+MONGO_DBNAME=...
+JWT_SECRET_KEY=...
+CLIENT_ORIGIN=http://localhost:5173
+GEMINI_API_KEY=...
+```
+
+`client/.env`
+
+```
+VITE_HOST=http://localhost:8080
+```
+
+### Install and run
+
+```bash
+# install dependencies
+cd client && npm install
+cd ../server && npm install
+
+# run both from the repo root (client on :5173, API on :8080)
+npm run dev
+```
+
+### Scripts (client)
+
+```bash
+npm run dev          # start the dev server
+npm run build        # production build → dist/
+npm run lint         # ESLint
+npm run test:run     # run the test suite once
+npm run coverage     # tests with a coverage report
+```
+
+## Deployment
+
+- **Client** → Netlify. Build `npm run build`, publish `dist/`, Node 22. SPA routing via `client/public/_redirects`.
+- **API** → Google Cloud Run, with the runtime environment variables above set on the service.
+- **Data** → MongoDB Atlas.
+
+## License
+
+MIT License
