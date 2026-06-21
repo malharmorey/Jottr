@@ -61,11 +61,11 @@ const Navbar = () => {
 			>
 				<div className='flex flex-wrap items-center justify-between px-3 nav:px-4'>
 					<NavLink
-						className='flex items-center pt-[7px] font-primary text-[1.5rem] font-bold text-white no-underline'
+						className='flex items-center pt-1.75 font-primary text-[1.5rem] font-bold text-white no-underline'
 						to='/'
 						onClick={closeMenu}
 					>
-						<img className='mb-[5px] mr-[7px] h-6 w-6' src={jottrLogo} alt='' />
+						<img className='mb-1.25 mr-1.75 h-6 w-6' src={jottrLogo} alt='' />
 						Jottr
 					</NavLink>
 
@@ -82,7 +82,7 @@ const Navbar = () => {
 					{/* grid 0fr→1fr animates to the exact content height, so the mobile
 					    menu opens and closes at the same smooth speed */}
 					<div
-						className={`grid basis-full transition-[grid-template-rows,opacity] duration-300 ease-pro nav:!block nav:!opacity-100 nav:basis-auto nav:grow ${
+						className={`grid basis-full transition-[grid-template-rows,opacity] duration-300 ease-pro nav:block! nav:opacity-100! nav:basis-auto nav:grow ${
 							menuOpen
 								? 'grid-rows-[1fr] opacity-100'
 								: 'grid-rows-[0fr] opacity-0'
