@@ -2,9 +2,6 @@ import { render } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router';
 
-// Wrap a component in the providers it needs (TanStack Query + Router).
-// A fresh QueryClient per render keeps tests isolated; retries off so failed
-// requests surface immediately instead of being retried.
 export const renderWithProviders = (ui, { route = '/' } = {}) => {
 	const queryClient = new QueryClient({
 		defaultOptions: {
@@ -22,8 +19,6 @@ export const renderWithProviders = (ui, { route = '/' } = {}) => {
 	};
 };
 
-// useAuth reads a JWT from sessionStorage and decodes the middle segment for
-// `user.name`. This builds a matching fake token so tests can log a user in.
 export const makeToken = (name = 'Test User') => {
 	const payload = btoa(JSON.stringify({ user: { name } }))
 		.replace(/\+/g, '-')

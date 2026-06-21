@@ -1,8 +1,5 @@
 import { vi } from 'vitest';
 
-// Our api/* layer does `await fetch()` then `await res.json()` and checks
-// `res.ok` + `data.success`. These stub global.fetch to match that shape.
-
 export const mockFetchOnce = (body, ok = true) =>
 	vi.spyOn(global, 'fetch').mockResolvedValueOnce({
 		ok,

@@ -15,8 +15,6 @@ const stores = [
 	useAlertStore,
 ];
 
-// jsdom doesn't implement these, but Radix dialogs/dropdowns, the navbar's
-// matchMedia and the scroll buttons all touch them — stub so renders don't throw.
 window.matchMedia ??= (query) => ({
 	matches: false,
 	media: query,
