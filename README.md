@@ -22,6 +22,10 @@
 
 Jottr is an open-source, cross-platform note app that helps you capture thoughts, reminders, loose ideas etc and get AI-written summary on demand.
 
+<p align="center">
+  <img src="docs/preview.png" alt="Jottr on desktop and mobile" width="820">
+</p>
+
 ## Tech stack
 
 **Frontend** — Vite · React · React Router · TanStack Query · Zustand · Tailwind CSS · Radix UI
