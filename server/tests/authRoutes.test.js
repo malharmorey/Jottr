@@ -4,10 +4,6 @@ import app from '../app.js';
 import User from '../models/User.js';
 import { connectTestDb, clearTestDb, disconnectTestDb } from './db.js';
 
-// Limiter budget for this file (in-memory, does NOT reset with the DB):
-// signup counts SUCCESSES only (5/day) — this file makes 2; login counts
-// FAILURES only (5/15min) — this file makes 4. Both stay under 5.
-
 const signup = (overrides = {}) =>
 	request(app)
 		.post('/api/auth/createUser')

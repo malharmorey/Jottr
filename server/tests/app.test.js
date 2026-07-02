@@ -1,7 +1,7 @@
 import request from 'supertest';
 import app from '../app.js';
 
-// App-shell behaviors that live outside the routers — no DB needed.
+// App-shell behaviors that live outside the routers, no DB needed.
 
 describe('app shell', () => {
 	it('answers the health-check root route', async () => {

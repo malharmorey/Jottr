@@ -4,10 +4,6 @@ import app from '../app.js';
 import User from '../models/User.js';
 import { connectTestDb, disconnectTestDb } from './db.js';
 
-// Own file on purpose: vitest isolates each file's module graph, so these
-// limiter-exhausting tests get fresh in-memory rate-limit buckets that can't
-// bleed into (or from) the other route suites.
-
 beforeAll(connectTestDb);
 afterAll(disconnectTestDb);
 
