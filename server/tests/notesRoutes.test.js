@@ -70,7 +70,7 @@ describe('POST /api/notes/addnote', () => {
 });
 
 describe('PUT /api/notes/updatenote/:id', () => {
-	const updateNote = (id, token, body = { title: 'New title', description: 'New description text' }) =>
+	const updateNote = (id, token, body = { title: 'New title', description: 'New description text', tag: 'Travel' }) =>
 		request(app).put(`/api/notes/updatenote/${id}`).set('auth-token', token).send(body);
 
 	it('updates your own note', async () => {
