@@ -97,4 +97,5 @@ const summarizeNote = async ({ title, description, tag }) => {
 	return scrubLabels(summary);
 };
 
+export { redactPII, scrubLabels };
 export default summarizeNote;
