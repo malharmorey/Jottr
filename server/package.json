@@ -17,10 +17,14 @@
 	"main": "index.js",
 	"type": "module",
 	"devDependencies": {
-		"nodemon": "^3.1.14"
+		"mongodb-memory-server": "11.2.0",
+		"nodemon": "^3.1.14",
+		"supertest": "7.2.2",
+		"vitest": "4.1.9"
 	},
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "vitest",
+		"test:run": "vitest run"
 	},
 	"author": "",
 	"license": "MIT",
