@@ -17,6 +17,7 @@
 	"main": "index.js",
 	"type": "module",
 	"devDependencies": {
+		"@vitest/coverage-v8": "4.1.9",
 		"mongodb-memory-server": "11.2.0",
 		"nodemon": "^3.1.14",
 		"supertest": "7.2.2",
@@ -24,7 +25,8 @@
 	},
 	"scripts": {
 		"test": "vitest",
-		"test:run": "vitest run"
+		"test:run": "vitest run",
+		"coverage": "vitest run --coverage"
 	},
 	"author": "",
 	"license": "MIT",
