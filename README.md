@@ -32,7 +32,7 @@ Jottr is an open-source, cross-platform note app that helps you capture thoughts
 
 **Backend** — Node · Express · Mongoose (MongoDB) · JSON Web Tokens · bcrypt · Helmet · express-rate-limit · express-validator
 
-**AI** — Google Gemini 2.5 Flash
+**AI** — Anthropic Claude (Haiku 4.5)
 
 **Testing** — Vitest · React Testing Library · jsdom (36 tests, ~89% line coverage)
 
@@ -46,7 +46,7 @@ client/                          server/
   ├─ TanStack Query  ──HTTP──►     ├─ routes/       (auth, notes)
   │   optimistic cache             ├─ middleware/   (JWT verify)
   ├─ Zustand  (alerts, modals)     ├─ models/       (Mongoose schemas)
-  └─ Radix + Tailwind UI           └─ lib/          (Gemini, quota, validation)
+  └─ Radix + Tailwind UI           └─ lib/          (AI summary, quota, validation)
                                         │
                                    MongoDB
 ```
@@ -55,7 +55,7 @@ client/                          server/
 
 1. **Sign up / log in** — a JWT is issued and stored client-side.
 2. **Write a note** — added optimistically, persisted to MongoDB Atlas.
-3. **Summarize** — `POST /api/notes/summarize/:id` runs rate-limit → JWT auth → ownership check → daily quota → Gemini, and returns the summary.
+3. **Summarize** — `POST /api/notes/summarize/:id` runs rate-limit → JWT auth → ownership check → daily quota → the AI model, and returns the summary.
 4. **Edit or delete** — both optimistic; delete holds a 10-second undo before it commits.
 
 ## Getting started
@@ -64,7 +64,7 @@ client/                          server/
 
 - Node 22+
 - A MongoDB connection (Atlas or local)
-- A Google Gemini API key
+- An Anthropic API key
 
 ### Environment variables
 
@@ -77,7 +77,7 @@ MONGO_CLUSTER=...
 MONGO_DBNAME=...
 JWT_SECRET_KEY=...
 CLIENT_ORIGIN=http://localhost:5173
-GEMINI_API_KEY=...
+ANTHROPIC_API_KEY=...
 ```
 
 `client/.env`
