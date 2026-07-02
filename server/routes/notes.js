@@ -187,9 +187,11 @@ router.post('/summarize/:id', summarizeLimiter, fetchuser, async (req, res) => {
 			res.json({ success: true, summary });
 		} catch (error) {
 			await refundSummary(req.user.id);
-			res
-				.status(502)
-				.json({ success: false, message: 'Could not generate a summary, please try again' });
+			console.error('Summary generation failed:', error.message);
+			res.status(error.statusCode || 502).json({
+				success: false,
+				message: error.userMessage || 'Could not generate a summary, please try again',
+			});
 		}
 	} catch (error) {
 		res.status(500).json({ success: false, message: 'Internal server error' });

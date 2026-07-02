@@ -64,16 +64,35 @@ Rules:
 const buildPrompt = ({ title, description, tag }) =>
 	`${INSTRUCTIONS}\n\n<title>${redactPII(title)}</title>\n<tags>${redactPII(tag || '')}</tags>\n<note>\n${redactPII(description)}\n</note>`;
 
-const summarizeNote = async ({ title, description, tag }) => {
-	const message = await anthropic.messages.create({
-		model: MODEL,
-		max_tokens: 150,
-		messages: [{ role: 'user', content: buildPrompt({ title, description, tag }) }],
-	});
+// Failure the route can surface to the user as-is (no provider details)
+const summaryError = (message, statusCode) => {
+	const err = new Error(message);
+	err.userMessage = message;
+	err.statusCode = statusCode;
+	return err;
+};
 
+const summarizeNote = async ({ title, description, tag }) => {
+	let message;
+	try {
+		message = await anthropic.messages.create({
+			model: MODEL,
+			max_tokens: 150,
+			messages: [{ role: 'user', content: buildPrompt({ title, description, tag }) }],
+		});
+	} catch (err) {
+		if (err instanceof Anthropic.APIConnectionError || err.status === 429 || err.status >= 500) {
+			throw summaryError('The AI service is busy right now, please try again in a minute', 503);
+		}
+		throw err;
+	}
+
+	if (message.stop_reason === 'refusal') {
+		throw summaryError('This note can not be summarized', 422);
+	}
 	const summary = message.content.find((block) => block.type === 'text')?.text?.trim();
-	if (message.stop_reason === 'refusal' || !summary) {
-		throw new Error('Claude returned an empty summary');
+	if (!summary) {
+		throw new Error('AI returned an empty summary');
 	}
 	return scrubLabels(summary);
 };
