@@ -11,7 +11,7 @@
   <img alt="Vite" src="https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white">
   <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind-v4-38bdf8?logo=tailwindcss&logoColor=white">
   <img alt="Node" src="https://img.shields.io/badge/Node-22-5fa04e?logo=nodedotjs&logoColor=white">
-  <img alt="Tests" src="https://img.shields.io/badge/tests-36%20passing-success">
+  <img alt="Tests" src="https://img.shields.io/badge/tests-94%20passing-success">
 </p>
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/1c84bcb9-33d2-4ab2-ba93-ba58b0aecf96/deploy-status)](https://app.netlify.com/projects/jottr-app/deploys)
@@ -34,7 +34,7 @@ Jottr is an open-source, cross-platform note app that helps you capture thoughts
 
 **AI** — Anthropic Claude (Haiku 4.5)
 
-**Testing** — Vitest · React Testing Library · jsdom (36 tests, ~89% line coverage)
+**Testing** — Vitest · React Testing Library · Supertest (94 tests across client and server)
 
 **Hosting** — Netlify (client) · Google Cloud Run (API) · MongoDB Atlas (data)
 
@@ -106,6 +106,8 @@ npm run lint         # ESLint
 npm run test:run     # run the test suite once
 npm run coverage     # tests with a coverage report
 ```
+
+`server/` has the same `test:run` and `coverage` scripts — routes are tested with Supertest against an in-memory MongoDB, with the AI call mocked.
 
 ## Deployment
 
