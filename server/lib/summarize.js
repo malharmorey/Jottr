@@ -1,7 +1,9 @@
-const GEMINI_URL =
-	'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+import Anthropic from '@anthropic-ai/sdk';
 
+const MODEL = 'claude-haiku-4-5';
 const TIMEOUT_MS = 15000;
+
+const anthropic = new Anthropic({ timeout: TIMEOUT_MS });
 
 // Input guardrail: Scrub structured PII
 const luhnValid = (digits) => {
@@ -63,36 +65,17 @@ const buildPrompt = ({ title, description, tag }) =>
 	`${INSTRUCTIONS}\n\n<title>${redactPII(title)}</title>\n<tags>${redactPII(tag || '')}</tags>\n<note>\n${redactPII(description)}\n</note>`;
 
 const summarizeNote = async ({ title, description, tag }) => {
-	const controller = new AbortController();
-	const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+	const message = await anthropic.messages.create({
+		model: MODEL,
+		max_tokens: 150,
+		messages: [{ role: 'user', content: buildPrompt({ title, description, tag }) }],
+	});
 
-	try {
-		const response = await fetch(GEMINI_URL, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'x-goog-api-key': process.env.GEMINI_API_KEY,
-			},
-			body: JSON.stringify({
-				contents: [{ parts: [{ text: buildPrompt({ title, description, tag }) }] }],
-				generationConfig: { maxOutputTokens: 150, thinkingConfig: { thinkingBudget: 0 } },
-			}),
-			signal: controller.signal,
-		});
-
-		if (!response.ok) {
-			throw new Error(`Gemini request failed with status ${response.status}`);
-		}
-
-		const data = await response.json();
-		const summary = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
-		if (!summary) {
-			throw new Error('Gemini returned an empty summary');
-		}
-		return scrubLabels(summary);
-	} finally {
-		clearTimeout(timer);
+	const summary = message.content.find((block) => block.type === 'text')?.text?.trim();
+	if (message.stop_reason === 'refusal' || !summary) {
+		throw new Error('Claude returned an empty summary');
 	}
+	return scrubLabels(summary);
 };
 
 export default summarizeNote;
