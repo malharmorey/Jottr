@@ -44,7 +44,10 @@ describe('NoteModal', () => {
 		};
 		const fetchSpy = mockFetch({ success: true });
 		const { queryClient } = renderWithProviders(<NoteModal />);
-		queryClient.setQueryData(['notes'], { notes: [note] });
+		queryClient.setQueryData(['notes'], {
+			pages: [{ success: true, notes: [note], nextCursor: null }],
+			pageParams: [null],
+		});
 
 		act(() => useNoteModalStore.getState().openEdit(note));
 		await screen.findByText('Edit Note');

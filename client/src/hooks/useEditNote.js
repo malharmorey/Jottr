@@ -20,11 +20,14 @@ export const useEditNote = () => {
 				old
 					? {
 							...old,
-							notes: old.notes.map((note) =>
-								note._id === id
-									? { ...note, title, description, tag, date: Date.now() }
-									: note
-							),
+							pages: old.pages.map((page) => ({
+								...page,
+								notes: page.notes.map((note) =>
+									note._id === id
+										? { ...note, title, description, tag, date: Date.now() }
+										: note
+								),
+							})),
 					  }
 					: old
 			);

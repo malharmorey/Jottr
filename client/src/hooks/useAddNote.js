@@ -14,7 +14,14 @@ export const useAddNote = () => {
 
 		onSuccess: (note) => {
 			queryClient.setQueryData(['notes'], (old) =>
-				old ? { ...old, notes: [...old.notes, note] } : old
+				old
+					? {
+							...old,
+							pages: old.pages.map((page, index) =>
+								index === 0 ? { ...page, notes: [note, ...page.notes] } : page
+							),
+					  }
+					: old
 			);
 			showAlert('Note added', 'success');
 		},

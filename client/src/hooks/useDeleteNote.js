@@ -17,7 +17,13 @@ export const useDeleteNote = () => {
 			await deleteNote(task.token, task.id);
 			queryClient.setQueryData(['notes'], (old) =>
 				old
-					? { ...old, notes: old.notes.filter((note) => note._id !== task.id) }
+					? {
+							...old,
+							pages: old.pages.map((page) => ({
+								...page,
+								notes: page.notes.filter((note) => note._id !== task.id),
+							})),
+					  }
 					: old
 			);
 		} catch (error) {

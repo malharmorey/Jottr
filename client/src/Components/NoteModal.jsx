@@ -30,7 +30,8 @@ function NoteModal() {
 		if (isEdit) {
 			const original = queryClient
 				.getQueryData(['notes'])
-				?.notes.find((note) => note._id === editId);
+				?.pages.flatMap((page) => page.notes)
+				.find((note) => note._id === editId);
 			const unchanged =
 				original &&
 				original.title === draft.title &&
