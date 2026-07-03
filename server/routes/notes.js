@@ -20,6 +20,18 @@ const summarizeLimiter = rateLimit({
 	},
 });
 
+const searchLimiter = rateLimit({
+	windowMs: 60 * 1000,
+	limit: 30,
+	standardHeaders: 'draft-7',
+	legacyHeaders: false,
+	handler: (req, res) => {
+		res.status(429).json({ success: false, message: 'Too many searches, slow down a little' });
+	},
+});
+
+const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 //---------------------------------ROUTE 1---------------------------------
 // fetching a page of a user's notes, newest first : get "api/notes/getallnotes".Login required
 router.get('/getallnotes', fetchuser, async (req, res) => {
@@ -207,6 +219,33 @@ router.post('/summarize/:id', summarizeLimiter, fetchuser, async (req, res) => {
 				message: error.userMessage || 'Could not generate a summary, please try again',
 			});
 		}
+	} catch (error) {
+		res.status(500).json({ success: false, message: 'Internal server error' });
+	}
+});
+
+//---------------------------------ROUTE 6---------------------------------
+// Searching a user's notes by title or description : GET "api/notes/search?q=".Login required
+router.get('/search', searchLimiter, fetchuser, async (req, res) => {
+	const q = (req.query.q || '').trim();
+	if (!q || q.length > 100) {
+		return res.status(400).json({ success: false, message: 'Search text must be 1 to 100 characters' });
+	}
+	try {
+		const pattern = new RegExp(escapeRegex(q), 'i');
+		const matches = await Note.find({
+			user: req.user.id,
+			$or: [{ title: pattern }, { description: pattern }],
+		})
+			.sort({ _id: -1 })
+			.limit(50);
+
+		// title hits above description-only hits, newest first within each
+		const notes = [
+			...matches.filter((note) => pattern.test(note.title)),
+			...matches.filter((note) => !pattern.test(note.title)),
+		];
+		res.json({ success: true, notes });
 	} catch (error) {
 		res.status(500).json({ success: false, message: 'Internal server error' });
 	}
