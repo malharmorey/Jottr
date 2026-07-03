@@ -71,6 +71,11 @@ function NotesList() {
 					<Shimmer />
 				</div>
 			)}
+			{!isLoading && !hasNextPage && notesArray.length > 0 && (
+				<p className='my-8 text-center font-secondary text-[1.05rem] text-white/60'>
+					No more notes down here. Just you and me again.
+				</p>
+			)}
 			<div ref={sentinelRef} aria-hidden='true'></div>
 		</>
 	);
