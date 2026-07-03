@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import Note from '../models/Note.js';
 import fetchuser from '../middleware/fetchuser.js';
 import { body } from 'express-validator';
@@ -20,11 +21,24 @@ const summarizeLimiter = rateLimit({
 });
 
 //---------------------------------ROUTE 1---------------------------------
-// fetching all notes of a user : get "api/notes/getallnotes".Login required
+// fetching a page of a user's notes, newest first : get "api/notes/getallnotes".Login required
 router.get('/getallnotes', fetchuser, async (req, res) => {
 	try {
-		const notes = await Note.find({ user: req.user.id });
-		res.json({ success: true, notes });
+		const parsed = parseInt(req.query.limit, 10);
+		const limit = parsed > 0 ? Math.min(parsed, 50) : 20;
+		const { cursor } = req.query;
+		if (cursor && !mongoose.isValidObjectId(cursor)) {
+			return res.status(400).json({ success: false, message: 'Invalid cursor' });
+		}
+
+		const filter = { user: req.user.id };
+		if (cursor) filter._id = { $lt: cursor };
+
+		// fetch one extra to know whether another page exists
+		const batch = await Note.find(filter).sort({ _id: -1 }).limit(limit + 1);
+		const notes = batch.slice(0, limit);
+		const nextCursor = batch.length > limit ? notes[notes.length - 1]._id : null;
+		res.json({ success: true, notes, nextCursor });
 	} catch (error) {
 		res.status(500).json({ success: false, message: 'Internal server error' });
 	}
