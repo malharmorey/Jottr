@@ -225,27 +225,27 @@ router.post('/summarize/:id', summarizeLimiter, fetchuser, async (req, res) => {
 });
 
 //---------------------------------ROUTE 6---------------------------------
-// Searching a user's notes by title or description : GET "api/notes/search?q=".Login required
+// Searching a user's notes by title, paged like getallnotes : GET "api/notes/search?q=".Login required
 router.get('/search', searchLimiter, fetchuser, async (req, res) => {
 	const q = (req.query.q || '').trim();
 	if (!q || q.length > 100) {
 		return res.status(400).json({ success: false, message: 'Search text must be 1 to 100 characters' });
 	}
 	try {
-		const pattern = new RegExp(escapeRegex(q), 'i');
-		const matches = await Note.find({
-			user: req.user.id,
-			$or: [{ title: pattern }, { description: pattern }],
-		})
-			.sort({ _id: -1 })
-			.limit(50);
+		const parsed = parseInt(req.query.limit, 10);
+		const limit = parsed > 0 ? Math.min(parsed, 50) : 20;
+		const { cursor } = req.query;
+		if (cursor && !mongoose.isValidObjectId(cursor)) {
+			return res.status(400).json({ success: false, message: 'Invalid cursor' });
+		}
 
-		// title hits above description-only hits, newest first within each
-		const notes = [
-			...matches.filter((note) => pattern.test(note.title)),
-			...matches.filter((note) => !pattern.test(note.title)),
-		];
-		res.json({ success: true, notes });
+		const filter = { user: req.user.id, title: new RegExp(escapeRegex(q), 'i') };
+		if (cursor) filter._id = { $lt: cursor };
+
+		const batch = await Note.find(filter).sort({ _id: -1 }).limit(limit + 1);
+		const notes = batch.slice(0, limit);
+		const nextCursor = batch.length > limit ? notes[notes.length - 1]._id : null;
+		res.json({ success: true, notes, nextCursor });
 	} catch (error) {
 		res.status(500).json({ success: false, message: 'Internal server error' });
 	}

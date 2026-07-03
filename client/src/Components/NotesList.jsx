@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNotes } from '../hooks/useNotes';
+import { useSearchNotes } from '../hooks/useSearchNotes';
 import useInView from '../hooks/useInView';
 import useAlertStore from '../stores/alertStore';
 import useAuth from '../hooks/useAuth';
@@ -8,14 +9,17 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 import NoteCard from './NoteCard';
 import Shimmer from './Shimmer';
 
-function NotesList() {
+function NotesList({ searchQuery = '' }) {
+	const isSearching = searchQuery.length > 0;
+	const allNotes = useNotes();
+	const searchResults = useSearchNotes(searchQuery);
 	const {
 		data: notesArray = [],
 		isLoading,
 		fetchNextPage,
 		hasNextPage,
 		isFetchingNextPage,
-	} = useNotes();
+	} = isSearching ? searchResults : allNotes;
 	const showAlert = useAlertStore((state) => state.showAlert);
 	const { isLoggedIn } = useAuth();
 
@@ -46,7 +50,13 @@ function NotesList() {
 				{isLoading ? (
 					<Shimmer />
 				) : notesArray.length === 0 ? (
-					<NoteCard title={'Nothing in Here, but you and me'} date={''} />
+					isSearching ? (
+						<p className='mx-2 my-8 w-full text-center font-secondary text-[1.05rem] text-white/60'>
+							No notes match your search.
+						</p>
+					) : (
+						<NoteCard title={'Nothing in Here, but you and me'} date={''} />
+					)
 				) : (
 					notesArray.map((note) => (
 						<div className='w-full md:w-1/2' key={note._id}>
@@ -71,7 +81,7 @@ function NotesList() {
 					<Shimmer />
 				</div>
 			)}
-			{!isLoading && !hasNextPage && notesArray.length > 0 && (
+			{!isSearching && !isLoading && !hasNextPage && notesArray.length > 0 && (
 				<p className='my-8 text-center font-secondary text-[1.05rem] text-white/60'>
 					No more notes down here. Just you and me again.
 				</p>

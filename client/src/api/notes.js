@@ -30,6 +30,14 @@ export const getNotes = (token, cursor) =>
 		'Unable to load your notes'
 	);
 
+// GET one page of the user's notes whose titles match q → { success, notes, nextCursor }
+export const searchNotes = (token, q, cursor) =>
+	request(
+		`${host}/api/notes/search?q=${encodeURIComponent(q)}&limit=20${cursor ? `&cursor=${cursor}` : ''}`,
+		{ method: 'GET', headers: headers(token) },
+		'Unable to search your notes'
+	);
+
 // POST a new note → returns the created note
 export const addNote = async (token, { title, description, tag }) => {
 	const data = await request(
