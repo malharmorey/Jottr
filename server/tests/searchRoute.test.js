@@ -80,6 +80,13 @@ describe('GET /api/notes/search', () => {
 		expect((await search('   ')).status).toBe(400);
 	});
 
+	it('rejects a non-string query instead of crashing', async () => {
+		const res = await request(app)
+			.get('/api/notes/search?q=a&q=b')
+			.set('auth-token', ownerToken);
+		expect(res.status).toBe(400);
+	});
+
 	it('rejects a query over 100 characters', async () => {
 		expect((await search('m'.repeat(101))).status).toBe(400);
 	});
