@@ -1,0 +1,78 @@
+import { useRef } from 'react';
+
+// frosted title search; always expanded from md up, icon-that-expands below it
+const SearchBar = ({ value, onChange, open, onOpen, onClose }) => {
+	const inputRef = useRef(null);
+
+	const handleIconClick = () => {
+		onOpen();
+		inputRef.current?.focus();
+	};
+
+	const handleClear = () => {
+		onChange('');
+		inputRef.current?.focus();
+	};
+
+	return (
+		<div className='flex shrink-0 items-center rounded-full border border-frost-border bg-frost py-1.5 pl-2.5 pr-2 backdrop-blur-[7px] backdrop-saturate-191'>
+			<button
+				type='button'
+				aria-label='Search notes'
+				onClick={handleIconClick}
+				className='flex cursor-pointer items-center justify-center border-none bg-transparent p-0 text-white'
+			>
+				<svg
+					width='16'
+					height='16'
+					viewBox='0 0 24 24'
+					fill='none'
+					stroke='currentColor'
+					strokeWidth='2.5'
+					strokeLinecap='round'
+					aria-hidden='true'
+				>
+					<circle cx='11' cy='11' r='7' />
+					<line x1='16.5' y1='16.5' x2='21' y2='21' />
+				</svg>
+			</button>
+			<input
+				ref={inputRef}
+				type='text'
+				value={value}
+				onChange={(e) => onChange(e.target.value)}
+				onBlur={() => {
+					if (!value) onClose();
+				}}
+				placeholder='Search notes…'
+				aria-label='Search notes'
+				className={`border-none bg-transparent font-secondary text-[1.05rem] text-white outline-none transition-[width,padding] duration-300 ease-pro placeholder:text-white/60 md:w-56 md:px-2 ${
+					open ? 'w-36 px-2' : 'w-0 px-0'
+				}`}
+			/>
+			{value && (
+				<button
+					type='button'
+					aria-label='Clear search'
+					onClick={handleClear}
+					className='flex cursor-pointer items-center justify-center border-none bg-transparent p-0 text-white/70'
+				>
+					<svg
+						width='13'
+						height='13'
+						viewBox='0 0 24 24'
+						stroke='currentColor'
+						strokeWidth='2.5'
+						strokeLinecap='round'
+						aria-hidden='true'
+					>
+						<line x1='5' y1='5' x2='19' y2='19' />
+						<line x1='19' y1='5' x2='5' y2='19' />
+					</svg>
+				</button>
+			)}
+		</div>
+	);
+};
+
+export default SearchBar;
