@@ -15,7 +15,7 @@ const SearchBar = ({ value, onChange, open, onOpen, onClose }) => {
 	};
 
 	return (
-		<div className='flex shrink-0 items-center rounded-full border border-frost-border bg-frost py-1.5 pl-2.5 pr-2 backdrop-blur-[7px] backdrop-saturate-191'>
+		<div className='flex shrink-0 items-center rounded-full border border-frost-border bg-frost p-2.5 backdrop-blur-[7px] backdrop-saturate-191'>
 			<button
 				type='button'
 				aria-label='Search notes'
@@ -23,8 +23,8 @@ const SearchBar = ({ value, onChange, open, onOpen, onClose }) => {
 				className='flex cursor-pointer items-center justify-center border-none bg-transparent p-0 text-white'
 			>
 				<svg
-					width='16'
-					height='16'
+					width='19'
+					height='19'
 					viewBox='0 0 24 24'
 					fill='none'
 					stroke='currentColor'
@@ -58,8 +58,8 @@ const SearchBar = ({ value, onChange, open, onOpen, onClose }) => {
 					className='flex cursor-pointer items-center justify-center border-none bg-transparent p-0 text-white/70'
 				>
 					<svg
-						width='13'
-						height='13'
+						width='15'
+						height='15'
 						viewBox='0 0 24 24'
 						stroke='currentColor'
 						strokeWidth='2.5'
