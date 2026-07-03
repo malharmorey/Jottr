@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateNote } from '../api/notes';
+import { flushPendingDelete } from './useDeleteNote';
 import { removeSummary } from '../lib/summaryCache';
 import useAuth from './useAuth';
 import useAlertStore from '../stores/alertStore';
@@ -14,17 +15,21 @@ export const useEditNote = () => {
 		mutationFn: ({ id, title, description, tag }) =>
 			updateNote(token, id, { title, description, tag }),
 		onMutate: async ({ id, title, description, tag }) => {
+			flushPendingDelete();
 			await queryClient.cancelQueries({ queryKey: ['notes'] });
 			const previous = queryClient.getQueryData(['notes']);
 			queryClient.setQueryData(['notes'], (old) =>
 				old
 					? {
 							...old,
-							notes: old.notes.map((note) =>
-								note._id === id
-									? { ...note, title, description, tag, date: Date.now() }
-									: note
-							),
+							pages: old.pages.map((page) => ({
+								...page,
+								notes: page.notes.map((note) =>
+									note._id === id
+										? { ...note, title, description, tag, date: Date.now() }
+										: note
+								),
+							})),
 					  }
 					: old
 			);

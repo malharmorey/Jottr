@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addNote } from '../api/notes';
+import { flushPendingDelete } from './useDeleteNote';
 import useAuth from './useAuth';
 import useAlertStore from '../stores/alertStore';
 
@@ -11,10 +12,19 @@ export const useAddNote = () => {
 
 	return useMutation({
 		mutationFn: (newNote) => addNote(token, newNote),
-
+		onMutate: () => {
+			flushPendingDelete();
+		},
 		onSuccess: (note) => {
 			queryClient.setQueryData(['notes'], (old) =>
-				old ? { ...old, notes: [...old.notes, note] } : old
+				old
+					? {
+							...old,
+							pages: old.pages.map((page, index) =>
+								index === 0 ? { ...page, notes: [note, ...page.notes] } : page
+							),
+					  }
+					: old
 			);
 			showAlert('Note added', 'success');
 		},

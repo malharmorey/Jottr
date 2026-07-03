@@ -50,6 +50,12 @@ global.ResizeObserver = class {
 	disconnect() {}
 };
 
+global.IntersectionObserver = class {
+	observe() {}
+	unobserve() {}
+	disconnect() {}
+};
+
 afterEach(() => {
 	cleanup();
 	sessionStorage.clear();

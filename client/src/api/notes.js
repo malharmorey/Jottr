@@ -22,10 +22,10 @@ const request = async (url, options, fallback) => {
 	return data;
 };
 
-// GET all notes of the logged-in user → { success, notes }
-export const getAllNotes = (token) =>
+// GET one page of the logged-in user's notes → { success, notes, nextCursor }
+export const getNotes = (token, cursor) =>
 	request(
-		`${host}/api/notes/getallnotes`,
+		`${host}/api/notes/getallnotes?limit=20${cursor ? `&cursor=${cursor}` : ''}`,
 		{ method: 'GET', headers: headers(token) },
 		'Unable to load your notes'
 	);

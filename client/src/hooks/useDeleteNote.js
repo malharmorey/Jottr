@@ -8,6 +8,11 @@ const UNDO_WINDOW_MS = 10000;
 
 let pending = null;
 
+// any other note action ends the undo window early — one pending goodbye at a time
+export const flushPendingDelete = () => {
+	if (pending) pending.flush();
+};
+
 export const useDeleteNote = () => {
 	const { token } = useAuth();
 	const queryClient = useQueryClient();
@@ -17,7 +22,13 @@ export const useDeleteNote = () => {
 			await deleteNote(task.token, task.id);
 			queryClient.setQueryData(['notes'], (old) =>
 				old
-					? { ...old, notes: old.notes.filter((note) => note._id !== task.id) }
+					? {
+							...old,
+							pages: old.pages.map((page) => ({
+								...page,
+								notes: page.notes.filter((note) => note._id !== task.id),
+							})),
+					  }
 					: old
 			);
 		} catch (error) {
@@ -48,6 +59,7 @@ export const useDeleteNote = () => {
 
 		const task = { id, token };
 		task.timer = setTimeout(() => commitNow(task), UNDO_WINDOW_MS);
+		task.flush = () => commitNow(task);
 		pending = task;
 
 		useAlertStore.getState().showUndoAlert(
