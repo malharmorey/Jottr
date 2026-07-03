@@ -227,7 +227,8 @@ router.post('/summarize/:id', summarizeLimiter, fetchuser, async (req, res) => {
 //---------------------------------ROUTE 6---------------------------------
 // Searching a user's notes by title, paged like getallnotes : GET "api/notes/search?q=".Login required
 router.get('/search', searchLimiter, fetchuser, async (req, res) => {
-	const q = (req.query.q || '').trim();
+	// qs can deliver q as an array/object — only a plain string may reach trim
+	const q = typeof req.query.q === 'string' ? req.query.q.trim() : '';
 	if (!q || q.length > 100) {
 		return res.status(400).json({ success: false, message: 'Search text must be 1 to 100 characters' });
 	}
