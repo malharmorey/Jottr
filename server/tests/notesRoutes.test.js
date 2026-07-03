@@ -36,6 +36,69 @@ describe('GET /api/notes/getallnotes', () => {
 		expect(res.status).toBe(200);
 		expect(res.body.notes).toHaveLength(1);
 		expect(res.body.notes[0].title).toBe('Mine');
+		expect(res.body.nextCursor).toBeNull();
+	});
+
+	it('returns notes newest first', async () => {
+		await createNote(ownerId, 'First');
+		await createNote(ownerId, 'Second');
+		await createNote(ownerId, 'Third');
+		const res = await request(app).get('/api/notes/getallnotes').set('auth-token', ownerToken);
+		expect(res.body.notes.map((n) => n.title)).toEqual(['Third', 'Second', 'First']);
+	});
+
+	it('pages through with the cursor, no overlap and no gap', async () => {
+		for (let i = 1; i <= 7; i++) await createNote(ownerId, `Note ${i}`);
+
+		const seen = [];
+		let cursor = null;
+		let pages = 0;
+		do {
+			const url = `/api/notes/getallnotes?limit=3${cursor ? `&cursor=${cursor}` : ''}`;
+			const res = await request(app).get(url).set('auth-token', ownerToken);
+			expect(res.status).toBe(200);
+			seen.push(...res.body.notes.map((n) => n.title));
+			cursor = res.body.nextCursor;
+			pages++;
+		} while (cursor);
+
+		expect(pages).toBe(3);
+		expect(seen).toEqual(['Note 7', 'Note 6', 'Note 5', 'Note 4', 'Note 3', 'Note 2', 'Note 1']);
+	});
+
+	it('keeps other users\' notes out of every page', async () => {
+		await createNote(ownerId, 'Mine 1');
+		await createNote(strangerId, 'Not mine');
+		await createNote(ownerId, 'Mine 2');
+		const res = await request(app).get('/api/notes/getallnotes?limit=2').set('auth-token', ownerToken);
+		expect(res.body.notes.map((n) => n.title)).toEqual(['Mine 2', 'Mine 1']);
+	});
+
+	it('caps the batch size at 50', async () => {
+		await Note.insertMany(
+			Array.from({ length: 55 }, (_, i) => ({
+				user: ownerId,
+				title: `Bulk ${i}`,
+				description: 'Filler body for the cap test',
+			}))
+		);
+		const res = await request(app).get('/api/notes/getallnotes?limit=999').set('auth-token', ownerToken);
+		expect(res.body.notes).toHaveLength(50);
+		expect(res.body.nextCursor).not.toBeNull();
+	});
+
+	it('falls back to the default batch on a garbage limit', async () => {
+		await createNote(ownerId);
+		const res = await request(app).get('/api/notes/getallnotes?limit=abc').set('auth-token', ownerToken);
+		expect(res.status).toBe(200);
+		expect(res.body.notes).toHaveLength(1);
+	});
+
+	it('rejects a malformed cursor', async () => {
+		const res = await request(app)
+			.get('/api/notes/getallnotes?cursor=not-an-id')
+			.set('auth-token', ownerToken);
+		expect(res.status).toBe(400);
 	});
 });
 

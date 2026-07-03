@@ -27,5 +27,7 @@ const NotesSchema = new Schema({
 	},
 });
 
+NotesSchema.index({ user: 1, _id: -1 });
+
 const Note = mongoose.model('note', NotesSchema);
 export default Note;
