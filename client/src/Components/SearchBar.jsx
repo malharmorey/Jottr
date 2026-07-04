@@ -5,7 +5,8 @@ const SearchBar = ({ value, onChange, open, onOpen, onClose }) => {
 	const inputRef = useRef(null);
 
 	const handleIconClick = () => {
-		onOpen();
+		// expand only below md — from md up the input is always out
+		if (!window.matchMedia('(min-width: 768px)').matches) onOpen();
 		inputRef.current?.focus();
 	};
 

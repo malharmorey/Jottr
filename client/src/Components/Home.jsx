@@ -17,18 +17,14 @@ const Home = ({ title }) => {
 	return (
 		<>
 			<div className='mx-2 flex items-center justify-between gap-2'>
-				{/* 1fr→0fr lets the heading give its width to the expanding search bar */}
-				<div
-					className={`grid min-w-0 transition-[grid-template-columns,opacity] duration-300 ease-pro ${
-						searchOpen
-							? 'max-md:grid-cols-[0fr] max-md:opacity-0 grid-cols-[1fr]'
-							: 'grid-cols-[1fr] opacity-100'
+				{/* max-width→0 hands the heading's space to the expanding search bar */}
+				<h2
+					className={`min-w-0 overflow-hidden whitespace-nowrap font-secondary text-[2.1rem] font-semibold transition-[max-width,opacity] duration-300 ease-pro max-[500px]:text-[2rem] max-[400px]:text-[1.8rem] md:max-w-none md:opacity-100 ${
+						searchOpen ? 'max-w-0 opacity-0' : 'max-w-64 opacity-100'
 					}`}
 				>
-					<h2 className='min-w-0 overflow-hidden whitespace-nowrap font-secondary text-[2.1rem] font-semibold max-[500px]:text-[2rem] max-[400px]:text-[1.8rem]'>
-						Your Notes
-					</h2>
-				</div>
+					Your Notes
+				</h2>
 				<SearchBar
 					value={query}
 					onChange={setQuery}
