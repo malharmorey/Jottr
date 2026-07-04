@@ -15,12 +15,20 @@ const SearchBar = ({ value, onChange, open, onOpen, onClose }) => {
 		inputRef.current?.focus();
 	};
 
+	// a press anywhere in the pill must not steal focus from the input —
+	// losing it while empty collapses the bar mid-tap
+	const handlePillPress = (e) => {
+		if (e.target !== inputRef.current) e.preventDefault();
+	};
+
 	return (
-		<div className='flex shrink-0 items-center rounded-full border border-frost-border bg-frost p-2.5 backdrop-blur-[7px] backdrop-saturate-191'>
+		<div
+			onMouseDown={handlePillPress}
+			className='flex shrink-0 items-center rounded-full border border-frost-border bg-frost p-2.5 backdrop-blur-[7px] backdrop-saturate-191'
+		>
 			<button
 				type='button'
 				aria-label='Search notes'
-				onMouseDown={(e) => e.preventDefault()}
 				onClick={handleIconClick}
 				className='flex cursor-pointer items-center justify-center border-none bg-transparent p-0 text-white'
 			>
@@ -56,7 +64,6 @@ const SearchBar = ({ value, onChange, open, onOpen, onClose }) => {
 				<button
 					type='button'
 					aria-label='Clear search'
-					onMouseDown={(e) => e.preventDefault()}
 					onClick={handleClear}
 					className='flex cursor-pointer items-center justify-center border-none bg-transparent p-0 text-white/70'
 				>

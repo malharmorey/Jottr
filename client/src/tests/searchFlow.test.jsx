@@ -139,6 +139,16 @@ describe('search bar open/close mechanics', () => {
 		expect(input.className).toContain('w-36');
 	});
 
+	it('an imprecise tap on the pill padding does not close the bar either', async () => {
+		const { user, icon, input } = await setup();
+
+		await user.click(icon);
+		await user.click(input.parentElement);
+
+		expect(input).toHaveFocus();
+		expect(input.className).toContain('w-36');
+	});
+
 	it('tapping outside with an empty box collapses the bar and restores the heading', async () => {
 		const { user, icon, input, heading } = await setup();
 
