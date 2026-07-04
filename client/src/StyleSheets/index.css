@@ -39,6 +39,12 @@
 		font: inherit;
 	}
 
+	/* dark canvas behind the photo — overscroll and mobile-browser-bar
+	   repaints show this instead of flashing white */
+	html {
+		background-color: #151320;
+	}
+
 	body {
 		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
 			'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
@@ -53,7 +59,10 @@
 		content: '';
 		position: fixed;
 		inset: 0;
+		/* large-viewport height keeps the photo covering the strip a hiding
+		   bottom bar reveals */
 		min-height: 100vh;
+		min-height: 100lvh;
 		z-index: 0;
 		background: url(../images/1.jpg);
 		filter: invert(94%);
