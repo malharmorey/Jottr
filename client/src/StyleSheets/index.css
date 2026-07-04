@@ -179,6 +179,39 @@
 	}
 }
 
+/* Icon tooltip — rises in, fades out (distinct keyframes so the exit replays). */
+@keyframes tooltipIn {
+	from {
+		opacity: 0;
+		transform: translateY(4px) scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+@keyframes tooltipOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+@layer components {
+	.tooltipContent {
+		transform-origin: var(--radix-tooltip-content-transform-origin);
+	}
+	.tooltipContent[data-state='delayed-open'],
+	.tooltipContent[data-state='instant-open'] {
+		animation: tooltipIn 0.2s var(--ease-pro);
+	}
+	.tooltipContent[data-state='closed'] {
+		animation: tooltipOut 0.15s var(--ease-pro);
+	}
+}
+
 /* Navbar hamburger that morphs into an X (driven by data-open), and the
    logout dropdown's slide-down. */
 @keyframes navDropIn {

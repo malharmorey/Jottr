@@ -3,6 +3,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import useNoteModalStore from '../stores/noteModalStore';
 import useAiSummaryStore from '../stores/aiSummaryStore';
 import useConfirmDeleteStore from '../stores/confirmDeleteStore';
+import Tooltip from './Tooltip';
 import pic from '../images/pngegg.png';
 
 dayjs.extend(relativeTime);
@@ -24,19 +25,21 @@ function NoteCard({ title, description, tag, date, id, note }) {
 					dayjs(date).isValid() ? undefined : { maxWidth: 'fit-content' }
 				}
 			>
-				<button
-					type='button'
-					className={`${iconBtn} absolute right-0 top-0 m-4 text-[#0dcaf0] ${
-						dayjs(date).isValid() ? '' : 'hidden'
-					}`}
-					aria-label='Summarize note'
-					onClick={() => openSummary(id)}
-				>
-					<i
-						className='fa-solid fa-wand-magic-sparkles fa-lg max-[400px]:text-[21px]!'
-						aria-hidden='true'
-					></i>
-				</button>
+				<Tooltip label='Summarize with AI'>
+					<button
+						type='button'
+						className={`${iconBtn} absolute right-0 top-0 m-4 text-[#0dcaf0] ${
+							dayjs(date).isValid() ? '' : 'hidden'
+						}`}
+						aria-label='Summarize note'
+						onClick={() => openSummary(id)}
+					>
+						<i
+							className='fa-solid fa-wand-magic-sparkles fa-lg max-[400px]:text-[21px]!'
+							aria-hidden='true'
+						></i>
+					</button>
+				</Tooltip>
 				<div className='mx-[0.3rem] my-[0.8rem] px-4 py-5 max-[500px]:mx-[0.2rem] max-[500px]:my-[1.3rem] max-[400px]:mx-0 max-[400px]:my-[1.4rem]'>
 					<h4
 						className='mb-3 wrap-break-word font-primary text-[1.8rem] font-bold leading-[1.15] max-[400px]:text-[1.7rem]'
@@ -69,33 +72,37 @@ function NoteCard({ title, description, tag, date, id, note }) {
 						</small>
 					</p>
 
-					<button
-						type='button'
-						className={`${iconBtn} text-[#ffc107] ${
-							dayjs(date).isValid() ? '' : 'hidden'
-						}`}
-						aria-label='Edit note'
-						onClick={() => openEdit(note)}
-					>
-						<i
-							className='fa-regular fa-pen-to-square fa-lg max-[400px]:text-[21px]!'
-							aria-hidden='true'
-						></i>
-					</button>
+					<Tooltip label='Edit note'>
+						<button
+							type='button'
+							className={`${iconBtn} text-[#ffc107] ${
+								dayjs(date).isValid() ? '' : 'hidden'
+							}`}
+							aria-label='Edit note'
+							onClick={() => openEdit(note)}
+						>
+							<i
+								className='fa-regular fa-pen-to-square fa-lg max-[400px]:text-[21px]!'
+								aria-hidden='true'
+							></i>
+						</button>
+					</Tooltip>
 
-					<button
-						type='button'
-						className={`${iconBtn} mx-6 text-[#dc3545] ${
-							dayjs(date).isValid() ? '' : 'hidden'
-						}`}
-						aria-label='Delete note'
-						onClick={() => openConfirmDelete(id)}
-					>
-						<i
-							className='fa-regular fa-trash-can fa-lg max-[400px]:text-[21px]!'
-							aria-hidden='true'
-						></i>
-					</button>
+					<Tooltip label='Delete note'>
+						<button
+							type='button'
+							className={`${iconBtn} mx-6 text-[#dc3545] ${
+								dayjs(date).isValid() ? '' : 'hidden'
+							}`}
+							aria-label='Delete note'
+							onClick={() => openConfirmDelete(id)}
+						>
+							<i
+								className='fa-regular fa-trash-can fa-lg max-[400px]:text-[21px]!'
+								aria-hidden='true'
+							></i>
+						</button>
+					</Tooltip>
 				</div>
 			</div>
 		</div>

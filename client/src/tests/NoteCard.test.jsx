@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import NoteCard from '../Components/NoteCard';
 import useConfirmDeleteStore from '../stores/confirmDeleteStore';
@@ -42,5 +42,44 @@ describe('NoteCard', () => {
 		expect(screen.getByRole('button', { name: /edit note/i })).toHaveClass(
 			'hidden'
 		);
+	});
+});
+
+describe('NoteCard icon tooltips', () => {
+	it.each([
+		[/edit note/i, 'Edit note'],
+		[/delete note/i, 'Delete note'],
+		[/summarize note/i, 'Summarize with AI'],
+	])('hovering the %s button shows its label', async (name, label) => {
+		const user = userEvent.setup();
+		render(<NoteCard {...note} id={note._id} note={note} />);
+
+		await user.hover(screen.getByRole('button', { name }));
+
+		const tooltip = await screen.findByRole('tooltip');
+		expect(tooltip).toHaveTextContent(label);
+	});
+
+	it('the tooltip goes away when the pointer leaves', async () => {
+		const user = userEvent.setup();
+		render(<NoteCard {...note} id={note._id} note={note} />);
+
+		await user.hover(screen.getByRole('button', { name: /edit note/i }));
+		await screen.findByRole('tooltip');
+		await user.unhover(screen.getByRole('button', { name: /edit note/i }));
+
+		await waitFor(() =>
+			expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+		);
+	});
+
+	it('hovering never fires the button action', async () => {
+		const user = userEvent.setup();
+		render(<NoteCard {...note} id={note._id} note={note} />);
+
+		await user.hover(screen.getByRole('button', { name: /delete note/i }));
+		await screen.findByRole('tooltip');
+
+		expect(useConfirmDeleteStore.getState().id).toBe(null);
 	});
 });
