@@ -20,6 +20,7 @@ const SearchBar = ({ value, onChange, open, onOpen, onClose }) => {
 			<button
 				type='button'
 				aria-label='Search notes'
+				onMouseDown={(e) => e.preventDefault()}
 				onClick={handleIconClick}
 				className='flex cursor-pointer items-center justify-center border-none bg-transparent p-0 text-white'
 			>
@@ -55,6 +56,7 @@ const SearchBar = ({ value, onChange, open, onOpen, onClose }) => {
 				<button
 					type='button'
 					aria-label='Clear search'
+					onMouseDown={(e) => e.preventDefault()}
 					onClick={handleClear}
 					className='flex cursor-pointer items-center justify-center border-none bg-transparent p-0 text-white/70'
 				>
