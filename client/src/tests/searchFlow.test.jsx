@@ -98,3 +98,102 @@ describe('note search flow', () => {
 		expect(await screen.findByText(/no notes match/i)).toBeInTheDocument();
 	});
 });
+
+// jsdom's matchMedia polyfill reports matches:false, i.e. a mobile viewport
+describe('search bar open/close mechanics', () => {
+	const setup = async () => {
+		const user = userEvent.setup();
+		login('Alice');
+		mockNotesAndSearch();
+		renderWithProviders(<Home title='Home' />);
+		await screen.findByText('Trip plan');
+		return {
+			user,
+			icon: screen.getByRole('button', { name: 'Search notes' }),
+			input: screen.getByRole('textbox', { name: 'Search notes' }),
+			heading: screen.getByRole('heading', { name: 'Your Notes' }),
+		};
+	};
+
+	it('magnifier tap expands the bar, collapses the heading and focuses the input', async () => {
+		const { user, icon, input, heading } = await setup();
+
+		await user.click(icon);
+
+		expect(input).toHaveFocus();
+		expect(input.className).toContain('w-36');
+		expect(heading.className).toContain('max-w-0');
+		expect(heading.className).toContain('opacity-0');
+	});
+
+	it('tapping the magnifier again never blurs the input (the snap-shut race)', async () => {
+		const { user, icon, input } = await setup();
+		const blurSpy = vi.fn();
+		input.addEventListener('blur', blurSpy);
+
+		await user.click(icon);
+		await user.click(icon);
+
+		expect(blurSpy).not.toHaveBeenCalled();
+		expect(input).toHaveFocus();
+		expect(input.className).toContain('w-36');
+	});
+
+	it('an imprecise tap on the pill padding does not close the bar either', async () => {
+		const { user, icon, input } = await setup();
+
+		await user.click(icon);
+		await user.click(input.parentElement);
+
+		expect(input).toHaveFocus();
+		expect(input.className).toContain('w-36');
+	});
+
+	it('tapping outside with an empty box collapses the bar and restores the heading', async () => {
+		const { user, icon, input, heading } = await setup();
+
+		await user.click(icon);
+		await user.click(screen.getByText('Trip plan'));
+
+		expect(input.className).toContain('w-0');
+		expect(heading.className).not.toContain('max-w-0');
+		expect(heading.className).toContain('opacity-100');
+	});
+
+	it('tapping outside with text in the box keeps the bar open', async () => {
+		const { user, icon, input } = await setup();
+
+		await user.click(icon);
+		await user.type(input, 'milk');
+		await user.click(await screen.findByText('Milk plans'));
+
+		expect(input.className).toContain('w-36');
+	});
+
+	it('clearing with the x keeps the input focused and the bar open', async () => {
+		const { user, icon, input } = await setup();
+
+		await user.click(icon);
+		await user.type(input, 'milk');
+		await user.click(screen.getByLabelText('Clear search'));
+
+		expect(input).toHaveValue('');
+		expect(input).toHaveFocus();
+		expect(input.className).toContain('w-36');
+	});
+
+	it('on desktop the magnifier only focuses — the heading never collapses', async () => {
+		vi.spyOn(window, 'matchMedia').mockReturnValue({
+			matches: true,
+			addEventListener: () => {},
+			removeEventListener: () => {},
+		});
+		const { user, icon, input, heading } = await setup();
+
+		await user.click(icon);
+
+		expect(input).toHaveFocus();
+		expect(heading.className).not.toContain('max-w-0');
+		expect(heading.className).toContain('opacity-100');
+	});
+});

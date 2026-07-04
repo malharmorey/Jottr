@@ -5,7 +5,8 @@ const SearchBar = ({ value, onChange, open, onOpen, onClose }) => {
 	const inputRef = useRef(null);
 
 	const handleIconClick = () => {
-		onOpen();
+		// expand only below md — from md up the input is always out
+		if (!window.matchMedia('(min-width: 768px)').matches) onOpen();
 		inputRef.current?.focus();
 	};
 
@@ -14,8 +15,17 @@ const SearchBar = ({ value, onChange, open, onOpen, onClose }) => {
 		inputRef.current?.focus();
 	};
 
+	// a press anywhere in the pill must not steal focus from the input —
+	// losing it while empty collapses the bar mid-tap
+	const handlePillPress = (e) => {
+		if (e.target !== inputRef.current) e.preventDefault();
+	};
+
 	return (
-		<div className='flex shrink-0 items-center rounded-full border border-frost-border bg-frost p-2.5 backdrop-blur-[7px] backdrop-saturate-191'>
+		<div
+			onMouseDown={handlePillPress}
+			className='flex shrink-0 items-center rounded-full border border-frost-border bg-frost p-2.5 backdrop-blur-[7px] backdrop-saturate-191'
+		>
 			<button
 				type='button'
 				aria-label='Search notes'
