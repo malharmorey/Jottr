@@ -1,7 +1,3 @@
-/* Layer order: Bootstrap sits lowest so Tailwind + our own styles win as each
-   component is ported. Un-ported components still match Bootstrap's rules and
-   keep their look until they move over. Bootstrap is removed entirely at the
-   end of the migration. */
 @layer theme, base, components, utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Raleway:wght@200;300;400;500;600;700;800&display=swap');
@@ -12,7 +8,7 @@
 	--font-primary: 'Kalam', cursive;
 	--font-secondary: 'Raleway', sans-serif;
 	--ease-pro: cubic-bezier(0.22, 1, 0.36, 1);
-	/* navbar collapse point — Bootstrap's lg (992px), not Tailwind's lg (1024) */
+	/* navbar collapse point — 992px, intentionally not Tailwind's lg (1024) */
 	--breakpoint-nav: 62rem;
 	/* frost palette — single source for every glass surface; exposed as the
 	   bg-frost / border-frost-border / etc. utilities so the look changes in
@@ -112,8 +108,8 @@
 	animation: shimmerGlide 1.4s ease-in-out infinite;
 }
 
-/* Radix dialog: drop-from-above on open, reverse on close (Bootstrap-modal
-   feel), plus the footer buttons (solid colour + Bootstrap-style sheen). */
+/* Radix dialog: drop-from-above on open, reverse on close, plus the footer
+   buttons (solid colour + gradient sheen). */
 @keyframes modalDrop {
 	from {
 		opacity: 0;
