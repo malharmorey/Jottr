@@ -84,6 +84,17 @@
 	border: none;
 	color: white;
 	outline: none;
+
+	/* Chrome forces a light background on autofilled fields, which hides the
+	   white text + show-password icon. Defer that background paint indefinitely
+	   so the field keeps its own frost fill, and keep text/caret white. */
+	&:-webkit-autofill,
+	&:-webkit-autofill:hover,
+	&:-webkit-autofill:focus {
+		-webkit-text-fill-color: white;
+		caret-color: white;
+		transition: background-color 9999s ease-in-out 0s;
+	}
 }
 
 @keyframes shimmerGlide {
