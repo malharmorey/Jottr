@@ -25,7 +25,7 @@ const Login = ({ title }) => {
 		<div className='relative mt-auto flex h-[inherit] w-[inherit] items-center justify-center'>
 			<div className='frost relative w-2/5 max-w-md max-[1000px]:w-1/2 max-[700px]:w-[65%] max-[500px]:w-4/5 max-[400px]:w-full'>
 				<div>
-					<p className='mx-8 mb-2 mt-8 text-center font-primary text-[2.8rem] font-semibold max-[500px]:text-[2.6rem]'>
+					<p className='mx-8 mb-2 mt-8 text-center font-secondary text-[2.1rem] font-semibold max-[500px]:text-[2rem] max-[400px]:text-[1.8rem]'>
 						Login
 					</p>
 				</div>
