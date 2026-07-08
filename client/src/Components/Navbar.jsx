@@ -5,7 +5,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import useAlertStore from '../stores/alertStore';
 import useAuth from '../hooks/useAuth';
 import { clearSummaries } from '../lib/summaryCache';
-import jottrLogo from '../images/logo512.png';
 
 const navLink =
 	'block py-2 font-secondary text-[1.05rem] font-medium text-white no-underline nav:px-3';
@@ -65,8 +64,7 @@ const Navbar = () => {
 						to='/'
 						onClick={closeMenu}
 					>
-						<img className='mb-1.25 mr-1.75 h-6 w-6' src={jottrLogo} alt='' />
-						Jottr
+												Jottr
 					</NavLink>
 
 					<button
