@@ -3,7 +3,7 @@
 		"concurrently": "^7.3.0"
 	},
 	"name": "jottr",
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"description": "AI-powered note-taking app",
 	"main": "index.js",
 	"scripts": {
