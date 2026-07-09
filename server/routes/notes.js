@@ -151,7 +151,7 @@ router.put(
 			note = await Note.findByIdAndUpdate(
 				req.params.id,
 				{ $set: newNote },
-				{ new: true }
+				{ new: true, runValidators: true }
 			);
 			res.json({
 				success: true,

@@ -154,6 +154,29 @@ describe('PUT /api/notes/updatenote/:id', () => {
 		const res = await updateNote(new mongoose.Types.ObjectId().toString(), ownerToken);
 		expect(res.status).toBe(404);
 	});
+
+	// update validators are off by default — without runValidators the overflow silently persists
+	it('surfaces a maxlength overflow as a readable 400 and leaves the note alone', async () => {
+		const note = await createNote();
+		const res = await updateNote(note.id, ownerToken, {
+			title: 'T'.repeat(201),
+			description: 'New description text',
+		});
+		expect(res.status).toBe(400);
+		expect(res.body.message).toBe('title is too long');
+		expect((await Note.findById(note.id)).title).toBe('Trip plan');
+	});
+
+	it('rejects an over-long tag and description on update', async () => {
+		const note = await createNote();
+		const res = await updateNote(note.id, ownerToken, {
+			title: 'New title',
+			description: 'D'.repeat(10001),
+			tag: 'G'.repeat(61),
+		});
+		expect(res.status).toBe(400);
+		expect(res.body.message).toBe('description and tag are too long');
+	});
 });
 
 describe('DELETE /api/notes/deletenote/:id', () => {
