@@ -1,8 +1,9 @@
-import { screen, act, renderHook } from '@testing-library/react';
+import { screen, act, renderHook, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import Home from '../Components/Home';
 import useDebouncedValue from '../hooks/useDebouncedValue';
+import { flushPendingDelete } from '../hooks/useDeleteNote';
 import { renderWithProviders, login } from './renderWithProviders';
 
 const note = (id, title) => ({
@@ -96,6 +97,39 @@ describe('note search flow', () => {
 		await user.type(screen.getByRole('textbox', { name: 'Search notes' }), 'zzz');
 
 		expect(await screen.findByText(/no notes match/i)).toBeInTheDocument();
+	});
+
+	// the pendingDelete filter only hides the note while the undo window is open —
+	// once the id clears, the search cache must not serve it again
+	it('a note deleted from the results stays gone after the delete commits', async () => {
+		const user = userEvent.setup();
+		login('Alice');
+
+		let deleted = false;
+		vi.spyOn(global, 'fetch').mockImplementation((url, options) => {
+			if (options?.method === 'DELETE') {
+				deleted = true;
+				return Promise.resolve({ ok: true, json: async () => ({ success: true }) });
+			}
+			const body = String(url).includes('/search')
+				? { success: true, notes: deleted ? [] : [note('s1', 'Milk plans')], nextCursor: null }
+				: { success: true, notes: [note('n1', 'Trip plan')], nextCursor: null };
+			return Promise.resolve({ ok: true, json: async () => body });
+		});
+
+		renderWithProviders(<Home title='Home' />);
+
+		await screen.findByText('Trip plan');
+		await user.type(screen.getByRole('textbox', { name: 'Search notes' }), 'milk');
+		await screen.findByText('Milk plans');
+
+		await user.click(screen.getByRole('button', { name: /delete note/i }));
+		await user.click(await screen.findByRole('button', { name: /^delete$/i }));
+
+		// ends the undo window early, exactly as another note action would
+		await act(async () => flushPendingDelete());
+
+		await waitFor(() => expect(screen.queryByText('Milk plans')).not.toBeInTheDocument());
 	});
 });
 
