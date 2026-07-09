@@ -35,14 +35,18 @@ describe('delete commit', () => {
 	it('sends the real DELETE when the undo toast is closed', async () => {
 		const user = userEvent.setup();
 		login('Alice');
-		const fetchSpy = vi.fn((url) =>
-			String(url).includes('deletenote')
-				? Promise.resolve({ ok: true, json: async () => ({ success: true }) })
-				: Promise.resolve({
-						ok: true,
-						json: async () => ({ success: true, notes: [note] }),
-				  })
-		);
+		// once the DELETE lands the note is really gone, so a refetch must not serve it again
+		let deleted = false;
+		const fetchSpy = vi.fn((url) => {
+			if (String(url).includes('deletenote')) {
+				deleted = true;
+				return Promise.resolve({ ok: true, json: async () => ({ success: true }) });
+			}
+			return Promise.resolve({
+				ok: true,
+				json: async () => ({ success: true, notes: deleted ? [] : [note] }),
+			});
+		});
 		global.fetch = fetchSpy;
 		renderScreen();
 

@@ -8,7 +8,6 @@ const UNDO_WINDOW_MS = 10000;
 
 let pending = null;
 
-// any other note action ends the undo window early — one pending goodbye at a time
 export const flushPendingDelete = () => {
 	if (pending) pending.flush();
 };
@@ -31,6 +30,7 @@ export const useDeleteNote = () => {
 					  }
 					: old
 			);
+			queryClient.invalidateQueries({ queryKey: ['notes'] });
 		} catch (error) {
 			useAlertStore.getState().showAlert(error.message, 'danger');
 		} finally {

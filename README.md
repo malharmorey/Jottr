@@ -11,7 +11,7 @@
   <img alt="Vite" src="https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white">
   <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind-v4-38bdf8?logo=tailwindcss&logoColor=white">
   <img alt="Node" src="https://img.shields.io/badge/Node-22-5fa04e?logo=nodedotjs&logoColor=white">
-  <img alt="Tests" src="https://img.shields.io/badge/tests-129%20passing-success">
+  <img alt="Tests" src="https://img.shields.io/badge/tests-132%20passing-success">
 </p>
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/1c84bcb9-33d2-4ab2-ba93-ba58b0aecf96/deploy-status)](https://app.netlify.com/projects/jottr-app/deploys)
@@ -34,7 +34,7 @@ Jottr is an open-source, cross-platform note app that helps you capture thoughts
 
 **AI** — Anthropic Claude (Haiku 4.5)
 
-**Testing** — Vitest · React Testing Library · Supertest (129 tests across client and server)
+**Testing** — Vitest · React Testing Library · Supertest (132 tests across client and server)
 
 **Hosting** — Netlify (client) · Google Cloud Run (API) · MongoDB Atlas (data)
 
@@ -55,8 +55,9 @@ client/                          server/
 
 1. **Sign up / log in** — a JWT is issued and stored client-side.
 2. **Write a note** — added optimistically, persisted to MongoDB Atlas.
-3. **Summarize** — `POST /api/notes/summarize/:id` runs rate-limit → JWT auth → ownership check → daily quota → the AI model, and returns the summary.
-4. **Edit or delete** — both optimistic; delete holds a 10-second undo before it commits.
+3. **Find a note** — the list loads 20 at a time as you scroll, and the search bar matches titles as you type.
+4. **Summarize** — `POST /api/notes/summarize/:id` runs rate-limit → JWT auth → ownership check → daily quota → PII redaction → the AI model, and returns the summary.
+5. **Edit or delete** — both optimistic; delete holds a 10-second undo before it commits.
 
 ## Getting started
 
