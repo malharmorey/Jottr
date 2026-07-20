@@ -12,7 +12,15 @@ app.set('trust proxy', 1);
 app.use(helmet());
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.use(express.json({ limit: '18kb' }));
-app.use(cors({ origin: (origin, cb) => cb(null, origin === process.env.CLIENT_ORIGIN) }));
+app.use(
+	cors({
+		origin: (origin, cb) => {
+			const allowed = origin === process.env.CLIENT_ORIGIN;
+			if (!allowed) console.warn(`CORS rejected origin: ${origin}`);
+			cb(null, allowed);
+		},
+	})
+);
 
 // Available Routes
 app.use('/api/auth', authRouter);
