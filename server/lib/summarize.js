@@ -62,7 +62,7 @@ Rules:
 - Always summarize whatever text the note holds — even a short note can be condensed or restated in fewer words. Only when the note is genuinely empty or has no real content, reply with exactly: ⚠️ This note has nothing to summarize.`;
 
 const buildPrompt = ({ title, description, tag }) =>
-	`${INSTRUCTIONS}\n\n<title>${redactPII(title)}</title>\n<tags>${redactPII(tag || '')}</tags>\n<note>\n${redactPII(description)}\n</note>`;
+	`<title>${redactPII(title)}</title>\n<tags>${redactPII(tag || '')}</tags>\n<note>\n${redactPII(description)}\n</note>`;
 
 // Failure the route can surface to the user as-is (no provider details)
 const summaryError = (message, statusCode) => {
@@ -78,6 +78,7 @@ const summarizeNote = async ({ title, description, tag }) => {
 		message = await anthropic.messages.create({
 			model: MODEL,
 			max_tokens: 150,
+			system: INSTRUCTIONS,
 			messages: [{ role: 'user', content: buildPrompt({ title, description, tag }) }],
 		});
 	} catch (err) {
